@@ -22,13 +22,18 @@ happiness_pre_2021 <- read_csv("data/world-happiness-report.csv") %>% janitor::c
 happiness_2021 <-
   happiness_2021 %>%
   select(country_name:ladder_score,logged_gdp_per_capita:perceptions_of_corruption) %>%
-  mutate(year = 2021)
+  mutate(year = 2021) 
 
 happiness_pre_2021 <-
   happiness_pre_2021 %>%
-  select(-positive_affect,-negative_affect)
-  
+  select(-positive_affect,-negative_affect) %>%
+  mutate(regional_indicator = NA) %>%
+  rename("ladder_score" = "life_ladder", 
+         "logged_gdp_per_capita" = "log_gdp_per_capita",
+         "healthy_life_expectancy" = "healthy_life_expectancy_at_birth")
+```
 
-
+```{r}
+df <- bind_rows(happiness_2021,happiness_pre_2021)
 ```
 
