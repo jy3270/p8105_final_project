@@ -45,6 +45,6 @@ df <-
 ```
 
 ```{r}
-write_csv(df, "data/")
+write_csv(df, "data/happiness.csv")
 ```
 
