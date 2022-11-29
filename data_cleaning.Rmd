@@ -48,26 +48,3 @@ df <-
 ```{r}
 write_csv(df, "Data/happiness.csv")
 ```
-
-```{r}
-country_to_region = dict()
-
-for (i in 1:nrow(happiness_2021)) {
-  country = happiness_2021[i, ]$country_name
-  region = happiness_2021[i, ]$regional_indicator
-  country_to_region[[country]] = region
-}
-
-f = function(country){
-  country_to_region[[country]]
-}
-```
-
-```{r}
-df = 
-  df %>%
-  mutate(regional_indicator = map(country_name, f)) %>%
-  drop_na()
-```
-
-
