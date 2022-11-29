@@ -1,0 +1,34 @@
+---
+title: "Data"
+output: github_document
+author: Jingya Yu, Landi Guo, Fengdi Zhang, Meng Fang, Yixuan Jiao
+date: "2022-11-11"
+---
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+happiness_2021 <- read_csv("data/world-happiness-report-2021.csv") %>% janitor::clean_names()
+happiness_pre_2021 <- read_csv("data/world-happiness-report.csv") %>% janitor::clean_names()
+```
+
+```{r}
+happiness_2021 <- read_csv("data/world-happiness-report-2021.csv") %>% janitor::clean_names()
+happiness_pre_2021 <- read_csv("data/world-happiness-report.csv") %>% janitor::clean_names()
+
+happiness_2021 <-
+  happiness_2021 %>%
+  select(country_name:ladder_score,logged_gdp_per_capita:perceptions_of_corruption) %>%
+  mutate(year = 2021)
+
+happiness_pre_2021 <-
+  happiness_pre_2021 %>%
+  select(-positive_affect,-negative_affect)
+  
+
+
+```
+
