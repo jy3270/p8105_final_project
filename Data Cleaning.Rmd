@@ -13,11 +13,6 @@ library(tidyverse)
 ```{r}
 happiness_2021 <- read_csv("data/world-happiness-report-2021.csv") %>% janitor::clean_names()
 happiness_pre_2021 <- read_csv("data/world-happiness-report.csv") %>% janitor::clean_names()
-```
-
-```{r}
-happiness_2021 <- read_csv("data/world-happiness-report-2021.csv") %>% janitor::clean_names()
-happiness_pre_2021 <- read_csv("data/world-happiness-report.csv") %>% janitor::clean_names()
 
 happiness_2021 <-
   happiness_2021 %>%
@@ -27,13 +22,29 @@ happiness_2021 <-
 happiness_pre_2021 <-
   happiness_pre_2021 %>%
   select(-positive_affect,-negative_affect) %>%
-  mutate(regional_indicator = NA) %>%
+  #mutate(regional_indicator = NA) %>%
   rename("ladder_score" = "life_ladder", 
          "logged_gdp_per_capita" = "log_gdp_per_capita",
          "healthy_life_expectancy" = "healthy_life_expectancy_at_birth")
+
+happiness_2021 <- 
+  happiness_2021 %>%
+  nest(data1 = ladder_score:year)
+happiness_pre_2021 <- 
+  happiness_pre_2021 %>%
+  nest(data2 = year:perceptions_of_corruption)
+df <- 
+  happiness_2021 %>%
+  left_join(happiness_pre_2021) %>%
+  mutate(data = map2(data1,data2,bind_rows)) %>%
+  select(-data1,-data2) %>%
+  unnest(data) %>%
+  drop_na() %>%
+  relocate(country_name,regional_indicator,year) %>%
+  arrange(country_name,regional_indicator,-year)
 ```
 
 ```{r}
-df <- bind_rows(happiness_2021,happiness_pre_2021)
+write_csv(df, "data/")
 ```
 
