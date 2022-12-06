@@ -43,7 +43,7 @@ regression_df$regional_indicator<- as.factor(regression_df$regional_indicator)
 
 regression_df <- regression_df %>%
   rename(Country = country_name, Region = regional_indicator, Ladder = ladder_score,
-         SD.Ladder = standard_error_of_ladder_score, GDP = logged_gdp_per_capita,
+         SD.Ladder = standard_error_of_ladder_score, GDP = logged_gdp_per_capita, Social.support = social_support,
          Life.exp = healthy_life_expectancy, Freedom = freedom_to_make_life_choices,
          Currpotion = perceptions_of_corruption, Ladder.Dystopia = ladder_score_in_dystopia,
          EXP.LOG.GPD = explained_by_log_gdp_per_capita, EXP.SS = explained_by_social_support,
@@ -67,3 +67,52 @@ M
 corrplot(M)
 ```
 
+##  Split the data into a training and validation set.
+```{r}
+#Data Partitioning
+set.seed(10)
+
+#select sample size of training data (75% of data for train, 25% for validation)
+sample_size <- floor(0.75 * nrow(hap))
+
+# using sample() to select sample of specific size without replacement
+# seq_len() generates a regular sequence - defined here as nrow (number of rows) of our data
+# size is setting how large the sequence is (111)
+train_ind <- sample(seq_len(nrow(hap)), size = sample_size)
+
+#creating train data based on train_ind
+train <- hap[train_ind,]
+#test data is what is left over after train_ind is taken out
+test <- hap[-train_ind,]
+```
+
+## use North America and ANZ as a reference group for comparision
+```{r}
+str(hap$Region)
+levels(hap$Region)
+hap$Region<- relevel(hap$Region, ref="North America and ANZ")
+```
+
+## use stepwise comparision to select the model with the lowest AIC. I also take a peek at the null model, which is just the intercept (mean) of the outcome variable. Once I get the best performing model, I take a look at the residuals to see how the model performs. Overall the residuals seem normally distributed and most assumptions seem to be maintained.
+
+## But, the Scale-Location plot does show some heteroskedasticity, where the variance increases a bit around the center.
+```{r}
+#Modeling
+summary(train)
+colnames(train)
+m1 <- lm(Ladder ~ ., data = train[,-1])
+summary(m1)
+
+null <- lm(Ladder ~ 1, data = train[,-1])
+summary(null)
+
+step(m1)
+
+m1.step <- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + Currpotion, data = train[, -1])
+
+summary(m1.step)
+
+plot(m1.step)
+```
+
+```{r}
