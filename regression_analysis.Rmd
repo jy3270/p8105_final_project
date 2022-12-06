@@ -1,0 +1,69 @@
+---
+title: "Regression analysis"
+author: "Jingya Yu"
+date: "2022-12-04"
+output: github_document
+---
+```{r}
+library(readr)
+library(dplyr)
+library(corrplot)
+library(ggplot2)
+library(MASS)
+```
+Here I am interested in which features best predict the outcome - Ladder Score. I am considering a multiple linear regression to see how variables relate to the outcome. Once important question that I am interested in is how much does GDP impacts the Ladder Score.
+
+## regression data import
+```{r, message=FALSE}
+regression_df = 
+  read_csv("data/world-happiness-report-2021.csv") %>% 
+  janitor::clean_names() 
+head(regression_df)
+```
+## variable description
+- Ladder Score or Happiness Score: “Please imagine a ladder, with steps numbered from 0 at the bottom to 10 at the top. The top of the ladder represents the best possible life for you and the bottom of the ladder represents the worst possible life for you. On which step of the ladder would you say you personally feel you stand at this time?”.
+
+- Log GDP per capita: It is the total monetary or market value of all the finished goods and services produced within a country’s borders in a specific time period.
+
+- Healthy life expectancy: Based on the data extracted from the World Health Organization’s (WHO)
+
+- Social Suport: “If you were in trouble, do you have relatives or friends you can count on to help you whenever you need them, or not?”.
+
+- Freedom to make life choices: “Are you satisfied or dissatisfied with your freedom to choose what you do with your life?”
+
+- Generosity: “Have you donated money to a charity in the past month?” on GDP per capita.
+
+- Corruption Perception: “Is corruption widespread throughout the government or not” and “Is corruption widespread within businesses or not?”
+
+## change column names and check if there is na
+```{r}
+regression_df$country_name <- as.factor(regression_df$country_name)
+
+regression_df$regional_indicator<- as.factor(regression_df$regional_indicator)
+
+regression_df <- regression_df %>%
+  rename(Country = country_name, Region = regional_indicator, Ladder = ladder_score,
+         SD.Ladder = standard_error_of_ladder_score, GDP = logged_gdp_per_capita,
+         Life.exp = healthy_life_expectancy, Freedom = freedom_to_make_life_choices,
+         Currpotion = perceptions_of_corruption, Ladder.Dystopia = ladder_score_in_dystopia,
+         EXP.LOG.GPD = explained_by_log_gdp_per_capita, EXP.SS = explained_by_social_support,
+         EXP.HLE = explained_by_healthy_life_expectancy, EXP.FREE = explained_by_freedom_to_make_life_choices,
+         EXP.GEN = explained_by_generosity, EXP.CUR = explained_by_perceptions_of_corruption,
+         DYS.RES = dystopia_residual)
+
+hap <- regression_df[,-c(4,5,6,13:20)]
+colnames(hap)
+
+
+sum(is.na(regression_df)) # there is no na
+```
+
+## Now, I would like to check the correlations between each of the variables. In order to use use the cor() function, the variables need to be numeric. I use the select_if() function on the hap dataframe and select the data that is numeric.
+## Then we print the correlation matrix and plot the correlation graph.
+```{r}
+num.var <- select_if(hap, is.numeric)
+M<-cor(num.var)
+M
+corrplot(M)
+```
+
