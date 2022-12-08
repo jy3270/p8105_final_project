@@ -14,7 +14,6 @@ library(corrplot)
 library(ggplot2)
 library(MASS)
 library(faraway)
-library(stats)
 ```
 Here I am interested in which features best predict the outcome - Ladder Score. I am considering a multiple linear regression to see how variables relate to the outcome. Once important question that I am interested in is how much does GDP impacts the Ladder Score.
 
@@ -167,8 +166,33 @@ ggplot(hap[low.GDP,], aes(x=Freedom, y=Ladder))+
 #slop of Freedom changes for every one increase in GDP
 int.mod <- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + GDP*Freedom, data = train[, -1])
 
-summary(int.mod)#as GDP increases, slope of freedom decreases
+summary(int.mod) #as GDP increases, slope of freedom decreases
 
 plot(int.mod)
 ```
+
+Looking at the p-value, the value of both GDP and Freedom indicate they're insignificant after we adding the interaction term, but the interaction effect is significant now. 
+
+## Now test how well our model predicts Happiness using MSE.
+```{r}
+predict_train <- predict(int.mod, train)
+predict_test <- predict(int.mod, test)
+
+train_MSE <- mean((as.numeric(unlist(train[,"Ladder"])) - predict_train)^2)
+train_MSE
+
+test_MSE <- mean((as.numeric(unlist(test[,"Ladder"])) - predict_test)^2)
+test_MSE
+```
+
+## our final model
+```{r}
+summary(int.mod)
+## Freedom and GDP's correlation
+cor(hap$GDP, hap$Freedom)
+## Ladder and GDP's correlation
+cor(hap$GDP, hap$Ladder)
+```
+
+The correlations between GDP and Ladder Score seem very strong, and the initial regression model would suggest that GDP is a powerful predictor of the Happiness Ladder Score, but after adapting interaction term and refit model, we found that the relationship between Freedom and GDP cannot be ignored.
 
