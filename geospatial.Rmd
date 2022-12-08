@@ -1,0 +1,47 @@
+---
+title: "Geospatial Analysis"
+output: html_document
+---
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(plotly)
+```
+
+```{r}
+theme_ set(theme_minimal() + theme(legend.position = "right"))
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+```
+
+```{r}
+iso_code <- 
+  read.csv("https://raw.githubusercontent.com/plotly/datasets/master/2014_world_gdp_with_codes.csv") %>%
+  janitor::clean_names() %>%
+  select(-gdp_billions) %>%
+  add_row(country = "Palestinian Territories", code = "PSE")
+```
+
+```{r}
+happy <- read_csv('Data/happiness.csv')
+```
+
+```{r}
+happy_name <- unique(happy$country_name)
+name <- unique(iso_code$country)
+diff_name <- setdiff(happy_name,name)
+code_name <- c("Congo, Republic of the","Gambia, The", "Hong Kong", "Cote d'Ivoire" ,"Burma", "Cyprus", "Macedonia", "Korea, South", "Taiwan")
+for (i in 1:length(code_name)){
+  iso_code$country[iso_code$country == code_name[i]] <- diff_name[i]
+}
+```
+
+
+
