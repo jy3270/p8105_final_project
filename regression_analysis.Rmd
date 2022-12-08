@@ -13,6 +13,8 @@ library(dplyr)
 library(corrplot)
 library(ggplot2)
 library(MASS)
+library(faraway)
+library(stats)
 ```
 Here I am interested in which features best predict the outcome - Ladder Score. I am considering a multiple linear regression to see how variables relate to the outcome. Once important question that I am interested in is how much does GDP impacts the Ladder Score.
 
@@ -160,3 +162,13 @@ ggplot(hap[low.GDP,], aes(x=Freedom, y=Ladder))+
 ```
 
 ## It seems like GDP and Freedom may have some interaction. So, I model the interaction.
+```{r}
+#interactions
+#slop of Freedom changes for every one increase in GDP
+int.mod <- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + GDP*Freedom, data = train[, -1])
+
+summary(int.mod)#as GDP increases, slope of freedom decreases
+
+plot(int.mod)
+```
+
