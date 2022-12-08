@@ -2,7 +2,10 @@
 title: "Regression analysis"
 author: "Jingya Yu"
 date: "2022-12-04"
-output: github_document
+output: 
+  html_document:
+    toc: true
+    toc_float: true
 ---
 ```{r}
 library(readr)
@@ -54,6 +57,9 @@ regression_df <- regression_df %>%
 hap <- regression_df[,-c(4,5,6,13:20)]
 colnames(hap)
 
+hap <- hap %>%
+  mutate(Ladder = row_number())
+head(hap)
 
 sum(is.na(regression_df)) # there is no na
 ```
@@ -114,5 +120,43 @@ summary(m1.step)
 
 plot(m1.step)
 ```
-
+## explore if there is an interaction effect between some of the data.
 ```{r}
+ggplot(train[1:10,], aes(x = reorder(Country, Ladder), y = Ladder, fill = GDP)) + 
+  geom_bar(stat = "identity")+
+  theme(axis.text.x=element_text(angle=45, hjust=1))+
+  labs(title = "Top Ten Happiest Countries") + 
+  ylab("Ladder Score")+
+  xlab("Coutries")
+
+ggplot(train[], aes(Ladder,GDP)) + 
+  geom_point()
+ggplot(train[], aes(Ladder,Freedom)) + 
+  geom_point()
+ggplot(train[], aes(GDP,Freedom)) + 
+  geom_point()
+
+ggplot(data=train[1:30,], aes(x=GDP, y=Ladder))+
+  geom_line(size=2, aes(color=Freedom))
+
+sd(hap$Freedom)+mean(hap$Freedom)
+sd(hap$Freedom)-mean(hap$Freedom)
+
+high.Free <- which(hap[,"Freedom"] >=0.9)
+low.Free <- which(hap[,"Freedom"] <=.7)
+
+sd(hap$GDP)+mean(hap$GDP)
+sd(hap$GDP)-mean(hap$GDP)
+
+
+high.GDP <- which(hap[,"GDP"] >= 10.6)
+low.GDP <- which(hap[,"GDP"] <= 8.3)
+
+ggplot(hap[high.GDP,], aes(x=Freedom, y=Ladder))+
+  geom_line(size=2, aes(color=GDP))
+
+ggplot(hap[low.GDP,], aes(x=Freedom, y=Ladder))+
+  geom_line(size=2, aes(color=GDP))
+```
+
+## It seems like GDP and Freedom may have some interaction. So, I model the interaction.
