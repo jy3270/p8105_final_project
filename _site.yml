@@ -18,4 +18,5 @@ navbar:
   right:
     - text: "About"
 output:
-  html_document
+  html_document:
+    theme: cosmo
