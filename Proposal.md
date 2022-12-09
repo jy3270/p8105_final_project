@@ -44,25 +44,25 @@ happiness scores may be used as well)
 
 **The planned analyses / visualizations / coding challenges**
 
--   Summary statistics analysis (Mean, median, sd… of each variable)
--   Visualization
-    -   Bar graph of mean Life Ladder score for each region
-    -   Bar graph of countries with top 10 Life Ladder
-    -   Line graph for each predictor vs. Life Ladder
-    -   Geospatial analysis
--   Statistical Tests: Compare the mean happiness scores based on
-    regions and continents (ANOVA).
--   Regression analysis:
-    -   Using Life Ladder from year 2008-2021 to predict future Life
-        Ladder score
-    -   Using predictors(Log GDP per capita, Social support, Healthy
-        life expectancy at birth, Freedom to make life choices,
-        Generosity) to predict Life Ladder for each country
--   Coding challenges:
-    -   Cleaning and merging potentially useful dataset
-    -   Designing Shiny app for presenting results
-    -   Using packages like leaflet to present geospatial analysis
-    -   Conducting statistical test in R
+- Summary statistics analysis (Mean, median, sd… of each variable)
+- Visualization
+  - Bar graph of mean Life Ladder score for each region
+  - Bar graph of countries with top 10 Life Ladder
+  - Line graph for each predictor vs. Life Ladder
+  - Geospatial analysis
+- Statistical Tests: Compare the mean happiness scores based on regions
+  and continents (ANOVA).
+- Regression analysis:
+  - Using Life Ladder from year 2008-2021 to predict future Life Ladder
+    score
+  - Using predictors(Log GDP per capita, Social support, Healthy life
+    expectancy at birth, Freedom to make life choices, Generosity) to
+    predict Life Ladder for each country
+- Coding challenges:
+  - Cleaning and merging potentially useful dataset
+  - Designing Shiny app for presenting results
+  - Using packages like leaflet to present geospatial analysis
+  - Conducting statistical test in R
 
 **The planned timeline**
 

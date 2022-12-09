@@ -393,9 +393,7 @@ score.</p>
 <p>After getting an idea of the differences of mean life ladder score
 among different regions, we want to explore the distribution of life
 ladder score on each region across the years.</p>
-<pre class="r"><code>par(mgp=c(10,1,0))
-par(mar=rep(8, 4))
-happ_df %&gt;%
+<pre class="r"><code>happ_df %&gt;%
   filter(year != 2005) %&gt;%
   ggplot(aes(x = year, y = ladder_score, group = year)) +
   geom_boxplot() +

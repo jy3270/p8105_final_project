@@ -4,3 +4,9 @@ output: html_document
 ---
 
 Final Project: overview might be inserted here
+
+```{r}
+hello <- "hello"
+hello
+```
+
