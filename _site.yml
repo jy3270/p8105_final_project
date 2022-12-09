@@ -1,0 +1,17 @@
+name: "P8105 Final Project"
+output_dir: "."
+navbar:
+  title: "Overview"
+  left:
+    - text: "Visulization"
+      href: visualization.html
+    - text: "Statistical Analysis"
+      menu:
+        - text: "Statistical Test"
+          href: statistical_tests.html
+        - text: "Regression Analysis"
+          href: regression_analysis.html
+  right:
+    - text: "About"
+output:
+  html_document

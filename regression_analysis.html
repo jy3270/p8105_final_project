@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Jingya Yu" />
+
+<meta name="date" content="2022-12-04" />
+
+<title>Regression analysis</title>
+
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Overview</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="visualization.html">Visulization</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Statistical Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="statistical_tests.html">Statistical Test</a>
+    </li>
+    <li>
+      <a href="regression_analysis.html">Regression Analysis</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="mailto:yj2752@cumc.columbia.edu">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://github.com/YixuanJiao04/">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Regression analysis</h1>
+<h4 class="author">Jingya Yu</h4>
+<h4 class="date">2022-12-04</h4>
+
+</div>
+
+
+<pre class="r"><code>library(readr)
+library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(corrplot)</code></pre>
+<pre><code>## corrplot 0.92 loaded</code></pre>
+<pre class="r"><code>library(ggplot2)
+library(MASS)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;MASS&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     select</code></pre>
+<pre class="r"><code>library(faraway)</code></pre>
+<p>Here I am interested in which features best predict the outcome -
+Ladder Score. I am considering a multiple linear regression to see how
+variables relate to the outcome. Once important question that I am
+interested in is how much does GDP impacts the Ladder Score.</p>
+<div id="regression-data-import" class="section level2">
+<h2>regression data import</h2>
+<pre class="r"><code>regression_df = 
+  read_csv(&quot;data/world-happiness-report-2021.csv&quot;) %&gt;% 
+  janitor::clean_names() 
+head(regression_df)</code></pre>
+<pre><code>## # A tibble: 6 × 20
+##   country_name regiona…¹ ladde…² stand…³ upper…⁴ lower…⁵ logge…⁶ socia…⁷ healt…⁸
+##   &lt;chr&gt;        &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Finland      Western …    7.84   0.032    7.90    7.78    10.8   0.954    72  
+## 2 Denmark      Western …    7.62   0.035    7.69    7.55    10.9   0.954    72.7
+## 3 Switzerland  Western …    7.57   0.036    7.64    7.5     11.1   0.942    74.4
+## 4 Iceland      Western …    7.55   0.059    7.67    7.44    10.9   0.983    73  
+## 5 Netherlands  Western …    7.46   0.027    7.52    7.41    10.9   0.942    72.4
+## 6 Norway       Western …    7.39   0.035    7.46    7.32    11.1   0.954    73.3
+## # … with 11 more variables: freedom_to_make_life_choices &lt;dbl&gt;,
+## #   generosity &lt;dbl&gt;, perceptions_of_corruption &lt;dbl&gt;,
+## #   ladder_score_in_dystopia &lt;dbl&gt;, explained_by_log_gdp_per_capita &lt;dbl&gt;,
+## #   explained_by_social_support &lt;dbl&gt;,
+## #   explained_by_healthy_life_expectancy &lt;dbl&gt;,
+## #   explained_by_freedom_to_make_life_choices &lt;dbl&gt;,
+## #   explained_by_generosity &lt;dbl&gt;, …</code></pre>
+</div>
+<div id="variable-description" class="section level2">
+<h2>variable description</h2>
+<ul>
+<li><p>Ladder Score or Happiness Score: “Please imagine a ladder, with
+steps numbered from 0 at the bottom to 10 at the top. The top of the
+ladder represents the best possible life for you and the bottom of the
+ladder represents the worst possible life for you. On which step of the
+ladder would you say you personally feel you stand at this
+time?”.</p></li>
+<li><p>Log GDP per capita: It is the total monetary or market value of
+all the finished goods and services produced within a country’s borders
+in a specific time period.</p></li>
+<li><p>Healthy life expectancy: Based on the data extracted from the
+World Health Organization’s (WHO)</p></li>
+<li><p>Social Suport: “If you were in trouble, do you have relatives or
+friends you can count on to help you whenever you need them, or
+not?”.</p></li>
+<li><p>Freedom to make life choices: “Are you satisfied or dissatisfied
+with your freedom to choose what you do with your life?”</p></li>
+<li><p>Generosity: “Have you donated money to a charity in the past
+month?” on GDP per capita.</p></li>
+<li><p>Corruption Perception: “Is corruption widespread throughout the
+government or not” and “Is corruption widespread within businesses or
+not?”</p></li>
+</ul>
+</div>
+<div id="change-column-names-and-check-if-there-is-na"
+class="section level2">
+<h2>change column names and check if there is na</h2>
+<pre class="r"><code>regression_df$country_name &lt;- as.factor(regression_df$country_name)
+
+regression_df$regional_indicator&lt;- as.factor(regression_df$regional_indicator)
+
+regression_df &lt;- regression_df %&gt;%
+  rename(Country = country_name, Region = regional_indicator, Ladder = ladder_score,
+         SD.Ladder = standard_error_of_ladder_score, GDP = logged_gdp_per_capita, Social.support = social_support,
+         Life.exp = healthy_life_expectancy, Freedom = freedom_to_make_life_choices,
+         Currpotion = perceptions_of_corruption, Ladder.Dystopia = ladder_score_in_dystopia,
+         EXP.LOG.GPD = explained_by_log_gdp_per_capita, EXP.SS = explained_by_social_support,
+         EXP.HLE = explained_by_healthy_life_expectancy, EXP.FREE = explained_by_freedom_to_make_life_choices,
+         EXP.GEN = explained_by_generosity, EXP.CUR = explained_by_perceptions_of_corruption,
+         DYS.RES = dystopia_residual)
+
+hap &lt;- regression_df[,-c(4,5,6,13:20)]
+colnames(hap)</code></pre>
+<pre><code>## [1] &quot;Country&quot;        &quot;Region&quot;         &quot;Ladder&quot;         &quot;GDP&quot;           
+## [5] &quot;Social.support&quot; &quot;Life.exp&quot;       &quot;Freedom&quot;        &quot;generosity&quot;    
+## [9] &quot;Currpotion&quot;</code></pre>
+<pre class="r"><code>hap &lt;- hap %&gt;%
+  mutate(Ladder = row_number())
+head(hap)</code></pre>
+<pre><code>## # A tibble: 6 × 9
+##   Country     Region        Ladder   GDP Socia…¹ Life.…² Freedom gener…³ Currp…⁴
+##   &lt;fct&gt;       &lt;fct&gt;          &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1 Finland     Western Euro…      1  10.8   0.954    72     0.949  -0.098   0.186
+## 2 Denmark     Western Euro…      2  10.9   0.954    72.7   0.946   0.03    0.179
+## 3 Switzerland Western Euro…      3  11.1   0.942    74.4   0.919   0.025   0.292
+## 4 Iceland     Western Euro…      4  10.9   0.983    73     0.955   0.16    0.673
+## 5 Netherlands Western Euro…      5  10.9   0.942    72.4   0.913   0.175   0.338
+## 6 Norway      Western Euro…      6  11.1   0.954    73.3   0.96    0.093   0.27 
+## # … with abbreviated variable names ¹​Social.support, ²​Life.exp, ³​generosity,
+## #   ⁴​Currpotion</code></pre>
+<pre class="r"><code>sum(is.na(regression_df)) # there is no na</code></pre>
+<pre><code>## [1] 0</code></pre>
+</div>
+<div
+id="now-i-would-like-to-check-the-correlations-between-each-of-the-variables.-in-order-to-use-use-the-cor-function-the-variables-need-to-be-numeric.-i-use-the-select_if-function-on-the-hap-dataframe-and-select-the-data-that-is-numeric."
+class="section level2">
+<h2>Now, I would like to check the correlations between each of the
+variables. In order to use use the cor() function, the variables need to
+be numeric. I use the select_if() function on the hap dataframe and
+select the data that is numeric.</h2>
+</div>
+<div
+id="then-we-print-the-correlation-matrix-and-plot-the-correlation-graph."
+class="section level2">
+<h2>Then we print the correlation matrix and plot the correlation
+graph.</h2>
+<pre class="r"><code>num.var &lt;- select_if(hap, is.numeric)
+M&lt;-cor(num.var)
+M</code></pre>
+<pre><code>##                     Ladder        GDP Social.support   Life.exp    Freedom
+## Ladder          1.00000000 -0.7969875     -0.7510240 -0.7759416 -0.6064113
+## GDP            -0.79698747  1.0000000      0.7852987  0.8594606  0.4323235
+## Social.support -0.75102401  0.7852987      1.0000000  0.7232561  0.4829298
+## Life.exp       -0.77594156  0.8594606      0.7232561  1.0000000  0.4614939
+## Freedom        -0.60641135  0.4323235      0.4829298  0.4614939  1.0000000
+## generosity      0.03966234 -0.1992864     -0.1149459 -0.1617503  0.1694374
+## Currpotion      0.40065425 -0.3423374     -0.2032070 -0.3643735 -0.4013630
+##                 generosity Currpotion
+## Ladder          0.03966234  0.4006543
+## GDP            -0.19928640 -0.3423374
+## Social.support -0.11494585 -0.2032070
+## Life.exp       -0.16175028 -0.3643735
+## Freedom         0.16943737 -0.4013630
+## generosity      1.00000000 -0.1639617
+## Currpotion     -0.16396173  1.0000000</code></pre>
+<pre class="r"><code>corrplot(M)</code></pre>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="split-the-data-into-a-training-and-validation-set."
+class="section level2">
+<h2>Split the data into a training and validation set.</h2>
+<pre class="r"><code>#Data Partitioning
+set.seed(10)
+
+#select sample size of training data (75% of data for train, 25% for validation)
+sample_size &lt;- floor(0.75 * nrow(hap))
+
+# using sample() to select sample of specific size without replacement
+# seq_len() generates a regular sequence - defined here as nrow (number of rows) of our data
+# size is setting how large the sequence is (111)
+train_ind &lt;- sample(seq_len(nrow(hap)), size = sample_size)
+
+#creating train data based on train_ind
+train &lt;- hap[train_ind,]
+#test data is what is left over after train_ind is taken out
+test &lt;- hap[-train_ind,]</code></pre>
+</div>
+<div id="use-north-america-and-anz-as-a-reference-group-for-comparision"
+class="section level2">
+<h2>use North America and ANZ as a reference group for comparision</h2>
+<pre class="r"><code>str(hap$Region)</code></pre>
+<pre><code>##  Factor w/ 10 levels &quot;Central and Eastern Europe&quot;,..: 10 10 10 10 10 10 10 10 6 10 ...</code></pre>
+<pre class="r"><code>levels(hap$Region)</code></pre>
+<pre><code>##  [1] &quot;Central and Eastern Europe&quot;         &quot;Commonwealth of Independent States&quot;
+##  [3] &quot;East Asia&quot;                          &quot;Latin America and Caribbean&quot;       
+##  [5] &quot;Middle East and North Africa&quot;       &quot;North America and ANZ&quot;             
+##  [7] &quot;South Asia&quot;                         &quot;Southeast Asia&quot;                    
+##  [9] &quot;Sub-Saharan Africa&quot;                 &quot;Western Europe&quot;</code></pre>
+<pre class="r"><code>hap$Region&lt;- relevel(hap$Region, ref=&quot;North America and ANZ&quot;)</code></pre>
+</div>
+<div
+id="use-stepwise-comparision-to-select-the-model-with-the-lowest-aic.-i-also-take-a-peek-at-the-null-model-which-is-just-the-intercept-mean-of-the-outcome-variable.-once-i-get-the-best-performing-model-i-take-a-look-at-the-residuals-to-see-how-the-model-performs.-overall-the-residuals-seem-normally-distributed-and-most-assumptions-seem-to-be-maintained."
+class="section level2">
+<h2>use stepwise comparision to select the model with the lowest AIC. I
+also take a peek at the null model, which is just the intercept (mean)
+of the outcome variable. Once I get the best performing model, I take a
+look at the residuals to see how the model performs. Overall the
+residuals seem normally distributed and most assumptions seem to be
+maintained.</h2>
+</div>
+<div
+id="but-the-scale-location-plot-does-show-some-heteroskedasticity-where-the-variance-increases-a-bit-around-the-center."
+class="section level2">
+<h2>But, the Scale-Location plot does show some heteroskedasticity,
+where the variance increases a bit around the center.</h2>
+<pre class="r"><code>#Modeling
+summary(train)</code></pre>
+<pre><code>##       Country                                   Region       Ladder      
+##  Albania  :  1   Sub-Saharan Africa                :31   Min.   :  3.00  
+##  Algeria  :  1   Western Europe                    :14   1st Qu.: 44.50  
+##  Argentina:  1   Central and Eastern Europe        :13   Median : 82.00  
+##  Armenia  :  1   Latin America and Caribbean       :13   Mean   : 79.96  
+##  Australia:  1   Middle East and North Africa      :12   3rd Qu.:119.00  
+##  Austria  :  1   Commonwealth of Independent States: 8   Max.   :148.00  
+##  (Other)  :105   (Other)                           :20                   
+##       GDP         Social.support      Life.exp        Freedom      
+##  Min.   : 6.635   Min.   :0.4890   Min.   :48.48   Min.   :0.4800  
+##  1st Qu.: 8.456   1st Qu.:0.7255   1st Qu.:59.29   1st Qu.:0.7180  
+##  Median : 9.487   Median :0.8210   Median :66.40   Median :0.7950  
+##  Mean   : 9.333   Mean   :0.8032   Mean   :64.60   Mean   :0.7906  
+##  3rd Qu.:10.297   3rd Qu.:0.8980   3rd Qu.:69.15   3rd Qu.:0.8780  
+##  Max.   :11.647   Max.   :0.9830   Max.   :76.95   Max.   :0.9700  
+##                                                                    
+##    generosity         Currpotion    
+##  Min.   :-0.28800   Min.   :0.0820  
+##  1st Qu.:-0.12400   1st Qu.:0.6655  
+##  Median :-0.03000   Median :0.7760  
+##  Mean   :-0.01084   Mean   :0.7263  
+##  3rd Qu.: 0.07550   3rd Qu.:0.8390  
+##  Max.   : 0.54200   Max.   :0.9390  
+## </code></pre>
+<pre class="r"><code>colnames(train)</code></pre>
+<pre><code>## [1] &quot;Country&quot;        &quot;Region&quot;         &quot;Ladder&quot;         &quot;GDP&quot;           
+## [5] &quot;Social.support&quot; &quot;Life.exp&quot;       &quot;Freedom&quot;        &quot;generosity&quot;    
+## [9] &quot;Currpotion&quot;</code></pre>
+<pre class="r"><code>m1 &lt;- lm(Ladder ~ ., data = train[,-1])
+summary(m1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Ladder ~ ., data = train[, -1])
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -33.160 -13.303  -1.021  12.496  60.285 
+## 
+## Coefficients:
+##                                          Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)                              297.8030    50.0711   5.948 4.51e-08
+## RegionCommonwealth of Independent States  25.7677    10.2086   2.524 0.013257
+## RegionEast Asia                           11.8555    12.3806   0.958 0.340703
+## RegionLatin America and Caribbean         -9.0051     8.6646  -1.039 0.301307
+## RegionMiddle East and North Africa        24.5459     9.0353   2.717 0.007836
+## RegionNorth America and ANZ               -6.8523    15.1294  -0.453 0.651644
+## RegionSouth Asia                          40.0499    11.6176   3.447 0.000845
+## RegionSoutheast Asia                      28.3348    10.2437   2.766 0.006818
+## RegionSub-Saharan Africa                  22.9253    10.8305   2.117 0.036895
+## RegionWestern Europe                      -5.7477     9.1016  -0.632 0.529229
+## GDP                                      -12.7875     3.9852  -3.209 0.001818
+## Social.support                           -75.4024    31.5198  -2.392 0.018715
+## Life.exp                                   0.0648     0.7568   0.086 0.931941
+## Freedom                                  -90.8450    24.2749  -3.742 0.000312
+## generosity                                -8.6442    14.9009  -0.580 0.563210
+## Currpotion                                22.5704    15.4423   1.462 0.147151
+##                                             
+## (Intercept)                              ***
+## RegionCommonwealth of Independent States *  
+## RegionEast Asia                             
+## RegionLatin America and Caribbean           
+## RegionMiddle East and North Africa       ** 
+## RegionNorth America and ANZ                 
+## RegionSouth Asia                         ***
+## RegionSoutheast Asia                     ** 
+## RegionSub-Saharan Africa                 *  
+## RegionWestern Europe                        
+## GDP                                      ** 
+## Social.support                           *  
+## Life.exp                                    
+## Freedom                                  ***
+## generosity                                  
+## Currpotion                                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 20.25 on 95 degrees of freedom
+## Multiple R-squared:  0.8119, Adjusted R-squared:  0.7823 
+## F-statistic: 27.34 on 15 and 95 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>null &lt;- lm(Ladder ~ 1, data = train[,-1])
+summary(null)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Ladder ~ 1, data = train[, -1])
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -76.964 -35.464   2.036  39.036  68.036 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   79.964      4.119   19.41   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 43.4 on 110 degrees of freedom</code></pre>
+<pre class="r"><code>step(m1)</code></pre>
+<pre><code>## Start:  AIC=682.56
+## Ladder ~ Region + GDP + Social.support + Life.exp + Freedom + 
+##     generosity + Currpotion
+## 
+##                  Df Sum of Sq   RSS    AIC
+## - Life.exp        1       3.0 38968 680.57
+## - generosity      1     138.0 39103 680.95
+## &lt;none&gt;                        38965 682.56
+## - Currpotion      1     876.2 39841 683.03
+## - Social.support  1    2347.2 41312 687.05
+## - GDP             1    4223.1 43188 691.98
+## - Freedom         1    5744.3 44709 695.82
+## - Region          9   17659.0 56624 706.05
+## 
+## Step:  AIC=680.57
+## Ladder ~ Region + GDP + Social.support + Freedom + generosity + 
+##     Currpotion
+## 
+##                  Df Sum of Sq   RSS    AIC
+## - generosity      1     145.1 39113 678.98
+## &lt;none&gt;                        38968 680.57
+## - Currpotion      1     897.6 39866 681.10
+## - Social.support  1    2352.7 41321 685.07
+## - GDP             1    5008.9 43977 691.99
+## - Freedom         1    5748.4 44717 693.84
+## - Region          9   19488.8 58457 707.58
+## 
+## Step:  AIC=678.98
+## Ladder ~ Region + GDP + Social.support + Freedom + Currpotion
+## 
+##                  Df Sum of Sq   RSS    AIC
+## &lt;none&gt;                        39113 678.98
+## - Currpotion      1     970.9 40084 679.70
+## - Social.support  1    2302.5 41416 683.33
+## - GDP             1    4889.5 44003 690.06
+## - Freedom         1    6111.8 45225 693.10
+## - Region          9   19392.6 58506 705.68</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + 
+##     Currpotion, data = train[, -1])
+## 
+## Coefficients:
+##                              (Intercept)  
+##                                  296.039  
+## RegionCommonwealth of Independent States  
+##                                   26.090  
+##                          RegionEast Asia  
+##                                   11.988  
+##        RegionLatin America and Caribbean  
+##                                   -8.385  
+##       RegionMiddle East and North Africa  
+##                                   24.992  
+##              RegionNorth America and ANZ  
+##                                   -8.064  
+##                         RegionSouth Asia  
+##                                   39.925  
+##                     RegionSoutheast Asia  
+##                                   27.068  
+##                 RegionSub-Saharan Africa  
+##                                   23.161  
+##                     RegionWestern Europe  
+##                                   -5.987  
+##                                      GDP  
+##                                  -12.128  
+##                           Social.support  
+##                                  -74.255  
+##                                  Freedom  
+##                                  -92.682  
+##                               Currpotion  
+##                                   23.077</code></pre>
+<pre class="r"><code>m1.step &lt;- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + Currpotion, data = train[, -1])
+
+summary(m1.step)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + 
+##     Currpotion, data = train[, -1])
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -33.077 -13.074   0.191  12.750  61.540 
+## 
+## Coefficients:
+##                                          Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)                               296.039     35.487   8.342    5e-13
+## RegionCommonwealth of Independent States   26.090      9.893   2.637 0.009735
+## RegionEast Asia                            11.988     12.168   0.985 0.326973
+## RegionLatin America and Caribbean          -8.385      8.526  -0.984 0.327804
+## RegionMiddle East and North Africa         24.992      8.643   2.892 0.004731
+## RegionNorth America and ANZ                -8.064     14.804  -0.545 0.587166
+## RegionSouth Asia                           39.925     11.474   3.479 0.000754
+## RegionSoutheast Asia                       27.068      9.885   2.738 0.007349
+## RegionSub-Saharan Africa                   23.161      9.058   2.557 0.012111
+## RegionWestern Europe                       -5.987      8.937  -0.670 0.504459
+## GDP                                       -12.128      3.483  -3.482 0.000747
+## Social.support                            -74.255     31.074  -2.390 0.018799
+## Freedom                                   -92.682     23.806  -3.893 0.000182
+## Currpotion                                 23.077     14.872   1.552 0.123996
+##                                             
+## (Intercept)                              ***
+## RegionCommonwealth of Independent States ** 
+## RegionEast Asia                             
+## RegionLatin America and Caribbean           
+## RegionMiddle East and North Africa       ** 
+## RegionNorth America and ANZ                 
+## RegionSouth Asia                         ***
+## RegionSoutheast Asia                     ** 
+## RegionSub-Saharan Africa                 *  
+## RegionWestern Europe                        
+## GDP                                      ***
+## Social.support                           *  
+## Freedom                                  ***
+## Currpotion                                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 20.08 on 97 degrees of freedom
+## Multiple R-squared:  0.8112, Adjusted R-squared:  0.7859 
+## F-statistic: 32.07 on 13 and 97 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>plot(m1.step)</code></pre>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-7-1.png" width="672" /><img src="regression_analysis_files/figure-html/unnamed-chunk-7-2.png" width="672" /><img src="regression_analysis_files/figure-html/unnamed-chunk-7-3.png" width="672" /><img src="regression_analysis_files/figure-html/unnamed-chunk-7-4.png" width="672" />
+## explore if there is an interaction effect between some of the
+data.</p>
+<pre class="r"><code>ggplot(train[1:10,], aes(x = reorder(Country, Ladder), y = Ladder, fill = GDP)) + 
+  geom_bar(stat = &quot;identity&quot;)+
+  theme(axis.text.x=element_text(angle=45, hjust=1))+
+  labs(title = &quot;Top Ten Happiest Countries&quot;) + 
+  ylab(&quot;Ladder Score&quot;)+
+  xlab(&quot;Coutries&quot;)</code></pre>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(train[], aes(Ladder,GDP)) + 
+  geom_point()</code></pre>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<pre class="r"><code>ggplot(train[], aes(Ladder,Freedom)) + 
+  geom_point()</code></pre>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
+<pre class="r"><code>ggplot(train[], aes(GDP,Freedom)) + 
+  geom_point()</code></pre>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-8-4.png" width="672" /></p>
+<pre class="r"><code>ggplot(data=train[1:30,], aes(x=GDP, y=Ladder))+
+  geom_line(size=2, aes(color=Freedom))</code></pre>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-8-5.png" width="672" /></p>
+<pre class="r"><code>sd(hap$Freedom)+mean(hap$Freedom)</code></pre>
+<pre><code>## [1] 0.9049291</code></pre>
+<pre class="r"><code>sd(hap$Freedom)-mean(hap$Freedom)</code></pre>
+<pre><code>## [1] -0.6782655</code></pre>
+<pre class="r"><code>high.Free &lt;- which(hap[,&quot;Freedom&quot;] &gt;=0.9)
+low.Free &lt;- which(hap[,&quot;Freedom&quot;] &lt;=.7)
+
+sd(hap$GDP)+mean(hap$GDP)</code></pre>
+<pre><code>## [1] 10.59081</code></pre>
+<pre class="r"><code>sd(hap$GDP)-mean(hap$GDP)</code></pre>
+<pre><code>## [1] -8.273607</code></pre>
+<pre class="r"><code>high.GDP &lt;- which(hap[,&quot;GDP&quot;] &gt;= 10.6)
+low.GDP &lt;- which(hap[,&quot;GDP&quot;] &lt;= 8.3)
+
+ggplot(hap[high.GDP,], aes(x=Freedom, y=Ladder))+
+  geom_line(size=2, aes(color=GDP))</code></pre>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-8-6.png" width="672" /></p>
+<pre class="r"><code>ggplot(hap[low.GDP,], aes(x=Freedom, y=Ladder))+
+  geom_line(size=2, aes(color=GDP))</code></pre>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-8-7.png" width="672" /></p>
+</div>
+<div
+id="it-seems-like-gdp-and-freedom-may-have-some-interaction.-so-i-model-the-interaction."
+class="section level2">
+<h2>It seems like GDP and Freedom may have some interaction. So, I model
+the interaction.</h2>
+<pre class="r"><code>#interactions
+#slop of Freedom changes for every one increase in GDP
+int.mod &lt;- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + GDP*Freedom, data = train[, -1])
+
+summary(int.mod) #as GDP increases, slope of freedom decreases</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + 
+##     GDP * Freedom, data = train[, -1])
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -35.946 -13.496  -1.871  13.290  62.118 
+## 
+## Coefficients:
+##                                          Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)                                81.853    118.267   0.692 0.490528
+## RegionCommonwealth of Independent States   20.237      9.222   2.194 0.030595
+## RegionEast Asia                             5.442     11.759   0.463 0.644516
+## RegionLatin America and Caribbean          -9.024      8.363  -1.079 0.283235
+## RegionMiddle East and North Africa         23.026      8.293   2.777 0.006593
+## RegionNorth America and ANZ               -11.429     13.503  -0.846 0.399392
+## RegionSouth Asia                           38.910     11.336   3.432 0.000881
+## RegionSoutheast Asia                       25.842      9.675   2.671 0.008870
+## RegionSub-Saharan Africa                   22.772      8.817   2.583 0.011294
+## RegionWestern Europe                       -7.585      8.304  -0.913 0.363281
+## GDP                                        13.434     12.943   1.038 0.301877
+## Social.support                            -63.324     29.972  -2.113 0.037186
+## Freedom                                   204.900    146.719   1.397 0.165736
+## GDP:Freedom                               -33.665     15.831  -2.127 0.035997
+##                                             
+## (Intercept)                                 
+## RegionCommonwealth of Independent States *  
+## RegionEast Asia                             
+## RegionLatin America and Caribbean           
+## RegionMiddle East and North Africa       ** 
+## RegionNorth America and ANZ                 
+## RegionSouth Asia                         ***
+## RegionSoutheast Asia                     ** 
+## RegionSub-Saharan Africa                 *  
+## RegionWestern Europe                        
+## GDP                                         
+## Social.support                           *  
+## Freedom                                     
+## GDP:Freedom                              *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 19.87 on 97 degrees of freedom
+## Multiple R-squared:  0.8152, Adjusted R-squared:  0.7904 
+## F-statistic: 32.91 on 13 and 97 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>plot(int.mod)</code></pre>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-9-1.png" width="672" /><img src="regression_analysis_files/figure-html/unnamed-chunk-9-2.png" width="672" /><img src="regression_analysis_files/figure-html/unnamed-chunk-9-3.png" width="672" /><img src="regression_analysis_files/figure-html/unnamed-chunk-9-4.png" width="672" /></p>
+<p>Looking at the p-value, the value of both GDP and Freedom indicate
+they’re insignificant after we adding the interaction term, but the
+interaction effect is significant now.</p>
+</div>
+<div id="now-test-how-well-our-model-predicts-happiness-using-mse."
+class="section level2">
+<h2>Now test how well our model predicts Happiness using MSE.</h2>
+<pre class="r"><code>predict_train &lt;- predict(int.mod, train)
+predict_test &lt;- predict(int.mod, test)
+
+train_MSE &lt;- mean((as.numeric(unlist(train[,&quot;Ladder&quot;])) - predict_train)^2)
+train_MSE</code></pre>
+<pre><code>## [1] 345.0328</code></pre>
+<pre class="r"><code>test_MSE &lt;- mean((as.numeric(unlist(test[,&quot;Ladder&quot;])) - predict_test)^2)
+test_MSE</code></pre>
+<pre><code>## [1] 369.2025</code></pre>
+</div>
+<div id="our-final-model" class="section level2">
+<h2>our final model</h2>
+<pre class="r"><code>summary(int.mod)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + 
+##     GDP * Freedom, data = train[, -1])
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -35.946 -13.496  -1.871  13.290  62.118 
+## 
+## Coefficients:
+##                                          Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)                                81.853    118.267   0.692 0.490528
+## RegionCommonwealth of Independent States   20.237      9.222   2.194 0.030595
+## RegionEast Asia                             5.442     11.759   0.463 0.644516
+## RegionLatin America and Caribbean          -9.024      8.363  -1.079 0.283235
+## RegionMiddle East and North Africa         23.026      8.293   2.777 0.006593
+## RegionNorth America and ANZ               -11.429     13.503  -0.846 0.399392
+## RegionSouth Asia                           38.910     11.336   3.432 0.000881
+## RegionSoutheast Asia                       25.842      9.675   2.671 0.008870
+## RegionSub-Saharan Africa                   22.772      8.817   2.583 0.011294
+## RegionWestern Europe                       -7.585      8.304  -0.913 0.363281
+## GDP                                        13.434     12.943   1.038 0.301877
+## Social.support                            -63.324     29.972  -2.113 0.037186
+## Freedom                                   204.900    146.719   1.397 0.165736
+## GDP:Freedom                               -33.665     15.831  -2.127 0.035997
+##                                             
+## (Intercept)                                 
+## RegionCommonwealth of Independent States *  
+## RegionEast Asia                             
+## RegionLatin America and Caribbean           
+## RegionMiddle East and North Africa       ** 
+## RegionNorth America and ANZ                 
+## RegionSouth Asia                         ***
+## RegionSoutheast Asia                     ** 
+## RegionSub-Saharan Africa                 *  
+## RegionWestern Europe                        
+## GDP                                         
+## Social.support                           *  
+## Freedom                                     
+## GDP:Freedom                              *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 19.87 on 97 degrees of freedom
+## Multiple R-squared:  0.8152, Adjusted R-squared:  0.7904 
+## F-statistic: 32.91 on 13 and 97 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>## Freedom and GDP&#39;s correlation
+cor(hap$GDP, hap$Freedom)</code></pre>
+<pre><code>## [1] 0.4323235</code></pre>
+<pre class="r"><code>## Ladder and GDP&#39;s correlation
+cor(hap$GDP, hap$Ladder)</code></pre>
+<pre><code>## [1] -0.7969875</code></pre>
+<p>The correlations between GDP and Ladder Score seem very strong, and
+the initial regression model would suggest that GDP is a powerful
+predictor of the Happiness Ladder Score, but after adapting interaction
+term and refit model, we found that the relationship between Freedom and
+GDP cannot be ignored.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
