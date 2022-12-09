@@ -398,34 +398,7 @@ important question that I am interested in is how much does GDP impacts
 the Ladder Score, and does anything interact with GDP. Here we mainly
 focus on our latest data - happiness report from 2021.</p>
 <p> </p>
-<div id="variable-description-put-it-in-the-data-description-part"
-class="section level2">
-<h2>variable description (put it in the data description part)</h2>
-<ul>
-<li><p>Ladder Score or Happiness Score: “Please imagine a ladder, with
-steps numbered from 0 at the bottom to 10 at the top. The top of the
-ladder represents the best possible life for you and the bottom of the
-ladder represents the worst possible life for you. On which step of the
-ladder would you say you personally feel you stand at this
-time?”.</p></li>
-<li><p>Log GDP per capita: It is the total monetary or market value of
-all the finished goods and services produced within a country’s borders
-in a specific time period.</p></li>
-<li><p>Healthy life expectancy: Based on the data extracted from the
-World Health Organization’s (WHO)</p></li>
-<li><p>Social Suport: “If you were in trouble, do you have relatives or
-friends you can count on to help you whenever you need them, or
-not?”.</p></li>
-<li><p>Freedom to make life choices: “Are you satisfied or dissatisfied
-with your freedom to choose what you do with your life?”</p></li>
-<li><p>Generosity: “Have you donated money to a charity in the past
-month?” on GDP per capita.</p></li>
-<li><p>Corruption Perception: “Is corruption widespread throughout the
-government or not” and “Is corruption widespread within businesses or
-not?”</p></li>
-</ul>
 <p> </p>
-</div>
 <div id="outcome-ladder-score" class="section level2">
 <h2>Outcome: Ladder score</h2>
 <ul>
@@ -507,7 +480,7 @@ M</code></pre>
 <ul>
 <li><p>First, we split the data into a training and validation set and
 star our analysis</p></li>
-<li><p>Then, we choose to use North America and ANZ as a reference group
+<li><p>Then, We choose to use North America and ANZ as a reference group
 for comparision</p></li>
 </ul>
 <pre class="r"><code>str(hap$Region)</code></pre>
@@ -725,61 +698,71 @@ ggplot(hap[high.GDP,], aes(x=Freedom, y=Ladder))+
 <div id="model-the-interaction" class="section level3">
 <h3>Model the interaction</h3>
 <pre class="r"><code>#interactions
-int.mod &lt;- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + GDP*Freedom, data = train[, -1])
+int.mod &lt;- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + Currpotion + GDP*Freedom, data = train[, -1])
 
-print(int.mod)</code></pre>
+summary(int.mod)</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + 
-##     GDP * Freedom, data = train[, -1])
+##     Currpotion + GDP * Freedom, data = train[, -1])
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -34.698 -14.833  -1.247  12.952  60.233 
 ## 
 ## Coefficients:
-##                              (Intercept)  
-##                                   81.853  
-## RegionCommonwealth of Independent States  
-##                                   20.237  
-##                          RegionEast Asia  
-##                                    5.442  
-##        RegionLatin America and Caribbean  
-##                                   -9.024  
-##       RegionMiddle East and North Africa  
-##                                   23.026  
-##              RegionNorth America and ANZ  
-##                                  -11.429  
-##                         RegionSouth Asia  
-##                                   38.910  
-##                     RegionSoutheast Asia  
-##                                   25.842  
-##                 RegionSub-Saharan Africa  
-##                                   22.772  
-##                     RegionWestern Europe  
-##                                   -7.585  
-##                                      GDP  
-##                                   13.434  
-##                           Social.support  
-##                                  -63.324  
-##                                  Freedom  
-##                                  204.900  
-##                              GDP:Freedom  
-##                                  -33.665</code></pre>
+##                                          Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)                                86.568    118.105   0.733 0.465360
+## RegionCommonwealth of Independent States   24.255      9.820   2.470 0.015278
+## RegionEast Asia                             9.014     12.124   0.743 0.459011
+## RegionLatin America and Caribbean          -7.640      8.430  -0.906 0.367034
+## RegionMiddle East and North Africa         25.497      8.540   2.986 0.003591
+## RegionNorth America and ANZ                -4.380     14.754  -0.297 0.767203
+## RegionSouth Asia                           39.686     11.333   3.502 0.000703
+## RegionSoutheast Asia                       27.556      9.766   2.822 0.005808
+## RegionSub-Saharan Africa                   24.989      9.000   2.776 0.006607
+## RegionWestern Europe                       -3.752      8.908  -0.421 0.674584
+## GDP                                        11.254     13.051   0.862 0.390680
+## Social.support                            -71.552     30.724  -2.329 0.021962
+## Freedom                                   178.889    148.100   1.208 0.230055
+## Currpotion                                 17.588     14.982   1.174 0.243319
+## GDP:Freedom                               -29.933     16.117  -1.857 0.066341
+##                                             
+## (Intercept)                                 
+## RegionCommonwealth of Independent States *  
+## RegionEast Asia                             
+## RegionLatin America and Caribbean           
+## RegionMiddle East and North Africa       ** 
+## RegionNorth America and ANZ                 
+## RegionSouth Asia                         ***
+## RegionSoutheast Asia                     ** 
+## RegionSub-Saharan Africa                 ** 
+## RegionWestern Europe                        
+## GDP                                         
+## Social.support                           *  
+## Freedom                                     
+## Currpotion                                  
+## GDP:Freedom                              .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 19.83 on 96 degrees of freedom
+## Multiple R-squared:  0.8178, Adjusted R-squared:  0.7912 
+## F-statistic: 30.77 on 14 and 96 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>We found that the slope of Freedom changes for every one increase in
 GDP, and as GDP increases, slope of freedom decreases. Looking at the
 p-value, the value of both GDP and Freedom indicate they’re
 insignificant after we adding the interaction term, but the interaction
-effect is significant now.</p>
+effect is significant now. At the same time, the p-value for Currpotion
+indicates it’s insignificant.</p>
 <p> </p>
-<div id="plot-the-residuals-to-see-the-distribution"
-class="section level4">
-<h4>Plot the residuals to see the distribution</h4>
-<pre class="r"><code>plot(int.mod)</code></pre>
-<p><img src="regression_analysis_files/figure-html/unnamed-chunk-14-1.png" width="90%" /><img src="regression_analysis_files/figure-html/unnamed-chunk-14-2.png" width="90%" /><img src="regression_analysis_files/figure-html/unnamed-chunk-14-3.png" width="90%" /><img src="regression_analysis_files/figure-html/unnamed-chunk-14-4.png" width="90%" /></p>
-<p> </p>
-</div>
 </div>
 </div>
 <div id="our-final-model" class="section level2">
 <h2>Our final model</h2>
-<pre class="r"><code>print(int.mod)</code></pre>
+<pre class="r"><code>final_model &lt;- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + GDP*Freedom, data = train[, -1])
+
+print(final_model)</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + 
@@ -814,6 +797,14 @@ class="section level4">
 ##                                  204.900  
 ##                              GDP:Freedom  
 ##                                  -33.665</code></pre>
+<p> </p>
+<div id="plot-the-final-models-residuals-to-see-the-distribution"
+class="section level4">
+<h4>Plot the final model’s residuals to see the distribution</h4>
+<pre class="r"><code>plot(final_model)</code></pre>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-15-1.png" width="90%" /><img src="regression_analysis_files/figure-html/unnamed-chunk-15-2.png" width="90%" /><img src="regression_analysis_files/figure-html/unnamed-chunk-15-3.png" width="90%" /><img src="regression_analysis_files/figure-html/unnamed-chunk-15-4.png" width="90%" /></p>
+<p> </p>
+</div>
 </div>
 <div id="reshow-the-correlation-score" class="section level2">
 <h2>Reshow the correlation score</h2>
@@ -835,9 +826,7 @@ class="section level4">
 <p>The correlations between GDP and Ladder Score seem very strong, and
 the initial regression model would suggest that GDP is a powerful
 predictor of the Happiness Ladder Score, but after adapting interaction
-term and refit model, we found that the relationship between Freedom and
-GDP cannot be ignored: these two seems to influence each other and we
-cannot eliminate either of them.</p>
+term and refit model, we found that the relationship between Freed</p>
 </div>
 
 

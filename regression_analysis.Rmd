@@ -48,21 +48,6 @@ regression_df =
 head(regression_df)
 ```
 
-## variable description (put it in the data description part)
-- Ladder Score or Happiness Score: “Please imagine a ladder, with steps numbered from 0 at the bottom to 10 at the top. The top of the ladder represents the best possible life for you and the bottom of the ladder represents the worst possible life for you. On which step of the ladder would you say you personally feel you stand at this time?”.
-
-- Log GDP per capita: It is the total monetary or market value of all the finished goods and services produced within a country’s borders in a specific time period.
-
-- Healthy life expectancy: Based on the data extracted from the World Health Organization’s (WHO)
-
-- Social Suport: “If you were in trouble, do you have relatives or friends you can count on to help you whenever you need them, or not?”.
-
-- Freedom to make life choices: “Are you satisfied or dissatisfied with your freedom to choose what you do with your life?”
-
-- Generosity: “Have you donated money to a charity in the past month?” on GDP per capita.
-
-- Corruption Perception: “Is corruption widespread throughout the government or not” and “Is corruption widespread within businesses or not?”
-
 &nbsp;
 
 ## Outcome: Ladder score 
@@ -111,7 +96,6 @@ corrplot(M)
 
 &nbsp;
 
-
 ## Model selection
 - First, we split the data into a training and validation set and star our analysis
 ```{r include=FALSE, message=FALSE, warning=FALSE}
@@ -132,7 +116,7 @@ train <- hap[train_ind,]
 test <- hap[-train_ind,]
 ```
 
-- Then, we choose to use North America and ANZ as a reference group for comparision
+- Then, We choose to use North America and ANZ as a reference group for comparision
 ```{r}
 str(hap$Region)
 levels(hap$Region)
@@ -228,27 +212,31 @@ It seems like GDP and Freedom may have some interaction.
 ### Model the interaction
 ```{r}
 #interactions
-int.mod <- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + GDP*Freedom, data = train[, -1])
+int.mod <- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + Currpotion + GDP*Freedom, data = train[, -1])
 
-print(int.mod)
+summary(int.mod)
 ```
 
 We found that the slope of Freedom changes for every one increase in GDP, and as GDP increases, slope of freedom decreases.
-Looking at the p-value, the value of both GDP and Freedom indicate they're insignificant after we adding the interaction term, but the interaction effect is significant now. 
-
-&nbsp;
-
-#### Plot the residuals to see the distribution
-```{r}
-plot(int.mod)
-```
+Looking at the p-value, the value of both GDP and Freedom indicate they're insignificant after we adding the interaction term, but the interaction effect is significant now. At the same time, the p-value for Currpotion indicates it's insignificant.
 
 &nbsp;
 
 ## Our final model
 ```{r}
-print(int.mod)
+final_model <- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + GDP*Freedom, data = train[, -1])
+
+print(final_model)
 ```
+
+&nbsp;
+
+#### Plot the final model's residuals to see the distribution
+```{r}
+plot(final_model)
+```
+
+&nbsp;
 
 ## Reshow the correlation score 
 - Freedom and GDP's correlation
@@ -266,4 +254,4 @@ cor(hap$GDP, hap$Ladder)
 &nbsp;
 
 ## Conclusion based on the analysis
-The correlations between GDP and Ladder Score seem very strong, and the initial regression model would suggest that GDP is a powerful predictor of the Happiness Ladder Score, but after adapting interaction term and refit model, we found that the relationship between Freedom and GDP cannot be ignored: these two seems to influence each other and we cannot eliminate either of them.
+The correlations between GDP and Ladder Score seem very strong, and the initial regression model would suggest that GDP is a powerful predictor of the Happiness Ladder Score, but after adapting interaction term and refit model, we found that the relationship between Freed
