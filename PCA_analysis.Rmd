@@ -126,4 +126,4 @@ RegTrainMSE
 
 The train MSE is about:0.18
 
-As a result, we conclude that in this senario, the linear regression model we found earlier does a better job predicting the
+As a result, we conclude that in this scenario, the linear regression model we found earlier does a better job predicting the ladder score than the pcr regression.
