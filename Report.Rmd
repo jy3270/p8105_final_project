@@ -1,0 +1,54 @@
+---
+title: "Report"
+output: html_document
+---
+---
+title: "Report"
+output: 
+ html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+---
+
+## Introduction
+
+
+## Background and related work
+ 
+
+## Research questions
+### Main research questions
+
+
+## Method
+
+### Data
+
+### Outcome variables
+
+### Exposures
+
+
+### Covariates
+
+
+### Statistical Analysis
+
+
+## Results
+
+### Explanatory Analysis
+
+### Regression Analysis
+
+## Discussion
+### Takeaways 
+
+### Next steps
+
+### Challenges
+
+### Limitations
+
+## Conclusion
