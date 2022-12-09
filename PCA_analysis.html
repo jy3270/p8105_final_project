@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Meng Fang" />
+
+
+<title>PCA and PCR Analysis for World Happiness Report</title>
+
+<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Overview</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Exploratory Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="visualization.html">Visualization</a>
+    </li>
+    <li>
+      <a href="geospatial.html">Geospatial Analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Statistical Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="statistical_tests.html">Statistical Test</a>
+    </li>
+    <li>
+      <a href="regression_analysis.html">Regression Analysis</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown-header">About</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">PCA and PCR Analysis for World Happiness
+Report</h1>
+<h4 class="author">Meng Fang</h4>
+
+</div>
+
+
+<p>Instead of using linear regression on the model, we want to see
+whether other models will can help us predict the happiness score. In
+this case, we adapt principle component analysis and principle component
+regression to predict the ladder score at 2021, and compare our pcr
+model with our regression model to see which one performs the best.</p>
+<div id="pca-analysis-in-ladder-score" class="section level3">
+<h3>PCA analysis in ladder score</h3>
+<p>First we filter the data from 2021 and all the predictors we are
+going to use to compute the principle components.</p>
+<pre class="r"><code>happy_meta &lt;- read_csv(&quot;./Data/happiness.csv&quot;)</code></pre>
+<pre><code>## Rows: 1816 Columns: 10
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (2): country_name, regional_indicator
+## dbl (8): year, ladder_score, logged_gdp_per_capita, social_support, healthy_...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>happy21 &lt;- happy_meta %&gt;%
+  filter(year == 2021) %&gt;%
+  select(-year)
+
+head(happy21) %&gt;% knitr::kable()</code></pre>
+<table>
+<colgroup>
+<col width="6%" />
+<col width="18%" />
+<col width="6%" />
+<col width="11%" />
+<col width="7%" />
+<col width="12%" />
+<col width="15%" />
+<col width="5%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">country_name</th>
+<th align="left">regional_indicator</th>
+<th align="right">ladder_score</th>
+<th align="right">logged_gdp_per_capita</th>
+<th align="right">social_support</th>
+<th align="right">healthy_life_expectancy</th>
+<th align="right">freedom_to_make_life_choices</th>
+<th align="right">generosity</th>
+<th align="right">perceptions_of_corruption</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Afghanistan</td>
+<td align="left">South Asia</td>
+<td align="right">2.523</td>
+<td align="right">7.695</td>
+<td align="right">0.463</td>
+<td align="right">52.493</td>
+<td align="right">0.382</td>
+<td align="right">-0.102</td>
+<td align="right">0.924</td>
+</tr>
+<tr class="even">
+<td align="left">Albania</td>
+<td align="left">Central and Eastern Europe</td>
+<td align="right">5.117</td>
+<td align="right">9.520</td>
+<td align="right">0.697</td>
+<td align="right">68.999</td>
+<td align="right">0.785</td>
+<td align="right">-0.030</td>
+<td align="right">0.901</td>
+</tr>
+<tr class="odd">
+<td align="left">Algeria</td>
+<td align="left">Middle East and North Africa</td>
+<td align="right">4.887</td>
+<td align="right">9.342</td>
+<td align="right">0.802</td>
+<td align="right">66.005</td>
+<td align="right">0.480</td>
+<td align="right">-0.067</td>
+<td align="right">0.752</td>
+</tr>
+<tr class="even">
+<td align="left">Argentina</td>
+<td align="left">Latin America and Caribbean</td>
+<td align="right">5.929</td>
+<td align="right">9.962</td>
+<td align="right">0.898</td>
+<td align="right">69.000</td>
+<td align="right">0.828</td>
+<td align="right">-0.182</td>
+<td align="right">0.834</td>
+</tr>
+<tr class="odd">
+<td align="left">Armenia</td>
+<td align="left">Commonwealth of Independent States</td>
+<td align="right">5.283</td>
+<td align="right">9.487</td>
+<td align="right">0.799</td>
+<td align="right">67.055</td>
+<td align="right">0.825</td>
+<td align="right">-0.168</td>
+<td align="right">0.629</td>
+</tr>
+<tr class="even">
+<td align="left">Australia</td>
+<td align="left">North America and ANZ</td>
+<td align="right">7.183</td>
+<td align="right">10.796</td>
+<td align="right">0.940</td>
+<td align="right">73.900</td>
+<td align="right">0.914</td>
+<td align="right">0.159</td>
+<td align="right">0.442</td>
+</tr>
+</tbody>
+</table>
+<p>Secondly, we separate our data into a training set(75% of the
+observations), and a testing set(25% of the observations).</p>
+<pre class="r"><code>set.seed(1)
+train_id &lt;- sample(seq_len(nrow(happy21)), size = floor(0.75*nrow(happy21)))
+train_set &lt;- happy21[train_id,]
+test_set &lt;- happy21[-train_id,]</code></pre>
+<p>Then wer apply the training set to do the principle data
+analysis.</p>
+<pre class="r"><code>X &lt;- model.matrix(ladder_score ~logged_gdp_per_capita   + social_support + healthy_life_expectancy + freedom_to_make_life_choices + generosity +perceptions_of_corruption, data = train_set)[, -1]
+happy_PCA &lt;- prcomp(X, center = T, scale = T) 
+summary(happy_PCA)</code></pre>
+<pre><code>## Importance of components:
+##                           PC1    PC2    PC3     PC4     PC5     PC6
+## Standard deviation     1.8067 1.1347 0.7811 0.70345 0.48008 0.33580
+## Proportion of Variance 0.5441 0.2146 0.1017 0.08247 0.03841 0.01879
+## Cumulative Proportion  0.5441 0.7586 0.8603 0.94279 0.98121 1.00000</code></pre>
+<pre class="r"><code>plot(happy_PCA, main = &quot;Scree Plot&quot;)</code></pre>
+<p><img src="PCA_analysis_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>From the scree plot and the summary of the PCA result, we see that
+three components will largely explain the variances in the data
+(86.03%). Let’s see the principle component scores for each
+principle.</p>
+<pre class="r"><code>happy_PCA$rotation</code></pre>
+<pre><code>##                                      PC1        PC2         PC3         PC4
+## logged_gdp_per_capita         0.50557942 -0.1963624  0.03593761 -0.29956544
+## social_support                0.48591366 -0.1257005 -0.33392130 -0.09087997
+## healthy_life_expectancy       0.50017876 -0.1503781  0.02985716 -0.29725350
+## freedom_to_make_life_choices  0.40245817  0.2799679 -0.31503571  0.77439435
+## generosity                   -0.03310161  0.7821098 -0.41124119 -0.45908163
+## perceptions_of_corruption    -0.30826981 -0.4826488 -0.78609591 -0.05656135
+##                                      PC5         PC6
+## logged_gdp_per_capita         0.11097337 -0.77619921
+## social_support               -0.74850206  0.26090102
+## healthy_life_expectancy       0.56834485  0.56119575
+## freedom_to_make_life_choices  0.22964237 -0.08930672
+## generosity                    0.06841811 -0.05149951
+## perceptions_of_corruption     0.21678801 -0.06226456</code></pre>
+<p>Let’s visualize the results on a biplot.</p>
+<pre class="r"><code>biplot &lt;- ggbiplot(happy_PCA,
+              obs.scale = 1,
+              var.scale = 1,
+              groups = train_set$regional_indicator,
+              ellipse = TRUE,
+              ellipse.prob = 0.60)
+biplot &lt;- biplot + scale_color_discrete(name = &#39;&#39;)
+biplot &lt;- biplot + theme(legend.direction = &#39;horizontal&#39;,
+               legend.position = &#39;top&#39;)
+
+biplot</code></pre>
+<p><img src="PCA_analysis_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>The data points closer to each other in the plot have a similar data
+pattern. As we see the countries from the same region are relatively
+closer to each other, which means that they are similar in the pattern
+of the predictors. Furthermore, we can see that the predictors social
+support, healthy life expectation, and logged gdp per capita is highly
+positively correlated with each other (shown on the plot their vectors
+form very small angles with each other). The predictor freedom to make
+life choices is also relatively correlated with social support, healthy
+life expectation and logged gdp per capita. This might be a concern when
+we build our regression model.</p>
+</div>
+<div id="principle-component-regression" class="section level3">
+<h3>Principle Component Regression</h3>
+<p>Now we want to compute a principle component regression, and compare
+our pcr model with regression model to see which one is better at
+predicting the ladder score of 2021.</p>
+<pre class="r"><code>happy_pcr &lt;- pcr(`ladder_score` ~ logged_gdp_per_capita + social_support + healthy_life_expectancy + freedom_to_make_life_choices + generosity +perceptions_of_corruption, data = train_set, scale = TRUE, validation = &quot;CV&quot;)
+summary(happy_pcr)</code></pre>
+<pre><code>## Data:    X dimension: 111 6 
+##  Y dimension: 111 1
+## Fit method: svdpc
+## Number of components considered: 6
+## 
+## VALIDATION: RMSEP
+## Cross-validated using 10 random segments.
+##        (Intercept)  1 comps  2 comps  3 comps  4 comps  5 comps  6 comps
+## CV           1.095   0.4844   0.4880   0.4938   0.4972   0.5008   0.4971
+## adjCV        1.095   0.4838   0.4872   0.4927   0.4959   0.4994   0.4953
+## 
+## TRAINING: % variance explained
+##               1 comps  2 comps  3 comps  4 comps  5 comps  6 comps
+## X               54.40    75.86    86.03    94.28    98.12   100.00
+## ladder_score    80.68    80.85    80.97    81.03    81.06    81.68</code></pre>
+<pre class="r"><code>validationplot(happy_pcr, main = &quot;Test Error&quot;)</code></pre>
+<p><img src="PCA_analysis_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>When we look at the plot, we see that when we add one principle
+component, the testerror will be the lowest. So we use one principle
+component to make predictions on the out of sample observations. Now we
+build out pcr model based on the optimal value <span
+class="math inline">\(k = 1\)</span>, and compute the test mse and train
+mse.</p>
+<pre class="r"><code>happy21_test&lt;- predict(happy_pcr, newdata = test_set, ncomp = 1) 
+PCRTestMSE &lt;- mean((happy21_test - test_set$`ladder_score`)^2) 
+PCRTestMSE</code></pre>
+<pre><code>## [1] 0.4701414</code></pre>
+<p>The test MSE is <a href="about:0.47" class="uri">about:0.47</a></p>
+<pre class="r"><code>happy21_train &lt;- predict(happy_pcr, newdata = train_set, ncomp = 1) 
+PCRTrainMSE &lt;- mean((happy21_train - train_set$`ladder_score`)^2) 
+PCRTrainMSE</code></pre>
+<pre><code>## [1] 0.2273465</code></pre>
+<p>The train error is about: 0.23</p>
+<p>We compare the train MSE and the test MSE with the best linear
+regression model we found previously by compute test MSE and train MSE
+for the linear regression model as well.</p>
+<pre class="r"><code>best_reg &lt;- lm(ladder_score ~ regional_indicator + logged_gdp_per_capita + social_support + freedom_to_make_life_choices +  logged_gdp_per_capita * freedom_to_make_life_choices, data = train_set)</code></pre>
+<pre class="r"><code>happy21_regtest&lt;- predict(best_reg, newdata = test_set) 
+RegTestMSE &lt;- mean((happy21_regtest - test_set$`ladder_score`)^2) 
+RegTestMSE</code></pre>
+<pre><code>## [1] 0.3817901</code></pre>
+<p>The test MSE is <a href="about:0.38" class="uri">about:0.38</a></p>
+<pre class="r"><code>happy21_regtrain&lt;- predict(best_reg, newdata = train_set) 
+RegTrainMSE &lt;- mean((happy21_regtrain - train_set$`ladder_score`)^2) 
+RegTrainMSE</code></pre>
+<pre><code>## [1] 0.1802655</code></pre>
+<p>The train MSE is <a href="about:0.18" class="uri">about:0.18</a></p>
+<p>As a result, we conclude that in this senario, the linear regression
+model we found earlier does a better job predicting the</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

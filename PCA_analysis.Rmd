@@ -1,0 +1,130 @@
+---
+title: "PCA and PCR Analysis for World Happiness Report"
+author: "Meng Fang"
+output: html_document
+---
+
+Instead of using linear regression on the model, we want to see whether other models will can help us predict the happiness score. In this case, we adapt principle component analysis and principle component regression to predict the ladder score at 2021, and compare our pcr model with our regression model to see which one performs the best.
+
+```{r, include = FALSE}
+library(tidyverse)
+library(readr)
+library(pls)
+library(devtools)
+library(ggbiplot)
+```
+
+### PCA analysis in ladder score 
+
+First we filter the data from 2021 and all the predictors we are going to use to compute the principle components.
+
+```{r}
+happy_meta <- read_csv("./Data/happiness.csv")
+happy21 <- happy_meta %>%
+  filter(year == 2021) %>%
+  select(-year)
+
+head(happy21) %>% knitr::kable()
+```
+
+Secondly, we separate our data into a training set(75% of the observations), and  a testing set(25% of the observations).
+
+```{r}
+set.seed(1)
+train_id <- sample(seq_len(nrow(happy21)), size = floor(0.75*nrow(happy21)))
+train_set <- happy21[train_id,]
+test_set <- happy21[-train_id,]
+```
+
+Then wer apply the training set to do the principle data analysis.
+
+```{r}
+X <- model.matrix(ladder_score ~logged_gdp_per_capita	+ social_support + healthy_life_expectancy + freedom_to_make_life_choices + generosity +perceptions_of_corruption, data = train_set)[, -1]
+happy_PCA <- prcomp(X, center = T, scale = T) 
+summary(happy_PCA)
+```
+
+```{r}
+plot(happy_PCA, main = "Scree Plot")
+```
+
+From the scree plot and the summary of the PCA result, we see that three components will largely explain the variances in the data (86.03%). Let's see the principle component scores for each principle.
+
+```{r}
+happy_PCA$rotation
+```
+
+Let's visualize the results on a biplot.
+
+```{r}
+biplot <- ggbiplot(happy_PCA,
+              obs.scale = 1,
+              var.scale = 1,
+              groups = train_set$regional_indicator,
+              ellipse = TRUE,
+              ellipse.prob = 0.60)
+biplot <- biplot + scale_color_discrete(name = '')
+biplot <- biplot + theme(legend.direction = 'horizontal',
+               legend.position = 'top')
+
+biplot
+```
+
+The data points closer to each other in the plot have a similar data pattern. As we see the countries from the same region are relatively closer to each other, which means that they are similar in the pattern of the predictors. Furthermore, we can see that the predictors social support, healthy life expectation, and logged gdp per capita is highly positively correlated with each other (shown on the plot their vectors form very small angles with each other). The predictor freedom to make life choices is also relatively correlated with  social support, healthy life expectation and logged gdp per capita. This might be a concern when we build our regression model.
+
+### Principle Component Regression
+
+Now we want to compute a principle component regression, and compare our pcr model with regression model to see which one is better at predicting the ladder score of 2021.
+
+```{r}
+happy_pcr <- pcr(`ladder_score` ~ logged_gdp_per_capita	+ social_support + healthy_life_expectancy + freedom_to_make_life_choices + generosity +perceptions_of_corruption, data = train_set, scale = TRUE, validation = "CV")
+summary(happy_pcr)
+```
+
+
+
+```{r}
+validationplot(happy_pcr, main = "Test Error")
+```
+
+When we look at the plot, we see that when we add one principle component, the testerror will be the lowest. So we use one principle component to make predictions on the out of sample observations. Now we build out pcr model based on the optimal value $k = 1$, and compute the test mse and train mse.
+
+```{r}
+happy21_test<- predict(happy_pcr, newdata = test_set, ncomp = 1) 
+PCRTestMSE <- mean((happy21_test - test_set$`ladder_score`)^2) 
+PCRTestMSE
+```
+
+The test MSE is about:0.47
+
+```{r}
+happy21_train <- predict(happy_pcr, newdata = train_set, ncomp = 1) 
+PCRTrainMSE <- mean((happy21_train - train_set$`ladder_score`)^2) 
+PCRTrainMSE
+```
+
+The train error is about: 0.23
+
+We compare the train MSE and the test MSE with the best linear regression model we found previously by compute test MSE and train MSE for the linear regression model as well. 
+
+```{r}
+best_reg <- lm(ladder_score ~ regional_indicator + logged_gdp_per_capita + social_support + freedom_to_make_life_choices +  logged_gdp_per_capita * freedom_to_make_life_choices, data = train_set)
+```
+
+```{r}
+happy21_regtest<- predict(best_reg, newdata = test_set) 
+RegTestMSE <- mean((happy21_regtest - test_set$`ladder_score`)^2) 
+RegTestMSE
+```
+
+The test MSE is about:0.38
+
+```{r}
+happy21_regtrain<- predict(best_reg, newdata = train_set) 
+RegTrainMSE <- mean((happy21_regtrain - train_set$`ladder_score`)^2) 
+RegTrainMSE
+```
+
+The train MSE is about:0.18
+
+As a result, we conclude that in this senario, the linear regression model we found earlier does a better job predicting the
