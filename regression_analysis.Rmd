@@ -66,6 +66,7 @@ head(regression_df)
 &nbsp;
 
 ## Outcome: Ladder score 
+- Rename the column name
 ```{r}
 regression_df$country_name <- as.factor(regression_df$country_name)
 
@@ -87,7 +88,10 @@ colnames(hap)
 hap <- hap %>%
   mutate(Ladder = row_number())
 head(hap)
+```
 
+- check NA
+```{r}
 sum(is.na(regression_df)) # there is no na
 ```
 
@@ -138,17 +142,16 @@ hap$Region<-relevel(hap$Region, ref="North America and ANZ")
 
 ###  Full model
 ```{r}
-summary(train)
-colnames(train)
-
 m1 <- lm(Ladder ~ ., data = train[,-1])
-summary(m1)
+print(m1)
 ```
+&nbsp;
+
 ### Null model
 Looking at the null model, which is just the intercept (mean) of the outcome variable.
 ```{r}
 null <- lm(Ladder ~ 1, data = train[,-1])
-summary(null)
+print(null)
 ```
 &nbsp;
 
@@ -161,7 +164,7 @@ m1.step <- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + Currp
 ```
 
 ```{r include=FALSE, message=FALSE, warning=FALSE}
-summary(m1.step)
+print(m1.step)
 ```
 
 Here we get the best performing model measuring by AIC. The predictor includes Region, GDP, Social.support, Freedom and Currpotion. 
@@ -227,7 +230,7 @@ It seems like GDP and Freedom may have some interaction.
 #interactions
 int.mod <- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + GDP*Freedom, data = train[, -1])
 
-summary(int.mod)
+print(int.mod)
 ```
 
 We found that the slope of Freedom changes for every one increase in GDP, and as GDP increases, slope of freedom decreases.
@@ -261,7 +264,7 @@ test_MSE
 
 ## Our final model
 ```{r}
-summary(int.mod)
+print(int.mod)
 ```
 
 ## Reshow the correlation score 
