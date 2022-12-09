@@ -777,22 +777,6 @@ class="section level4">
 </div>
 </div>
 </div>
-<div id="generate-mse" class="section level2">
-<h2>Generate MSE</h2>
-<p>Now we test how well our model predicts Happiness using MSE Since we
-have already altered the ladder score into scale of 1 to 149(country
-count), the error is reasonable to be large.</p>
-<pre class="r"><code>predict_train &lt;- predict(int.mod, train)
-predict_test &lt;- predict(int.mod, test)
-
-train_MSE &lt;- mean((as.numeric(unlist(train[,&quot;Ladder&quot;])) - predict_train)^2)
-train_MSE</code></pre>
-<pre><code>## [1] 345.0328</code></pre>
-<pre class="r"><code>test_MSE &lt;- mean((as.numeric(unlist(test[,&quot;Ladder&quot;])) - predict_test)^2)
-test_MSE</code></pre>
-<pre><code>## [1] 369.2025</code></pre>
-<p> </p>
-</div>
 <div id="our-final-model" class="section level2">
 <h2>Our final model</h2>
 <pre class="r"><code>print(int.mod)</code></pre>

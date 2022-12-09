@@ -245,23 +245,6 @@ plot(int.mod)
 
 &nbsp;
 
-## Generate MSE
-Now we test how well our model predicts Happiness using MSE
-Since we have already altered the ladder score into scale of 1 to 149(country count), the error is reasonable to be large.
-
-```{r}
-predict_train <- predict(int.mod, train)
-predict_test <- predict(int.mod, test)
-
-train_MSE <- mean((as.numeric(unlist(train[,"Ladder"])) - predict_train)^2)
-train_MSE
-
-test_MSE <- mean((as.numeric(unlist(test[,"Ladder"])) - predict_test)^2)
-test_MSE
-```
-
-&nbsp;
-
 ## Our final model
 ```{r}
 print(int.mod)

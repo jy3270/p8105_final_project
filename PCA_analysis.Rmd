@@ -1,6 +1,5 @@
 ---
 title: "PCA and PCR Analysis for World Happiness Report"
-author: "Meng Fang"
 output: html_document
 ---
 
@@ -80,7 +79,6 @@ Now we want to compute a principle component regression, and compare our pcr mod
 happy_pcr <- pcr(`ladder_score` ~ logged_gdp_per_capita	+ social_support + healthy_life_expectancy + freedom_to_make_life_choices + generosity +perceptions_of_corruption, data = train_set, scale = TRUE, validation = "CV")
 summary(happy_pcr)
 ```
-
 
 
 ```{r}
