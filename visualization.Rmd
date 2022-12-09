@@ -1,6 +1,9 @@
 ---
 title: "Visualization"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_float: true
 ---
 
 ```{r, include = FALSE, message=FALSE, warning=FALSE}
@@ -32,25 +35,28 @@ select <- dplyr::select
 happ_df = read_csv("Data/happiness.csv")
 ```
 
+
 ### Life Ladder Scores for Different Regions
+
+#### Overall mean Life Ladder Score
 We want to first get a general sense about the differences among life ladder scores for different regions by plotting the mean life ladder score for each region throughout the years.
 ```{r}
-region_ladder =
-  happ_df %>%
+happ_df %>%
   group_by(regional_indicator) %>%
   summarise(mean_ladder_score = mean(ladder_score)) %>%
   mutate(regional_indicator = fct_reorder(regional_indicator, mean_ladder_score, .desc = TRUE)) %>%
   ggplot(aes(x = regional_indicator, y = mean_ladder_score, fill = regional_indicator)) +
   geom_bar(stat = "identity", show.legend = FALSE) +
   coord_flip() +
-  labs(y = "Mean life ladder score",
-       x = "Region",
-       title = "Mean Life Ladder Score for Different Regions")
-
-region_ladder
+  labs(
+    y = "Mean life ladder score",
+    x = "Region",
+    title = "Mean Life Ladder Score for Different Regions"
+  )
 ```
 From the years 2005 to 2021, North America and ANZ region has the highest mean life ladder score. Western Europe region has the second highest mean ladder score and is close to North America and ANZ's. Sub-Saharan Africa and South Asia have the two lowest mean life ladder scores in which Sub-Saharan Africa has the lowest mean life ladder score.
 
+#### Across Years 2005 to 2021
 After getting an idea of the differences of mean life ladder score among different regions, we want to explore the distribution of life ladder score on each region across the years.
 
 ```{r}
@@ -63,12 +69,15 @@ happ_df %>%
   labs(
     x = "Year",
     y = "Life ladder score",
-    title = "Life Ladder Score for Different Regions Across Years"
+    title = "Life Ladder Scores for Different Regions Across Years"
   )
 ```
-With the initial idea that the mean life ladder score of North America and ANZ being the highest, we can see that each year the life ladder score of North America and ANZ region has similar distribution around 7. For Sub-Saharan Africa, it also has similar distribution in life ladder score around 4 across the years.
+With the initial idea that the mean life ladder score of the North America and ANZ region being the highest, we can see that each year the life ladder score of the North America and ANZ region has similar distribution around 7. For Sub-Saharan Africa, it also has similar distribution in life ladder score around 4 across the years. It seems that the Middle East and North Africa region has many outliers in each year's life ladder score.
 
+### Life Ladder Scores for Different Countries
 
+#### Mean life ladder score for top 50 countries
+Now we want to look at the countries that have top 50 mean life ladder score and which regions they belong to.
 ```{r}
 happ_df %>%
   group_by(country_name, regional_indicator) %>%
@@ -80,9 +89,11 @@ happ_df %>%
   geom_point(stat = "identity") +
   theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust = 1),
         legend.position = "top") +
-  labs(x = "Country",
-       y = "Mean Life Ladder Score",
-       color = "Region")
+  labs(
+    x = "Country",
+    y = "Mean Life Ladder Score",
+    color = "Region"
+  )
   
 ```
 
