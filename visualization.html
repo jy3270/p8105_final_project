@@ -329,8 +329,20 @@ div.tocify {
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="visualization.html">Visulization</a>
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Exploratory Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="visualization.html">Visualization</a>
+    </li>
+    <li>
+      <a href="geospatial.html">Geospatial Analysis</a>
+    </li>
+  </ul>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -456,11 +468,15 @@ also have relatively high mean life ladder score across the years.</p>
 <div id="other-variables-based-on-different-regions"
 class="section level3 tabset">
 <h3 class="tabset">Other variables Based on Different Regions</h3>
+<p>Now we want to look at the other variables other than Life Ladder
+Score since we are interested in exploring the possible factors
+contributing to happiness.</p>
 <div id="logged-gdp-per-capita" class="section level4">
 <h4>Logged GDP per capita</h4>
 <p>We can see that the distributions in North America and ANZ, and
 Western Europe are similar in logged GDP per capita and they are the two
-highest among these regions.</p>
+highest among these regions. Expectedly, the distribution of Sub-Saharan
+Africa region is the lowest on the GDP scale.</p>
 <pre class="r"><code>happ_df %&gt;%
   filter(year != 2005) %&gt;%
   ggplot(aes(x = year, y = logged_gdp_per_capita, group = year)) +
@@ -479,6 +495,10 @@ highest among these regions.</p>
 </div>
 <div id="social-support" class="section level4">
 <h4>Social Support</h4>
+<p>Western Europe and North America and ANZ regions have similar
+distribution and the overall positions are the two highest on the social
+support scale. Surprisingly, the Sub-Saharan Africa region is not the
+lowest one on this scale, but has many outliers and larger range.</p>
 <pre class="r"><code>happ_df %&gt;%
   filter(year != 2005) %&gt;%
   ggplot(aes(x = year, y = social_support, group = year)) +
@@ -497,6 +517,8 @@ highest among these regions.</p>
 </div>
 <div id="healthy-life-expectancy" class="section level4">
 <h4>Healthy life expectancy</h4>
+<p>The regions of Western Europe and North America and ANZ again are the
+two highest on the scale; Sub-Saharan Africa being the lowest.</p>
 <pre class="r"><code>happ_df %&gt;%
   filter(year != 2005) %&gt;%
   ggplot(aes(x = year, y = healthy_life_expectancy, group = year)) +
@@ -515,6 +537,9 @@ highest among these regions.</p>
 </div>
 <div id="freedom-to-make-life-chocies" class="section level4">
 <h4>Freedom to make life chocies</h4>
+<p>This time the distribution does not follow the previous trend. It
+seems that as time moves on, people in most regions are more satisfied
+with their freedom to choose what they do with their lives.</p>
 <pre class="r"><code>happ_df %&gt;%
   filter(year != 2005) %&gt;%
   ggplot(aes(x = year, y = freedom_to_make_life_choices, group = year)) +
@@ -533,6 +558,10 @@ highest among these regions.</p>
 </div>
 <div id="generosity" class="section level4">
 <h4>Generosity</h4>
+<p>For North America and ANZ, Western Europe, and Latin America and
+Caribbean regions, we can see that the generosity trend is likely to
+decrease across the years. The rest of the regions do not show an
+obvious trend in distribution.</p>
 <pre class="r"><code>happ_df %&gt;%
   filter(year != 2005) %&gt;%
   ggplot(aes(x = year, y = generosity, group = year)) +
@@ -551,6 +580,10 @@ highest among these regions.</p>
 </div>
 <div id="perceptions-of-corruption" class="section level4">
 <h4>Perceptions of corruption</h4>
+<p>Surprisingly, only North America and ANZ region is obviously the
+lowest on the scale. The range of each year’s distribution in Western
+Europe is large. It seems that the rest of the regions generally think
+there is corruption widespread throughout the government/businesses.</p>
 <pre class="r"><code>happ_df %&gt;%
   filter(year != 2005) %&gt;%
   ggplot(aes(x = year, y = perceptions_of_corruption, group = year)) +

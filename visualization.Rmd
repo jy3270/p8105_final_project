@@ -98,9 +98,10 @@ happ_df %>%
 Interestingly, there are many countries from Western Europe and they also have relatively high mean life ladder score across the years.
 
 ### Other variables Based on Different Regions {.tabset}
+Now we want to look at the other variables other than Life Ladder Score since we are interested in exploring the possible factors contributing to happiness.
 
 #### Logged GDP per capita
-We can see that the distributions in North America and ANZ, and Western Europe are similar in logged GDP per capita and they are the two highest among these regions.
+We can see that the distributions in North America and ANZ, and Western Europe are similar in logged GDP per capita and they are the two highest among these regions. Expectedly, the distribution of Sub-Saharan Africa region is the lowest on the GDP scale.
 
 ```{r, fig.width = 11.5, fig.height = 6.5}
 happ_df %>%
@@ -120,7 +121,7 @@ happ_df %>%
 ```
 
 #### Social Support
-
+Western Europe and North America and ANZ regions have similar distribution and the overall positions are the two highest on the social support scale. Surprisingly, the Sub-Saharan Africa region is not the lowest one on this scale, but has many outliers and larger range.
 ```{r, fig.width = 11.5, fig.height = 6.5}
 happ_df %>%
   filter(year != 2005) %>%
@@ -139,6 +140,7 @@ happ_df %>%
 ```
 
 #### Healthy life expectancy
+The regions of Western Europe and North America and ANZ again are the two highest on the scale; Sub-Saharan Africa being the lowest.
 ```{r, fig.width = 11.5, fig.height = 6.5}
 happ_df %>%
   filter(year != 2005) %>%
@@ -157,6 +159,7 @@ happ_df %>%
 ```
 
 #### Freedom to make life chocies
+This time the distribution does not follow the previous trend. It seems that as time moves on, people in most regions are more satisfied with their freedom to choose what they do with their lives.
 ```{r, fig.width = 11.5, fig.height = 6.5}
 happ_df %>%
   filter(year != 2005) %>%
@@ -175,6 +178,7 @@ happ_df %>%
 ```
 
 #### Generosity
+For North America and ANZ, Western Europe, and Latin America and Caribbean regions, we can see that the generosity trend is likely to decrease across the years. The rest of the regions do not show an obvious trend in distribution.
 ```{r, fig.width = 11.5, fig.height = 6.5}
 happ_df %>%
   filter(year != 2005) %>%
@@ -193,6 +197,7 @@ happ_df %>%
 ```
 
 #### Perceptions of corruption
+Surprisingly, only North America and ANZ region is obviously the lowest on the scale. The range of each year's distribution in Western Europe is large. It seems that the rest of the regions generally think there is corruption widespread throughout the government/businesses.
 ```{r, fig.width = 11.5, fig.height = 6.5}
 happ_df %>%
   filter(year != 2005) %>%
