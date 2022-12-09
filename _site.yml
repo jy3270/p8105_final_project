@@ -5,10 +5,10 @@ navbar:
   left:
     - text: "Exploratory Analysis"
       menu:
+        - text: "Descriptive statistics"
+          href: descriptive.html
         - text: "Visualization"
           href: visualization.html
-        - text: "Geospatial Analysis"
-          href: geospatial.html
     - text: "Statistical Analysis"
       menu:
         - text: "Statistical Test"

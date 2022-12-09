@@ -13,10 +13,10 @@
 
 <title>Descriptive Statistics</title>
 
-<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -182,8 +182,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -191,16 +191,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -337,10 +330,10 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="visualization.html">Visualization</a>
+      <a href="descriptive.html">Descriptive statistics</a>
     </li>
     <li>
-      <a href="geospatial.html">Geospatial Analysis</a>
+      <a href="visualization.html">Visualization</a>
     </li>
   </ul>
 </li>
@@ -866,12 +859,12 @@ deviation of each variable.</p>
                            perceptions_of_corruption ~ &quot;Perceiptions of corruption&quot;)) %&gt;% 
   bold_labels() %&gt;%
   italicize_levels() </code></pre>
-<div id="avexjlgmbf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="oigerpdoil" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#avexjlgmbf .gt_table {
+#oigerpdoil .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -896,7 +889,7 @@ deviation of each variable.</p>
   border-left-color: #D3D3D3;
 }
 
-#avexjlgmbf .gt_heading {
+#oigerpdoil .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -908,7 +901,12 @@ deviation of each variable.</p>
   border-right-color: #D3D3D3;
 }
 
-#avexjlgmbf .gt_title {
+#oigerpdoil .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#oigerpdoil .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -920,7 +918,7 @@ deviation of each variable.</p>
   border-bottom-width: 0;
 }
 
-#avexjlgmbf .gt_subtitle {
+#oigerpdoil .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -932,13 +930,13 @@ deviation of each variable.</p>
   border-top-width: 0;
 }
 
-#avexjlgmbf .gt_bottom_border {
+#oigerpdoil .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#avexjlgmbf .gt_col_headings {
+#oigerpdoil .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -953,7 +951,7 @@ deviation of each variable.</p>
   border-right-color: #D3D3D3;
 }
 
-#avexjlgmbf .gt_col_heading {
+#oigerpdoil .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -973,7 +971,7 @@ deviation of each variable.</p>
   overflow-x: hidden;
 }
 
-#avexjlgmbf .gt_column_spanner_outer {
+#oigerpdoil .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -985,15 +983,15 @@ deviation of each variable.</p>
   padding-right: 4px;
 }
 
-#avexjlgmbf .gt_column_spanner_outer:first-child {
+#oigerpdoil .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#avexjlgmbf .gt_column_spanner_outer:last-child {
+#oigerpdoil .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#avexjlgmbf .gt_column_spanner {
+#oigerpdoil .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1005,7 +1003,7 @@ deviation of each variable.</p>
   width: 100%;
 }
 
-#avexjlgmbf .gt_group_heading {
+#oigerpdoil .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1028,9 +1026,10 @@ deviation of each variable.</p>
   border-right-width: 1px;
   border-right-color: #D3D3D3;
   vertical-align: middle;
+  text-align: left;
 }
 
-#avexjlgmbf .gt_empty_group_heading {
+#oigerpdoil .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1045,15 +1044,15 @@ deviation of each variable.</p>
   vertical-align: middle;
 }
 
-#avexjlgmbf .gt_from_md > :first-child {
+#oigerpdoil .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#avexjlgmbf .gt_from_md > :last-child {
+#oigerpdoil .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#avexjlgmbf .gt_row {
+#oigerpdoil .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1072,7 +1071,7 @@ deviation of each variable.</p>
   overflow-x: hidden;
 }
 
-#avexjlgmbf .gt_stub {
+#oigerpdoil .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1085,7 +1084,7 @@ deviation of each variable.</p>
   padding-right: 5px;
 }
 
-#avexjlgmbf .gt_stub_row_group {
+#oigerpdoil .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1099,11 +1098,11 @@ deviation of each variable.</p>
   vertical-align: top;
 }
 
-#avexjlgmbf .gt_row_group_first td {
+#oigerpdoil .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#avexjlgmbf .gt_summary_row {
+#oigerpdoil .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1113,16 +1112,16 @@ deviation of each variable.</p>
   padding-right: 5px;
 }
 
-#avexjlgmbf .gt_first_summary_row {
+#oigerpdoil .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#avexjlgmbf .gt_first_summary_row.thick {
+#oigerpdoil .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#avexjlgmbf .gt_last_summary_row {
+#oigerpdoil .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1132,7 +1131,7 @@ deviation of each variable.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#avexjlgmbf .gt_grand_summary_row {
+#oigerpdoil .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1142,7 +1141,7 @@ deviation of each variable.</p>
   padding-right: 5px;
 }
 
-#avexjlgmbf .gt_first_grand_summary_row {
+#oigerpdoil .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1152,11 +1151,11 @@ deviation of each variable.</p>
   border-top-color: #D3D3D3;
 }
 
-#avexjlgmbf .gt_striped {
+#oigerpdoil .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#avexjlgmbf .gt_table_body {
+#oigerpdoil .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1165,7 +1164,7 @@ deviation of each variable.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#avexjlgmbf .gt_footnotes {
+#oigerpdoil .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1179,7 +1178,7 @@ deviation of each variable.</p>
   border-right-color: #D3D3D3;
 }
 
-#avexjlgmbf .gt_footnote {
+#oigerpdoil .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -1188,7 +1187,7 @@ deviation of each variable.</p>
   padding-right: 5px;
 }
 
-#avexjlgmbf .gt_sourcenotes {
+#oigerpdoil .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1202,7 +1201,7 @@ deviation of each variable.</p>
   border-right-color: #D3D3D3;
 }
 
-#avexjlgmbf .gt_sourcenote {
+#oigerpdoil .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1210,64 +1209,64 @@ deviation of each variable.</p>
   padding-right: 5px;
 }
 
-#avexjlgmbf .gt_left {
+#oigerpdoil .gt_left {
   text-align: left;
 }
 
-#avexjlgmbf .gt_center {
+#oigerpdoil .gt_center {
   text-align: center;
 }
 
-#avexjlgmbf .gt_right {
+#oigerpdoil .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#avexjlgmbf .gt_font_normal {
+#oigerpdoil .gt_font_normal {
   font-weight: normal;
 }
 
-#avexjlgmbf .gt_font_bold {
+#oigerpdoil .gt_font_bold {
   font-weight: bold;
 }
 
-#avexjlgmbf .gt_font_italic {
+#oigerpdoil .gt_font_italic {
   font-style: italic;
 }
 
-#avexjlgmbf .gt_super {
+#oigerpdoil .gt_super {
   font-size: 65%;
 }
 
-#avexjlgmbf .gt_footnote_marks {
+#oigerpdoil .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#avexjlgmbf .gt_asterisk {
+#oigerpdoil .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#avexjlgmbf .gt_indent_1 {
+#oigerpdoil .gt_indent_1 {
   text-indent: 5px;
 }
 
-#avexjlgmbf .gt_indent_2 {
+#oigerpdoil .gt_indent_2 {
   text-indent: 10px;
 }
 
-#avexjlgmbf .gt_indent_3 {
+#oigerpdoil .gt_indent_3 {
   text-indent: 15px;
 }
 
-#avexjlgmbf .gt_indent_4 {
+#oigerpdoil .gt_indent_4 {
   text-indent: 20px;
 }
 
-#avexjlgmbf .gt_indent_5 {
+#oigerpdoil .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1275,25 +1274,25 @@ deviation of each variable.</p>
   
   <thead class="gt_col_headings">
     <tr>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"><strong>Characteristic</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>N = 1,816</strong><sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Characteristic&lt;/strong&gt;"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;N = 1,816&lt;/strong&gt;&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>N = 1,816</strong><sup class="gt_footnote_marks">1</sup></th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Ladder score</td>
-<td class="gt_row gt_center">5.47 (1.13)</td></tr>
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Logged gdp per capita</td>
-<td class="gt_row gt_center">9.35 (1.15)</td></tr>
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Social support</td>
-<td class="gt_row gt_center">0.81 (0.12)</td></tr>
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Healthy life exp</td>
-<td class="gt_row gt_center">64 (8)</td></tr>
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Freedom to make life choices</td>
-<td class="gt_row gt_center">0.75 (0.14)</td></tr>
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Generosity</td>
-<td class="gt_row gt_center">0.00 (0.16)</td></tr>
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Perceiptions of corruption</td>
-<td class="gt_row gt_center">0.75 (0.19)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Ladder score</td>
+<td headers="stat_0" class="gt_row gt_center">5.47 (1.13)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Logged gdp per capita</td>
+<td headers="stat_0" class="gt_row gt_center">9.35 (1.15)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Social support</td>
+<td headers="stat_0" class="gt_row gt_center">0.81 (0.12)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Healthy life exp</td>
+<td headers="stat_0" class="gt_row gt_center">64 (8)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Freedom to make life choices</td>
+<td headers="stat_0" class="gt_row gt_center">0.75 (0.14)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Generosity</td>
+<td headers="stat_0" class="gt_row gt_center">0.00 (0.16)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Perceiptions of corruption</td>
+<td headers="stat_0" class="gt_row gt_center">0.75 (0.19)</td></tr>
   </tbody>
   
   <tfoot class="gt_footnotes">
@@ -1317,12 +1316,12 @@ deviation of each variable.</p>
                            perceptions_of_corruption ~ &quot;Perceiptions of corruption&quot;)) %&gt;% 
   bold_labels() %&gt;%
   italicize_levels() </code></pre>
-<div id="ummzlqvpmx" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="jabsqaojct" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#ummzlqvpmx .gt_table {
+#jabsqaojct .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1347,7 +1346,7 @@ deviation of each variable.</p>
   border-left-color: #D3D3D3;
 }
 
-#ummzlqvpmx .gt_heading {
+#jabsqaojct .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1359,7 +1358,12 @@ deviation of each variable.</p>
   border-right-color: #D3D3D3;
 }
 
-#ummzlqvpmx .gt_title {
+#jabsqaojct .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#jabsqaojct .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1371,7 +1375,7 @@ deviation of each variable.</p>
   border-bottom-width: 0;
 }
 
-#ummzlqvpmx .gt_subtitle {
+#jabsqaojct .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1383,13 +1387,13 @@ deviation of each variable.</p>
   border-top-width: 0;
 }
 
-#ummzlqvpmx .gt_bottom_border {
+#jabsqaojct .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ummzlqvpmx .gt_col_headings {
+#jabsqaojct .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1404,7 +1408,7 @@ deviation of each variable.</p>
   border-right-color: #D3D3D3;
 }
 
-#ummzlqvpmx .gt_col_heading {
+#jabsqaojct .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1424,7 +1428,7 @@ deviation of each variable.</p>
   overflow-x: hidden;
 }
 
-#ummzlqvpmx .gt_column_spanner_outer {
+#jabsqaojct .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1436,15 +1440,15 @@ deviation of each variable.</p>
   padding-right: 4px;
 }
 
-#ummzlqvpmx .gt_column_spanner_outer:first-child {
+#jabsqaojct .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ummzlqvpmx .gt_column_spanner_outer:last-child {
+#jabsqaojct .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ummzlqvpmx .gt_column_spanner {
+#jabsqaojct .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1456,7 +1460,7 @@ deviation of each variable.</p>
   width: 100%;
 }
 
-#ummzlqvpmx .gt_group_heading {
+#jabsqaojct .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1479,9 +1483,10 @@ deviation of each variable.</p>
   border-right-width: 1px;
   border-right-color: #D3D3D3;
   vertical-align: middle;
+  text-align: left;
 }
 
-#ummzlqvpmx .gt_empty_group_heading {
+#jabsqaojct .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1496,15 +1501,15 @@ deviation of each variable.</p>
   vertical-align: middle;
 }
 
-#ummzlqvpmx .gt_from_md > :first-child {
+#jabsqaojct .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ummzlqvpmx .gt_from_md > :last-child {
+#jabsqaojct .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ummzlqvpmx .gt_row {
+#jabsqaojct .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1523,7 +1528,7 @@ deviation of each variable.</p>
   overflow-x: hidden;
 }
 
-#ummzlqvpmx .gt_stub {
+#jabsqaojct .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1536,7 +1541,7 @@ deviation of each variable.</p>
   padding-right: 5px;
 }
 
-#ummzlqvpmx .gt_stub_row_group {
+#jabsqaojct .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1550,11 +1555,11 @@ deviation of each variable.</p>
   vertical-align: top;
 }
 
-#ummzlqvpmx .gt_row_group_first td {
+#jabsqaojct .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ummzlqvpmx .gt_summary_row {
+#jabsqaojct .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1564,16 +1569,16 @@ deviation of each variable.</p>
   padding-right: 5px;
 }
 
-#ummzlqvpmx .gt_first_summary_row {
+#jabsqaojct .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ummzlqvpmx .gt_first_summary_row.thick {
+#jabsqaojct .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ummzlqvpmx .gt_last_summary_row {
+#jabsqaojct .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1583,7 +1588,7 @@ deviation of each variable.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ummzlqvpmx .gt_grand_summary_row {
+#jabsqaojct .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1593,7 +1598,7 @@ deviation of each variable.</p>
   padding-right: 5px;
 }
 
-#ummzlqvpmx .gt_first_grand_summary_row {
+#jabsqaojct .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1603,11 +1608,11 @@ deviation of each variable.</p>
   border-top-color: #D3D3D3;
 }
 
-#ummzlqvpmx .gt_striped {
+#jabsqaojct .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ummzlqvpmx .gt_table_body {
+#jabsqaojct .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1616,7 +1621,7 @@ deviation of each variable.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#ummzlqvpmx .gt_footnotes {
+#jabsqaojct .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1630,7 +1635,7 @@ deviation of each variable.</p>
   border-right-color: #D3D3D3;
 }
 
-#ummzlqvpmx .gt_footnote {
+#jabsqaojct .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -1639,7 +1644,7 @@ deviation of each variable.</p>
   padding-right: 5px;
 }
 
-#ummzlqvpmx .gt_sourcenotes {
+#jabsqaojct .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1653,7 +1658,7 @@ deviation of each variable.</p>
   border-right-color: #D3D3D3;
 }
 
-#ummzlqvpmx .gt_sourcenote {
+#jabsqaojct .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1661,64 +1666,64 @@ deviation of each variable.</p>
   padding-right: 5px;
 }
 
-#ummzlqvpmx .gt_left {
+#jabsqaojct .gt_left {
   text-align: left;
 }
 
-#ummzlqvpmx .gt_center {
+#jabsqaojct .gt_center {
   text-align: center;
 }
 
-#ummzlqvpmx .gt_right {
+#jabsqaojct .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ummzlqvpmx .gt_font_normal {
+#jabsqaojct .gt_font_normal {
   font-weight: normal;
 }
 
-#ummzlqvpmx .gt_font_bold {
+#jabsqaojct .gt_font_bold {
   font-weight: bold;
 }
 
-#ummzlqvpmx .gt_font_italic {
+#jabsqaojct .gt_font_italic {
   font-style: italic;
 }
 
-#ummzlqvpmx .gt_super {
+#jabsqaojct .gt_super {
   font-size: 65%;
 }
 
-#ummzlqvpmx .gt_footnote_marks {
+#jabsqaojct .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#ummzlqvpmx .gt_asterisk {
+#jabsqaojct .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ummzlqvpmx .gt_indent_1 {
+#jabsqaojct .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ummzlqvpmx .gt_indent_2 {
+#jabsqaojct .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ummzlqvpmx .gt_indent_3 {
+#jabsqaojct .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ummzlqvpmx .gt_indent_4 {
+#jabsqaojct .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ummzlqvpmx .gt_indent_5 {
+#jabsqaojct .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1726,97 +1731,97 @@ deviation of each variable.</p>
   
   <thead class="gt_col_headings">
     <tr>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"><strong>Characteristic</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>Central and Eastern Europe</strong>, N = 224<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>Commonwealth of Independent States</strong>, N = 165<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>East Asia</strong>, N = 49<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>Latin America and Caribbean</strong>, N = 292<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>Middle East and North Africa</strong>, N = 138<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>North America and ANZ</strong>, N = 58<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>South Asia</strong>, N = 87<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>Southeast Asia</strong>, N = 116<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>Sub-Saharan Africa</strong>, N = 421<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>Western Europe</strong>, N = 266<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Characteristic&lt;/strong&gt;"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Central and Eastern Europe&lt;/strong&gt;, N = 224&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>Central and Eastern Europe</strong>, N = 224<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Commonwealth of Independent States&lt;/strong&gt;, N = 165&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>Commonwealth of Independent States</strong>, N = 165<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;East Asia&lt;/strong&gt;, N = 49&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>East Asia</strong>, N = 49<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Latin America and Caribbean&lt;/strong&gt;, N = 292&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>Latin America and Caribbean</strong>, N = 292<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Middle East and North Africa&lt;/strong&gt;, N = 138&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>Middle East and North Africa</strong>, N = 138<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;North America and ANZ&lt;/strong&gt;, N = 58&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>North America and ANZ</strong>, N = 58<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;South Asia&lt;/strong&gt;, N = 87&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>South Asia</strong>, N = 87<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Southeast Asia&lt;/strong&gt;, N = 116&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>Southeast Asia</strong>, N = 116<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Sub-Saharan Africa&lt;/strong&gt;, N = 421&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>Sub-Saharan Africa</strong>, N = 421<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Western Europe&lt;/strong&gt;, N = 266&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>Western Europe</strong>, N = 266<sup class="gt_footnote_marks">1</sup></th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Ladder score</td>
-<td class="gt_row gt_center">5.55 (0.63)</td>
-<td class="gt_row gt_center">5.18 (0.62)</td>
-<td class="gt_row gt_center">5.68 (0.51)</td>
-<td class="gt_row gt_center">5.99 (0.76)</td>
-<td class="gt_row gt_center">5.27 (0.96)</td>
-<td class="gt_row gt_center">7.25 (0.18)</td>
-<td class="gt_row gt_center">4.51 (0.69)</td>
-<td class="gt_row gt_center">5.37 (0.75)</td>
-<td class="gt_row gt_center">4.32 (0.64)</td>
-<td class="gt_row gt_center">6.87 (0.69)</td></tr>
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Logged gdp per capita</td>
-<td class="gt_row gt_center">10.03 (0.36)</td>
-<td class="gt_row gt_center">9.28 (0.66)</td>
-<td class="gt_row gt_center">10.17 (0.64)</td>
-<td class="gt_row gt_center">9.33 (0.62)</td>
-<td class="gt_row gt_center">9.61 (0.76)</td>
-<td class="gt_row gt_center">10.76 (0.14)</td>
-<td class="gt_row gt_center">8.33 (0.55)</td>
-<td class="gt_row gt_center">9.26 (0.96)</td>
-<td class="gt_row gt_center">7.99 (0.76)</td>
-<td class="gt_row gt_center">10.79 (0.28)</td></tr>
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Social support</td>
-<td class="gt_row gt_center">0.86 (0.08)</td>
-<td class="gt_row gt_center">0.82 (0.11)</td>
-<td class="gt_row gt_center">0.87 (0.06)</td>
-<td class="gt_row gt_center">0.85 (0.07)</td>
-<td class="gt_row gt_center">0.77 (0.10)</td>
-<td class="gt_row gt_center">0.94 (0.02)</td>
-<td class="gt_row gt_center">0.65 (0.13)</td>
-<td class="gt_row gt_center">0.81 (0.07)</td>
-<td class="gt_row gt_center">0.71 (0.11)</td>
-<td class="gt_row gt_center">0.92 (0.05)</td></tr>
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Healthy life exp</td>
-<td class="gt_row gt_center">67 (2)</td>
-<td class="gt_row gt_center">63 (2)</td>
-<td class="gt_row gt_center">70 (6)</td>
-<td class="gt_row gt_center">66 (5)</td>
-<td class="gt_row gt_center">65 (4)</td>
-<td class="gt_row gt_center">72 (2)</td>
-<td class="gt_row gt_center">60 (5)</td>
-<td class="gt_row gt_center">64 (5)</td>
-<td class="gt_row gt_center">53 (5)</td>
-<td class="gt_row gt_center">72 (1)</td></tr>
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Freedom to make life choices</td>
-<td class="gt_row gt_center">0.69 (0.14)</td>
-<td class="gt_row gt_center">0.70 (0.13)</td>
-<td class="gt_row gt_center">0.71 (0.09)</td>
-<td class="gt_row gt_center">0.78 (0.11)</td>
-<td class="gt_row gt_center">0.64 (0.13)</td>
-<td class="gt_row gt_center">0.90 (0.04)</td>
-<td class="gt_row gt_center">0.69 (0.17)</td>
-<td class="gt_row gt_center">0.87 (0.07)</td>
-<td class="gt_row gt_center">0.70 (0.11)</td>
-<td class="gt_row gt_center">0.84 (0.12)</td></tr>
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Generosity</td>
-<td class="gt_row gt_center">-0.10 (0.10)</td>
-<td class="gt_row gt_center">-0.12 (0.14)</td>
-<td class="gt_row gt_center">-0.04 (0.12)</td>
-<td class="gt_row gt_center">-0.03 (0.12)</td>
-<td class="gt_row gt_center">-0.06 (0.13)</td>
-<td class="gt_row gt_center">0.23 (0.08)</td>
-<td class="gt_row gt_center">0.08 (0.11)</td>
-<td class="gt_row gt_center">0.20 (0.22)</td>
-<td class="gt_row gt_center">-0.01 (0.11)</td>
-<td class="gt_row gt_center">0.06 (0.17)</td></tr>
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Perceiptions of corruption</td>
-<td class="gt_row gt_center">0.87 (0.09)</td>
-<td class="gt_row gt_center">0.78 (0.16)</td>
-<td class="gt_row gt_center">0.79 (0.11)</td>
-<td class="gt_row gt_center">0.79 (0.09)</td>
-<td class="gt_row gt_center">0.77 (0.13)</td>
-<td class="gt_row gt_center">0.45 (0.16)</td>
-<td class="gt_row gt_center">0.81 (0.07)</td>
-<td class="gt_row gt_center">0.73 (0.25)</td>
-<td class="gt_row gt_center">0.79 (0.13)</td>
-<td class="gt_row gt_center">0.56 (0.24)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Ladder score</td>
+<td headers="stat_1" class="gt_row gt_center">5.55 (0.63)</td>
+<td headers="stat_2" class="gt_row gt_center">5.18 (0.62)</td>
+<td headers="stat_3" class="gt_row gt_center">5.68 (0.51)</td>
+<td headers="stat_4" class="gt_row gt_center">5.99 (0.76)</td>
+<td headers="stat_5" class="gt_row gt_center">5.27 (0.96)</td>
+<td headers="stat_6" class="gt_row gt_center">7.25 (0.18)</td>
+<td headers="stat_7" class="gt_row gt_center">4.51 (0.69)</td>
+<td headers="stat_8" class="gt_row gt_center">5.37 (0.75)</td>
+<td headers="stat_9" class="gt_row gt_center">4.32 (0.64)</td>
+<td headers="stat_10" class="gt_row gt_center">6.87 (0.69)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Logged gdp per capita</td>
+<td headers="stat_1" class="gt_row gt_center">10.03 (0.36)</td>
+<td headers="stat_2" class="gt_row gt_center">9.28 (0.66)</td>
+<td headers="stat_3" class="gt_row gt_center">10.17 (0.64)</td>
+<td headers="stat_4" class="gt_row gt_center">9.33 (0.62)</td>
+<td headers="stat_5" class="gt_row gt_center">9.61 (0.76)</td>
+<td headers="stat_6" class="gt_row gt_center">10.76 (0.14)</td>
+<td headers="stat_7" class="gt_row gt_center">8.33 (0.55)</td>
+<td headers="stat_8" class="gt_row gt_center">9.26 (0.96)</td>
+<td headers="stat_9" class="gt_row gt_center">7.99 (0.76)</td>
+<td headers="stat_10" class="gt_row gt_center">10.79 (0.28)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Social support</td>
+<td headers="stat_1" class="gt_row gt_center">0.86 (0.08)</td>
+<td headers="stat_2" class="gt_row gt_center">0.82 (0.11)</td>
+<td headers="stat_3" class="gt_row gt_center">0.87 (0.06)</td>
+<td headers="stat_4" class="gt_row gt_center">0.85 (0.07)</td>
+<td headers="stat_5" class="gt_row gt_center">0.77 (0.10)</td>
+<td headers="stat_6" class="gt_row gt_center">0.94 (0.02)</td>
+<td headers="stat_7" class="gt_row gt_center">0.65 (0.13)</td>
+<td headers="stat_8" class="gt_row gt_center">0.81 (0.07)</td>
+<td headers="stat_9" class="gt_row gt_center">0.71 (0.11)</td>
+<td headers="stat_10" class="gt_row gt_center">0.92 (0.05)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Healthy life exp</td>
+<td headers="stat_1" class="gt_row gt_center">67 (2)</td>
+<td headers="stat_2" class="gt_row gt_center">63 (2)</td>
+<td headers="stat_3" class="gt_row gt_center">70 (6)</td>
+<td headers="stat_4" class="gt_row gt_center">66 (5)</td>
+<td headers="stat_5" class="gt_row gt_center">65 (4)</td>
+<td headers="stat_6" class="gt_row gt_center">72 (2)</td>
+<td headers="stat_7" class="gt_row gt_center">60 (5)</td>
+<td headers="stat_8" class="gt_row gt_center">64 (5)</td>
+<td headers="stat_9" class="gt_row gt_center">53 (5)</td>
+<td headers="stat_10" class="gt_row gt_center">72 (1)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Freedom to make life choices</td>
+<td headers="stat_1" class="gt_row gt_center">0.69 (0.14)</td>
+<td headers="stat_2" class="gt_row gt_center">0.70 (0.13)</td>
+<td headers="stat_3" class="gt_row gt_center">0.71 (0.09)</td>
+<td headers="stat_4" class="gt_row gt_center">0.78 (0.11)</td>
+<td headers="stat_5" class="gt_row gt_center">0.64 (0.13)</td>
+<td headers="stat_6" class="gt_row gt_center">0.90 (0.04)</td>
+<td headers="stat_7" class="gt_row gt_center">0.69 (0.17)</td>
+<td headers="stat_8" class="gt_row gt_center">0.87 (0.07)</td>
+<td headers="stat_9" class="gt_row gt_center">0.70 (0.11)</td>
+<td headers="stat_10" class="gt_row gt_center">0.84 (0.12)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Generosity</td>
+<td headers="stat_1" class="gt_row gt_center">-0.10 (0.10)</td>
+<td headers="stat_2" class="gt_row gt_center">-0.12 (0.14)</td>
+<td headers="stat_3" class="gt_row gt_center">-0.04 (0.12)</td>
+<td headers="stat_4" class="gt_row gt_center">-0.03 (0.12)</td>
+<td headers="stat_5" class="gt_row gt_center">-0.06 (0.13)</td>
+<td headers="stat_6" class="gt_row gt_center">0.23 (0.08)</td>
+<td headers="stat_7" class="gt_row gt_center">0.08 (0.11)</td>
+<td headers="stat_8" class="gt_row gt_center">0.20 (0.22)</td>
+<td headers="stat_9" class="gt_row gt_center">-0.01 (0.11)</td>
+<td headers="stat_10" class="gt_row gt_center">0.06 (0.17)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Perceiptions of corruption</td>
+<td headers="stat_1" class="gt_row gt_center">0.87 (0.09)</td>
+<td headers="stat_2" class="gt_row gt_center">0.78 (0.16)</td>
+<td headers="stat_3" class="gt_row gt_center">0.79 (0.11)</td>
+<td headers="stat_4" class="gt_row gt_center">0.79 (0.09)</td>
+<td headers="stat_5" class="gt_row gt_center">0.77 (0.13)</td>
+<td headers="stat_6" class="gt_row gt_center">0.45 (0.16)</td>
+<td headers="stat_7" class="gt_row gt_center">0.81 (0.07)</td>
+<td headers="stat_8" class="gt_row gt_center">0.73 (0.25)</td>
+<td headers="stat_9" class="gt_row gt_center">0.79 (0.13)</td>
+<td headers="stat_10" class="gt_row gt_center">0.56 (0.24)</td></tr>
   </tbody>
   
   <tfoot class="gt_footnotes">
@@ -1841,12 +1846,12 @@ deviation of each variable.</p>
                            perceptions_of_corruption ~ &quot;Perceiptions of corruption&quot;)) %&gt;% 
   bold_labels() %&gt;%
   italicize_levels() </code></pre>
-<div id="awkbjsfyti" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="pvfxikofmu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#awkbjsfyti .gt_table {
+#pvfxikofmu .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1871,7 +1876,7 @@ deviation of each variable.</p>
   border-left-color: #D3D3D3;
 }
 
-#awkbjsfyti .gt_heading {
+#pvfxikofmu .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1883,7 +1888,12 @@ deviation of each variable.</p>
   border-right-color: #D3D3D3;
 }
 
-#awkbjsfyti .gt_title {
+#pvfxikofmu .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#pvfxikofmu .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1895,7 +1905,7 @@ deviation of each variable.</p>
   border-bottom-width: 0;
 }
 
-#awkbjsfyti .gt_subtitle {
+#pvfxikofmu .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1907,13 +1917,13 @@ deviation of each variable.</p>
   border-top-width: 0;
 }
 
-#awkbjsfyti .gt_bottom_border {
+#pvfxikofmu .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#awkbjsfyti .gt_col_headings {
+#pvfxikofmu .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1928,7 +1938,7 @@ deviation of each variable.</p>
   border-right-color: #D3D3D3;
 }
 
-#awkbjsfyti .gt_col_heading {
+#pvfxikofmu .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1948,7 +1958,7 @@ deviation of each variable.</p>
   overflow-x: hidden;
 }
 
-#awkbjsfyti .gt_column_spanner_outer {
+#pvfxikofmu .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1960,15 +1970,15 @@ deviation of each variable.</p>
   padding-right: 4px;
 }
 
-#awkbjsfyti .gt_column_spanner_outer:first-child {
+#pvfxikofmu .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#awkbjsfyti .gt_column_spanner_outer:last-child {
+#pvfxikofmu .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#awkbjsfyti .gt_column_spanner {
+#pvfxikofmu .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1980,7 +1990,7 @@ deviation of each variable.</p>
   width: 100%;
 }
 
-#awkbjsfyti .gt_group_heading {
+#pvfxikofmu .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2003,9 +2013,10 @@ deviation of each variable.</p>
   border-right-width: 1px;
   border-right-color: #D3D3D3;
   vertical-align: middle;
+  text-align: left;
 }
 
-#awkbjsfyti .gt_empty_group_heading {
+#pvfxikofmu .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2020,15 +2031,15 @@ deviation of each variable.</p>
   vertical-align: middle;
 }
 
-#awkbjsfyti .gt_from_md > :first-child {
+#pvfxikofmu .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#awkbjsfyti .gt_from_md > :last-child {
+#pvfxikofmu .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#awkbjsfyti .gt_row {
+#pvfxikofmu .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2047,7 +2058,7 @@ deviation of each variable.</p>
   overflow-x: hidden;
 }
 
-#awkbjsfyti .gt_stub {
+#pvfxikofmu .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2060,7 +2071,7 @@ deviation of each variable.</p>
   padding-right: 5px;
 }
 
-#awkbjsfyti .gt_stub_row_group {
+#pvfxikofmu .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2074,11 +2085,11 @@ deviation of each variable.</p>
   vertical-align: top;
 }
 
-#awkbjsfyti .gt_row_group_first td {
+#pvfxikofmu .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#awkbjsfyti .gt_summary_row {
+#pvfxikofmu .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2088,16 +2099,16 @@ deviation of each variable.</p>
   padding-right: 5px;
 }
 
-#awkbjsfyti .gt_first_summary_row {
+#pvfxikofmu .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#awkbjsfyti .gt_first_summary_row.thick {
+#pvfxikofmu .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#awkbjsfyti .gt_last_summary_row {
+#pvfxikofmu .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2107,7 +2118,7 @@ deviation of each variable.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#awkbjsfyti .gt_grand_summary_row {
+#pvfxikofmu .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2117,7 +2128,7 @@ deviation of each variable.</p>
   padding-right: 5px;
 }
 
-#awkbjsfyti .gt_first_grand_summary_row {
+#pvfxikofmu .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2127,11 +2138,11 @@ deviation of each variable.</p>
   border-top-color: #D3D3D3;
 }
 
-#awkbjsfyti .gt_striped {
+#pvfxikofmu .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#awkbjsfyti .gt_table_body {
+#pvfxikofmu .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2140,7 +2151,7 @@ deviation of each variable.</p>
   border-bottom-color: #D3D3D3;
 }
 
-#awkbjsfyti .gt_footnotes {
+#pvfxikofmu .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2154,7 +2165,7 @@ deviation of each variable.</p>
   border-right-color: #D3D3D3;
 }
 
-#awkbjsfyti .gt_footnote {
+#pvfxikofmu .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -2163,7 +2174,7 @@ deviation of each variable.</p>
   padding-right: 5px;
 }
 
-#awkbjsfyti .gt_sourcenotes {
+#pvfxikofmu .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2177,7 +2188,7 @@ deviation of each variable.</p>
   border-right-color: #D3D3D3;
 }
 
-#awkbjsfyti .gt_sourcenote {
+#pvfxikofmu .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2185,64 +2196,64 @@ deviation of each variable.</p>
   padding-right: 5px;
 }
 
-#awkbjsfyti .gt_left {
+#pvfxikofmu .gt_left {
   text-align: left;
 }
 
-#awkbjsfyti .gt_center {
+#pvfxikofmu .gt_center {
   text-align: center;
 }
 
-#awkbjsfyti .gt_right {
+#pvfxikofmu .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#awkbjsfyti .gt_font_normal {
+#pvfxikofmu .gt_font_normal {
   font-weight: normal;
 }
 
-#awkbjsfyti .gt_font_bold {
+#pvfxikofmu .gt_font_bold {
   font-weight: bold;
 }
 
-#awkbjsfyti .gt_font_italic {
+#pvfxikofmu .gt_font_italic {
   font-style: italic;
 }
 
-#awkbjsfyti .gt_super {
+#pvfxikofmu .gt_super {
   font-size: 65%;
 }
 
-#awkbjsfyti .gt_footnote_marks {
+#pvfxikofmu .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#awkbjsfyti .gt_asterisk {
+#pvfxikofmu .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#awkbjsfyti .gt_indent_1 {
+#pvfxikofmu .gt_indent_1 {
   text-indent: 5px;
 }
 
-#awkbjsfyti .gt_indent_2 {
+#pvfxikofmu .gt_indent_2 {
   text-indent: 10px;
 }
 
-#awkbjsfyti .gt_indent_3 {
+#pvfxikofmu .gt_indent_3 {
   text-indent: 15px;
 }
 
-#awkbjsfyti .gt_indent_4 {
+#pvfxikofmu .gt_indent_4 {
   text-indent: 20px;
 }
 
-#awkbjsfyti .gt_indent_5 {
+#pvfxikofmu .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -2250,145 +2261,145 @@ deviation of each variable.</p>
   
   <thead class="gt_col_headings">
     <tr>
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"><strong>Characteristic</strong></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2006</strong>, N = 74<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2007</strong>, N = 92<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2008</strong>, N = 99<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2009</strong>, N = 101<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2010</strong>, N = 109<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2011</strong>, N = 125<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2012</strong>, N = 116<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2013</strong>, N = 119<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2014</strong>, N = 123<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2015</strong>, N = 124<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2016</strong>, N = 122<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2017</strong>, N = 129<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2018</strong>, N = 126<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2019</strong>, N = 126<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2020</strong>, N = 81<sup class="gt_footnote_marks">1</sup></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2021</strong>, N = 149<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;Characteristic&lt;/strong&gt;"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;2006&lt;/strong&gt;, N = 74&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>2006</strong>, N = 74<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;2007&lt;/strong&gt;, N = 92&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>2007</strong>, N = 92<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;2008&lt;/strong&gt;, N = 99&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>2008</strong>, N = 99<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;2009&lt;/strong&gt;, N = 101&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>2009</strong>, N = 101<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;2010&lt;/strong&gt;, N = 109&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>2010</strong>, N = 109<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;2011&lt;/strong&gt;, N = 125&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>2011</strong>, N = 125<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;2012&lt;/strong&gt;, N = 116&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>2012</strong>, N = 116<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;2013&lt;/strong&gt;, N = 119&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>2013</strong>, N = 119<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;2014&lt;/strong&gt;, N = 123&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>2014</strong>, N = 123<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;2015&lt;/strong&gt;, N = 124&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>2015</strong>, N = 124<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;2016&lt;/strong&gt;, N = 122&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>2016</strong>, N = 122<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;2017&lt;/strong&gt;, N = 129&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>2017</strong>, N = 129<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;2018&lt;/strong&gt;, N = 126&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>2018</strong>, N = 126<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;2019&lt;/strong&gt;, N = 126&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>2019</strong>, N = 126<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;2020&lt;/strong&gt;, N = 81&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>2020</strong>, N = 81<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col" id="&lt;strong&gt;2021&lt;/strong&gt;, N = 149&lt;sup class=&quot;gt_footnote_marks&quot;&gt;1&lt;/sup&gt;"><strong>2021</strong>, N = 149<sup class="gt_footnote_marks">1</sup></th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Ladder score</td>
-<td class="gt_row gt_center">5.18 (1.11)</td>
-<td class="gt_row gt_center">5.37 (1.02)</td>
-<td class="gt_row gt_center">5.44 (1.20)</td>
-<td class="gt_row gt_center">5.48 (1.06)</td>
-<td class="gt_row gt_center">5.55 (1.15)</td>
-<td class="gt_row gt_center">5.41 (1.10)</td>
-<td class="gt_row gt_center">5.45 (1.16)</td>
-<td class="gt_row gt_center">5.38 (1.20)</td>
-<td class="gt_row gt_center">5.40 (1.21)</td>
-<td class="gt_row gt_center">5.40 (1.15)</td>
-<td class="gt_row gt_center">5.42 (1.15)</td>
-<td class="gt_row gt_center">5.51 (1.13)</td>
-<td class="gt_row gt_center">5.54 (1.09)</td>
-<td class="gt_row gt_center">5.56 (1.13)</td>
-<td class="gt_row gt_center">5.87 (1.00)</td>
-<td class="gt_row gt_center">5.53 (1.07)</td></tr>
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Logged gdp per capita</td>
-<td class="gt_row gt_center">9.05 (1.22)</td>
-<td class="gt_row gt_center">9.17 (1.11)</td>
-<td class="gt_row gt_center">9.16 (1.25)</td>
-<td class="gt_row gt_center">9.29 (1.14)</td>
-<td class="gt_row gt_center">9.42 (1.11)</td>
-<td class="gt_row gt_center">9.25 (1.16)</td>
-<td class="gt_row gt_center">9.34 (1.10)</td>
-<td class="gt_row gt_center">9.34 (1.11)</td>
-<td class="gt_row gt_center">9.36 (1.15)</td>
-<td class="gt_row gt_center">9.36 (1.17)</td>
-<td class="gt_row gt_center">9.40 (1.16)</td>
-<td class="gt_row gt_center">9.39 (1.16)</td>
-<td class="gt_row gt_center">9.40 (1.18)</td>
-<td class="gt_row gt_center">9.42 (1.15)</td>
-<td class="gt_row gt_center">9.75 (0.95)</td>
-<td class="gt_row gt_center">9.43 (1.16)</td></tr>
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Social support</td>
-<td class="gt_row gt_center">0.83 (0.12)</td>
-<td class="gt_row gt_center">0.81 (0.11)</td>
-<td class="gt_row gt_center">0.78 (0.15)</td>
-<td class="gt_row gt_center">0.81 (0.11)</td>
-<td class="gt_row gt_center">0.83 (0.10)</td>
-<td class="gt_row gt_center">0.81 (0.13)</td>
-<td class="gt_row gt_center">0.81 (0.12)</td>
-<td class="gt_row gt_center">0.81 (0.11)</td>
-<td class="gt_row gt_center">0.81 (0.12)</td>
-<td class="gt_row gt_center">0.80 (0.13)</td>
-<td class="gt_row gt_center">0.82 (0.12)</td>
-<td class="gt_row gt_center">0.81 (0.12)</td>
-<td class="gt_row gt_center">0.81 (0.12)</td>
-<td class="gt_row gt_center">0.81 (0.12)</td>
-<td class="gt_row gt_center">0.84 (0.11)</td>
-<td class="gt_row gt_center">0.81 (0.11)</td></tr>
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Healthy life exp</td>
-<td class="gt_row gt_center">60 (9)</td>
-<td class="gt_row gt_center">61 (8)</td>
-<td class="gt_row gt_center">61 (9)</td>
-<td class="gt_row gt_center">63 (8)</td>
-<td class="gt_row gt_center">63 (8)</td>
-<td class="gt_row gt_center">62 (8)</td>
-<td class="gt_row gt_center">63 (7)</td>
-<td class="gt_row gt_center">63 (7)</td>
-<td class="gt_row gt_center">64 (7)</td>
-<td class="gt_row gt_center">64 (7)</td>
-<td class="gt_row gt_center">64 (7)</td>
-<td class="gt_row gt_center">64 (7)</td>
-<td class="gt_row gt_center">65 (7)</td>
-<td class="gt_row gt_center">65 (7)</td>
-<td class="gt_row gt_center">67 (6)</td>
-<td class="gt_row gt_center">65 (7)</td></tr>
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Freedom to make life choices</td>
-<td class="gt_row gt_center">0.73 (0.13)</td>
-<td class="gt_row gt_center">0.69 (0.15)</td>
-<td class="gt_row gt_center">0.68 (0.16)</td>
-<td class="gt_row gt_center">0.68 (0.15)</td>
-<td class="gt_row gt_center">0.71 (0.15)</td>
-<td class="gt_row gt_center">0.73 (0.15)</td>
-<td class="gt_row gt_center">0.71 (0.15)</td>
-<td class="gt_row gt_center">0.73 (0.13)</td>
-<td class="gt_row gt_center">0.74 (0.14)</td>
-<td class="gt_row gt_center">0.75 (0.13)</td>
-<td class="gt_row gt_center">0.76 (0.13)</td>
-<td class="gt_row gt_center">0.78 (0.13)</td>
-<td class="gt_row gt_center">0.78 (0.12)</td>
-<td class="gt_row gt_center">0.79 (0.12)</td>
-<td class="gt_row gt_center">0.82 (0.09)</td>
-<td class="gt_row gt_center">0.79 (0.11)</td></tr>
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Generosity</td>
-<td class="gt_row gt_center">0.00 (0.17)</td>
-<td class="gt_row gt_center">0.01 (0.17)</td>
-<td class="gt_row gt_center">0.02 (0.17)</td>
-<td class="gt_row gt_center">-0.02 (0.16)</td>
-<td class="gt_row gt_center">0.00 (0.16)</td>
-<td class="gt_row gt_center">-0.02 (0.17)</td>
-<td class="gt_row gt_center">0.00 (0.17)</td>
-<td class="gt_row gt_center">0.00 (0.17)</td>
-<td class="gt_row gt_center">0.02 (0.16)</td>
-<td class="gt_row gt_center">0.02 (0.17)</td>
-<td class="gt_row gt_center">0.00 (0.16)</td>
-<td class="gt_row gt_center">-0.01 (0.16)</td>
-<td class="gt_row gt_center">-0.02 (0.16)</td>
-<td class="gt_row gt_center">-0.02 (0.15)</td>
-<td class="gt_row gt_center">0.00 (0.14)</td>
-<td class="gt_row gt_center">-0.02 (0.15)</td></tr>
-    <tr><td class="gt_row gt_left" style="font-weight: bold;">Perceiptions of corruption</td>
-<td class="gt_row gt_center">0.76 (0.18)</td>
-<td class="gt_row gt_center">0.80 (0.17)</td>
-<td class="gt_row gt_center">0.77 (0.19)</td>
-<td class="gt_row gt_center">0.78 (0.18)</td>
-<td class="gt_row gt_center">0.77 (0.18)</td>
-<td class="gt_row gt_center">0.76 (0.18)</td>
-<td class="gt_row gt_center">0.77 (0.18)</td>
-<td class="gt_row gt_center">0.76 (0.18)</td>
-<td class="gt_row gt_center">0.74 (0.19)</td>
-<td class="gt_row gt_center">0.74 (0.20)</td>
-<td class="gt_row gt_center">0.75 (0.19)</td>
-<td class="gt_row gt_center">0.72 (0.18)</td>
-<td class="gt_row gt_center">0.73 (0.19)</td>
-<td class="gt_row gt_center">0.72 (0.19)</td>
-<td class="gt_row gt_center">0.71 (0.20)</td>
-<td class="gt_row gt_center">0.73 (0.18)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Ladder score</td>
+<td headers="stat_1" class="gt_row gt_center">5.18 (1.11)</td>
+<td headers="stat_2" class="gt_row gt_center">5.37 (1.02)</td>
+<td headers="stat_3" class="gt_row gt_center">5.44 (1.20)</td>
+<td headers="stat_4" class="gt_row gt_center">5.48 (1.06)</td>
+<td headers="stat_5" class="gt_row gt_center">5.55 (1.15)</td>
+<td headers="stat_6" class="gt_row gt_center">5.41 (1.10)</td>
+<td headers="stat_7" class="gt_row gt_center">5.45 (1.16)</td>
+<td headers="stat_8" class="gt_row gt_center">5.38 (1.20)</td>
+<td headers="stat_9" class="gt_row gt_center">5.40 (1.21)</td>
+<td headers="stat_10" class="gt_row gt_center">5.40 (1.15)</td>
+<td headers="stat_11" class="gt_row gt_center">5.42 (1.15)</td>
+<td headers="stat_12" class="gt_row gt_center">5.51 (1.13)</td>
+<td headers="stat_13" class="gt_row gt_center">5.54 (1.09)</td>
+<td headers="stat_14" class="gt_row gt_center">5.56 (1.13)</td>
+<td headers="stat_15" class="gt_row gt_center">5.87 (1.00)</td>
+<td headers="stat_16" class="gt_row gt_center">5.53 (1.07)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Logged gdp per capita</td>
+<td headers="stat_1" class="gt_row gt_center">9.05 (1.22)</td>
+<td headers="stat_2" class="gt_row gt_center">9.17 (1.11)</td>
+<td headers="stat_3" class="gt_row gt_center">9.16 (1.25)</td>
+<td headers="stat_4" class="gt_row gt_center">9.29 (1.14)</td>
+<td headers="stat_5" class="gt_row gt_center">9.42 (1.11)</td>
+<td headers="stat_6" class="gt_row gt_center">9.25 (1.16)</td>
+<td headers="stat_7" class="gt_row gt_center">9.34 (1.10)</td>
+<td headers="stat_8" class="gt_row gt_center">9.34 (1.11)</td>
+<td headers="stat_9" class="gt_row gt_center">9.36 (1.15)</td>
+<td headers="stat_10" class="gt_row gt_center">9.36 (1.17)</td>
+<td headers="stat_11" class="gt_row gt_center">9.40 (1.16)</td>
+<td headers="stat_12" class="gt_row gt_center">9.39 (1.16)</td>
+<td headers="stat_13" class="gt_row gt_center">9.40 (1.18)</td>
+<td headers="stat_14" class="gt_row gt_center">9.42 (1.15)</td>
+<td headers="stat_15" class="gt_row gt_center">9.75 (0.95)</td>
+<td headers="stat_16" class="gt_row gt_center">9.43 (1.16)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Social support</td>
+<td headers="stat_1" class="gt_row gt_center">0.83 (0.12)</td>
+<td headers="stat_2" class="gt_row gt_center">0.81 (0.11)</td>
+<td headers="stat_3" class="gt_row gt_center">0.78 (0.15)</td>
+<td headers="stat_4" class="gt_row gt_center">0.81 (0.11)</td>
+<td headers="stat_5" class="gt_row gt_center">0.83 (0.10)</td>
+<td headers="stat_6" class="gt_row gt_center">0.81 (0.13)</td>
+<td headers="stat_7" class="gt_row gt_center">0.81 (0.12)</td>
+<td headers="stat_8" class="gt_row gt_center">0.81 (0.11)</td>
+<td headers="stat_9" class="gt_row gt_center">0.81 (0.12)</td>
+<td headers="stat_10" class="gt_row gt_center">0.80 (0.13)</td>
+<td headers="stat_11" class="gt_row gt_center">0.82 (0.12)</td>
+<td headers="stat_12" class="gt_row gt_center">0.81 (0.12)</td>
+<td headers="stat_13" class="gt_row gt_center">0.81 (0.12)</td>
+<td headers="stat_14" class="gt_row gt_center">0.81 (0.12)</td>
+<td headers="stat_15" class="gt_row gt_center">0.84 (0.11)</td>
+<td headers="stat_16" class="gt_row gt_center">0.81 (0.11)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Healthy life exp</td>
+<td headers="stat_1" class="gt_row gt_center">60 (9)</td>
+<td headers="stat_2" class="gt_row gt_center">61 (8)</td>
+<td headers="stat_3" class="gt_row gt_center">61 (9)</td>
+<td headers="stat_4" class="gt_row gt_center">63 (8)</td>
+<td headers="stat_5" class="gt_row gt_center">63 (8)</td>
+<td headers="stat_6" class="gt_row gt_center">62 (8)</td>
+<td headers="stat_7" class="gt_row gt_center">63 (7)</td>
+<td headers="stat_8" class="gt_row gt_center">63 (7)</td>
+<td headers="stat_9" class="gt_row gt_center">64 (7)</td>
+<td headers="stat_10" class="gt_row gt_center">64 (7)</td>
+<td headers="stat_11" class="gt_row gt_center">64 (7)</td>
+<td headers="stat_12" class="gt_row gt_center">64 (7)</td>
+<td headers="stat_13" class="gt_row gt_center">65 (7)</td>
+<td headers="stat_14" class="gt_row gt_center">65 (7)</td>
+<td headers="stat_15" class="gt_row gt_center">67 (6)</td>
+<td headers="stat_16" class="gt_row gt_center">65 (7)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Freedom to make life choices</td>
+<td headers="stat_1" class="gt_row gt_center">0.73 (0.13)</td>
+<td headers="stat_2" class="gt_row gt_center">0.69 (0.15)</td>
+<td headers="stat_3" class="gt_row gt_center">0.68 (0.16)</td>
+<td headers="stat_4" class="gt_row gt_center">0.68 (0.15)</td>
+<td headers="stat_5" class="gt_row gt_center">0.71 (0.15)</td>
+<td headers="stat_6" class="gt_row gt_center">0.73 (0.15)</td>
+<td headers="stat_7" class="gt_row gt_center">0.71 (0.15)</td>
+<td headers="stat_8" class="gt_row gt_center">0.73 (0.13)</td>
+<td headers="stat_9" class="gt_row gt_center">0.74 (0.14)</td>
+<td headers="stat_10" class="gt_row gt_center">0.75 (0.13)</td>
+<td headers="stat_11" class="gt_row gt_center">0.76 (0.13)</td>
+<td headers="stat_12" class="gt_row gt_center">0.78 (0.13)</td>
+<td headers="stat_13" class="gt_row gt_center">0.78 (0.12)</td>
+<td headers="stat_14" class="gt_row gt_center">0.79 (0.12)</td>
+<td headers="stat_15" class="gt_row gt_center">0.82 (0.09)</td>
+<td headers="stat_16" class="gt_row gt_center">0.79 (0.11)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Generosity</td>
+<td headers="stat_1" class="gt_row gt_center">0.00 (0.17)</td>
+<td headers="stat_2" class="gt_row gt_center">0.01 (0.17)</td>
+<td headers="stat_3" class="gt_row gt_center">0.02 (0.17)</td>
+<td headers="stat_4" class="gt_row gt_center">-0.02 (0.16)</td>
+<td headers="stat_5" class="gt_row gt_center">0.00 (0.16)</td>
+<td headers="stat_6" class="gt_row gt_center">-0.02 (0.17)</td>
+<td headers="stat_7" class="gt_row gt_center">0.00 (0.17)</td>
+<td headers="stat_8" class="gt_row gt_center">0.00 (0.17)</td>
+<td headers="stat_9" class="gt_row gt_center">0.02 (0.16)</td>
+<td headers="stat_10" class="gt_row gt_center">0.02 (0.17)</td>
+<td headers="stat_11" class="gt_row gt_center">0.00 (0.16)</td>
+<td headers="stat_12" class="gt_row gt_center">-0.01 (0.16)</td>
+<td headers="stat_13" class="gt_row gt_center">-0.02 (0.16)</td>
+<td headers="stat_14" class="gt_row gt_center">-0.02 (0.15)</td>
+<td headers="stat_15" class="gt_row gt_center">0.00 (0.14)</td>
+<td headers="stat_16" class="gt_row gt_center">-0.02 (0.15)</td></tr>
+    <tr><td headers="label" class="gt_row gt_left" style="font-weight: bold;">Perceiptions of corruption</td>
+<td headers="stat_1" class="gt_row gt_center">0.76 (0.18)</td>
+<td headers="stat_2" class="gt_row gt_center">0.80 (0.17)</td>
+<td headers="stat_3" class="gt_row gt_center">0.77 (0.19)</td>
+<td headers="stat_4" class="gt_row gt_center">0.78 (0.18)</td>
+<td headers="stat_5" class="gt_row gt_center">0.77 (0.18)</td>
+<td headers="stat_6" class="gt_row gt_center">0.76 (0.18)</td>
+<td headers="stat_7" class="gt_row gt_center">0.77 (0.18)</td>
+<td headers="stat_8" class="gt_row gt_center">0.76 (0.18)</td>
+<td headers="stat_9" class="gt_row gt_center">0.74 (0.19)</td>
+<td headers="stat_10" class="gt_row gt_center">0.74 (0.20)</td>
+<td headers="stat_11" class="gt_row gt_center">0.75 (0.19)</td>
+<td headers="stat_12" class="gt_row gt_center">0.72 (0.18)</td>
+<td headers="stat_13" class="gt_row gt_center">0.73 (0.19)</td>
+<td headers="stat_14" class="gt_row gt_center">0.72 (0.19)</td>
+<td headers="stat_15" class="gt_row gt_center">0.71 (0.20)</td>
+<td headers="stat_16" class="gt_row gt_center">0.73 (0.18)</td></tr>
   </tbody>
   
   <tfoot class="gt_footnotes">
