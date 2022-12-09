@@ -1,6 +1,8 @@
 ---
 title: "Geospatial Analysis"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r}
@@ -42,7 +44,7 @@ happy <- left_join(happy,iso_code)
 ```
 
 ```{r}
-g <- list(projection = list(type = ('worlds')))
+g <- list(projection = list(type = ('world')))
 
 fig <- plot_ly(happy, type='choropleth', locations=happy$code, z=happy$mean_ladder_score, text=happy$country_name,colorscale = "Viridis")
 
