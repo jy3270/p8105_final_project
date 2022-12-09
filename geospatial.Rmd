@@ -42,9 +42,11 @@ happy <- left_join(happy,iso_code)
 ```
 
 ```{r}
+g <- list(projection = list(type = ('orthographic')))
+
 fig <- plot_ly(happy, type='choropleth', locations=happy$code, z=happy$mean_ladder_score, text=happy$country_name,colorscale = "Viridis")
 
-fig
+fig %>% layout(geo = g)
 ```
 
 
