@@ -1,0 +1,2487 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Descriptive Statistics</title>
+
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Overview</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Exploratory Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="visualization.html">Visualization</a>
+    </li>
+    <li>
+      <a href="geospatial.html">Geospatial Analysis</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Statistical Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="statistical_tests.html">Statistical Test</a>
+    </li>
+    <li>
+      <a href="regression_analysis.html">Regression Analysis</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown-header">About</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Descriptive Statistics</h1>
+
+</div>
+
+
+<p>First Let’s take a peak of our dataset:</p>
+<pre class="r"><code>happiness_df %&gt;% head() %&gt;% knitr::kable()</code></pre>
+<table>
+<colgroup>
+<col width="7%" />
+<col width="10%" />
+<col width="2%" />
+<col width="7%" />
+<col width="12%" />
+<col width="8%" />
+<col width="13%" />
+<col width="16%" />
+<col width="6%" />
+<col width="14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">country_name</th>
+<th align="left">regional_indicator</th>
+<th align="right">year</th>
+<th align="right">ladder_score</th>
+<th align="right">logged_gdp_per_capita</th>
+<th align="right">social_support</th>
+<th align="right">healthy_life_expectancy</th>
+<th align="right">freedom_to_make_life_choices</th>
+<th align="right">generosity</th>
+<th align="right">perceptions_of_corruption</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Afghanistan</td>
+<td align="left">South Asia</td>
+<td align="right">2021</td>
+<td align="right">2.523</td>
+<td align="right">7.695</td>
+<td align="right">0.463</td>
+<td align="right">52.493</td>
+<td align="right">0.382</td>
+<td align="right">-0.102</td>
+<td align="right">0.924</td>
+</tr>
+<tr class="even">
+<td align="left">Afghanistan</td>
+<td align="left">South Asia</td>
+<td align="right">2019</td>
+<td align="right">2.375</td>
+<td align="right">7.697</td>
+<td align="right">0.420</td>
+<td align="right">52.400</td>
+<td align="right">0.394</td>
+<td align="right">-0.108</td>
+<td align="right">0.924</td>
+</tr>
+<tr class="odd">
+<td align="left">Afghanistan</td>
+<td align="left">South Asia</td>
+<td align="right">2018</td>
+<td align="right">2.694</td>
+<td align="right">7.692</td>
+<td align="right">0.508</td>
+<td align="right">52.600</td>
+<td align="right">0.374</td>
+<td align="right">-0.094</td>
+<td align="right">0.928</td>
+</tr>
+<tr class="even">
+<td align="left">Afghanistan</td>
+<td align="left">South Asia</td>
+<td align="right">2017</td>
+<td align="right">2.662</td>
+<td align="right">7.697</td>
+<td align="right">0.491</td>
+<td align="right">52.800</td>
+<td align="right">0.427</td>
+<td align="right">-0.121</td>
+<td align="right">0.954</td>
+</tr>
+<tr class="odd">
+<td align="left">Afghanistan</td>
+<td align="left">South Asia</td>
+<td align="right">2016</td>
+<td align="right">4.220</td>
+<td align="right">7.697</td>
+<td align="right">0.559</td>
+<td align="right">53.000</td>
+<td align="right">0.523</td>
+<td align="right">0.042</td>
+<td align="right">0.793</td>
+</tr>
+<tr class="even">
+<td align="left">Afghanistan</td>
+<td align="left">South Asia</td>
+<td align="right">2015</td>
+<td align="right">3.983</td>
+<td align="right">7.702</td>
+<td align="right">0.529</td>
+<td align="right">53.200</td>
+<td align="right">0.389</td>
+<td align="right">0.080</td>
+<td align="right">0.881</td>
+</tr>
+</tbody>
+</table>
+<p>The dataset has 1816 observations and 10 variables, Let’s take a
+deeper look into each variable:</p>
+<div id="looking-into-each-variable" class="section level3 tabset">
+<h3 class="tabset">Looking into each variable</h3>
+<div id="country-name" class="section level4">
+<h4>Country name</h4>
+<p>There are 149 unique countries in this dataset.</p>
+<pre class="r"><code>happiness_df %&gt;%
+  group_by(country_name) %&gt;%
+  summarize(
+    n_obs = n()
+  ) %&gt;%
+  group_by(n_obs) %&gt;%
+  summarize(
+    number_of_countries = n()
+  ) %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">n_obs</th>
+<th align="right">number_of_countries</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">4</td>
+<td align="right">6</td>
+</tr>
+<tr class="even">
+<td align="right">5</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">6</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">7</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="right">8</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="right">9</td>
+<td align="right">6</td>
+</tr>
+<tr class="odd">
+<td align="right">10</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="right">11</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="right">12</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="right">13</td>
+<td align="right">12</td>
+</tr>
+<tr class="odd">
+<td align="right">14</td>
+<td align="right">31</td>
+</tr>
+<tr class="even">
+<td align="right">15</td>
+<td align="right">31</td>
+</tr>
+<tr class="odd">
+<td align="right">16</td>
+<td align="right">24</td>
+</tr>
+</tbody>
+</table>
+<p>We can see that 6 countries appeared only 1 time, while 24 countries
+appeared 16 times.</p>
+</div>
+<div id="regional-indicator" class="section level4">
+<h4>Regional indicator</h4>
+<p>This variable represents the region that the country belongs to.
+There are 10 unique regions in this dataset. The regional indicators are
+South Asia, Central and Eastern Europe, Middle East and North Africa,
+Latin America and Caribbean, Commonwealth of Independent States, North
+America and ANZ, Western Europe, Sub-Saharan Africa, Southeast Asia,
+East Asia.</p>
+<pre class="r"><code>happiness_df %&gt;%
+  group_by(regional_indicator) %&gt;%
+  summarize(
+    n_obs = n()
+  ) %&gt;%
+  mutate(regional_indicator = fct_reorder(regional_indicator, n_obs)) %&gt;%
+  ggplot(aes(x = regional_indicator, y = n_obs)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) +
+  labs(
+    x = &quot;regional indicator&quot;,
+    y = &quot;number of observations&quot;,
+    title = &quot;Number of observations for each region&quot;
+  )</code></pre>
+<p><img src="descriptive_statistics_files/figure-html/unnamed-chunk-5-1.png" width="90%" /></p>
+<p>East Asia has the lowest number of observations, while Sub-Saharan
+Africa has the highest.</p>
+</div>
+<div id="year" class="section level4">
+<h4>Year</h4>
+<pre class="r"><code>happiness_df %&gt;%
+  group_by(year) %&gt;%
+  summarize(
+    n_obs = n()
+  ) %&gt;%
+  ggplot(aes(x = factor(year), y = n_obs)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) +
+  labs(
+    x = &quot;year&quot;,
+    y = &quot;number of observations&quot;,
+    title = &quot;Number of observations for each year&quot;
+  )</code></pre>
+<p><img src="descriptive_statistics_files/figure-html/unnamed-chunk-6-1.png" width="90%" /></p>
+<p>Year ranges from 2005 to 2021 in this dataset. The year with the most
+observation is 2021, and the year with the least observation is
+2005.</p>
+</div>
+<div id="ladder-score" class="section level4">
+<h4>Ladder score</h4>
+<p>Ladder score is the happiness index.</p>
+<pre class="r"><code>happiness_df %&gt;%
+  ggplot(aes(x = ladder_score)) +
+  geom_histogram(bins = 20) +
+  labs(title = &quot;Distribution of ladder score&quot;)</code></pre>
+<p><img src="descriptive_statistics_files/figure-html/unnamed-chunk-7-1.png" width="90%" /></p>
+<p>Ladder score ranges from 2.375 to 7.971. The distribution is
+approximately symmetric with mean at 5.470168.</p>
+<p>Since ladder score is the main outcome of our project, we should dive
+a little deeper by looking at the mean ladder score for each region and
+year.</p>
+<pre class="r"><code>happiness_df %&gt;%
+  group_by(regional_indicator) %&gt;%
+  summarize(
+    mean_ladder_score = mean(ladder_score)
+  ) %&gt;%
+  arrange(mean_ladder_score) %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">regional_indicator</th>
+<th align="right">mean_ladder_score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Sub-Saharan Africa</td>
+<td align="right">4.317518</td>
+</tr>
+<tr class="even">
+<td align="left">South Asia</td>
+<td align="right">4.512207</td>
+</tr>
+<tr class="odd">
+<td align="left">Commonwealth of Independent States</td>
+<td align="right">5.180830</td>
+</tr>
+<tr class="even">
+<td align="left">Middle East and North Africa</td>
+<td align="right">5.271464</td>
+</tr>
+<tr class="odd">
+<td align="left">Southeast Asia</td>
+<td align="right">5.368957</td>
+</tr>
+<tr class="even">
+<td align="left">Central and Eastern Europe</td>
+<td align="right">5.550598</td>
+</tr>
+<tr class="odd">
+<td align="left">East Asia</td>
+<td align="right">5.682980</td>
+</tr>
+<tr class="even">
+<td align="left">Latin America and Caribbean</td>
+<td align="right">5.988366</td>
+</tr>
+<tr class="odd">
+<td align="left">Western Europe</td>
+<td align="right">6.871429</td>
+</tr>
+<tr class="even">
+<td align="left">North America and ANZ</td>
+<td align="right">7.246328</td>
+</tr>
+</tbody>
+</table>
+<p>Sub-Saharan Africa has the lowest mean ladder score across all years,
+while North America and ANZ has the highest.</p>
+<pre class="r"><code>happiness_df %&gt;%
+  group_by(year) %&gt;%
+  summarize(
+    mean_ladder_score = mean(ladder_score)
+  ) %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">year</th>
+<th align="right">mean_ladder_score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2005</td>
+<td align="right">7.418000</td>
+</tr>
+<tr class="even">
+<td align="right">2006</td>
+<td align="right">5.183946</td>
+</tr>
+<tr class="odd">
+<td align="right">2007</td>
+<td align="right">5.367533</td>
+</tr>
+<tr class="even">
+<td align="right">2008</td>
+<td align="right">5.437252</td>
+</tr>
+<tr class="odd">
+<td align="right">2009</td>
+<td align="right">5.480366</td>
+</tr>
+<tr class="even">
+<td align="right">2010</td>
+<td align="right">5.546394</td>
+</tr>
+<tr class="odd">
+<td align="right">2011</td>
+<td align="right">5.411216</td>
+</tr>
+<tr class="even">
+<td align="right">2012</td>
+<td align="right">5.446638</td>
+</tr>
+<tr class="odd">
+<td align="right">2013</td>
+<td align="right">5.379185</td>
+</tr>
+<tr class="even">
+<td align="right">2014</td>
+<td align="right">5.396512</td>
+</tr>
+<tr class="odd">
+<td align="right">2015</td>
+<td align="right">5.404903</td>
+</tr>
+<tr class="even">
+<td align="right">2016</td>
+<td align="right">5.418459</td>
+</tr>
+<tr class="odd">
+<td align="right">2017</td>
+<td align="right">5.505721</td>
+</tr>
+<tr class="even">
+<td align="right">2018</td>
+<td align="right">5.542738</td>
+</tr>
+<tr class="odd">
+<td align="right">2019</td>
+<td align="right">5.559349</td>
+</tr>
+<tr class="even">
+<td align="right">2020</td>
+<td align="right">5.873580</td>
+</tr>
+<tr class="odd">
+<td align="right">2021</td>
+<td align="right">5.532839</td>
+</tr>
+</tbody>
+</table>
+<p>Year 2005 has significantly higher ladder score than the others.
+However, because year 2005 only has one observation, the difference
+should not be considered significant. Ladder scores for all other years
+are around 5.5.</p>
+</div>
+<div id="logged-gdp-per-capita" class="section level4">
+<h4>Logged GDP per capita</h4>
+<pre class="r"><code>happiness_df %&gt;%
+  ggplot(aes(x = logged_gdp_per_capita)) +
+  geom_histogram(bins = 15) +
+  labs(title = &quot;Distribution of logged GDP per capita&quot;)</code></pre>
+<p><img src="descriptive_statistics_files/figure-html/unnamed-chunk-10-1.png" width="90%" /></p>
+<p>Logged GDP per capita ranges from 6.635 to 11.648. The distribution
+is approximately symmetric with mean at 9.3522203.</p>
+</div>
+<div id="social-support" class="section level4">
+<h4>Social support</h4>
+<pre class="r"><code>happiness_df %&gt;%
+  ggplot(aes(x = social_support)) +
+  geom_histogram(bins = 15) +
+  labs(title = &quot;Distribution of social support&quot;)</code></pre>
+<p><img src="descriptive_statistics_files/figure-html/unnamed-chunk-11-1.png" width="90%" /></p>
+<p>Social support ranges from 0.291 to 0.987. Since the distribution is
+skewed right, we will look at the median instead of the mean. The median
+of social support is 0.836.</p>
+</div>
+<div id="healthy-life-expectancy" class="section level4">
+<h4>Healthy life expectancy</h4>
+<pre class="r"><code>happiness_df %&gt;%
+  ggplot(aes(x = healthy_life_expectancy)) +
+  geom_histogram(bins = 15) +
+  labs(title = &quot;Distribution of healthy life expectancy&quot;)</code></pre>
+<p><img src="descriptive_statistics_files/figure-html/unnamed-chunk-12-1.png" width="90%" /></p>
+<p>Healthy life expectancy ranges from 32.3 to 77.1. The distribution is
+skewed right. The median of healthy life expectancy is 65.3015.</p>
+</div>
+<div id="freedom-to-make-life-choices" class="section level4">
+<h4>Freedom to make life choices</h4>
+<pre class="r"><code>happiness_df %&gt;%
+  ggplot(aes(x = freedom_to_make_life_choices)) +
+  geom_histogram(bins = 15) +
+  labs(title = &quot;Distribution of freedom to make life choices&quot;)</code></pre>
+<p><img src="descriptive_statistics_files/figure-html/unnamed-chunk-13-1.png" width="90%" /></p>
+<p>Freedom to make life choices ranges from 0.258 to 0.985. The
+distribution is skewed right. The median of freedom to make life choices
+is 0.766.</p>
+</div>
+<div id="generosity" class="section level4">
+<h4>Generosity</h4>
+<pre class="r"><code>happiness_df %&gt;%
+  ggplot(aes(x = generosity)) +
+  geom_histogram(bins = 15) +
+  labs(title = &quot;Distribution of generosity&quot;)</code></pre>
+<p><img src="descriptive_statistics_files/figure-html/unnamed-chunk-14-1.png" width="90%" /></p>
+<p>Generosity ranges from -0.335 to 0.689. The distribution is
+approximately symmetric with mean at -0.0031773.</p>
+</div>
+<div id="perceptions-of-corruption" class="section level4">
+<h4>Perceptions of corruption</h4>
+<pre class="r"><code>happiness_df %&gt;%
+  ggplot(aes(x = perceptions_of_corruption)) +
+  geom_histogram(bins = 15) +
+  labs(title = &quot;Distribution of perceptions of corruption&quot;)</code></pre>
+<p><img src="descriptive_statistics_files/figure-html/unnamed-chunk-15-1.png" width="90%" /></p>
+<p>Perceptions of corruption ranges from 0.035 to 0.983. The
+distribution is skewed right. The median of perceptions of corruption is
+0.804.</p>
+</div>
+</div>
+<div id="summary" class="section level3">
+<h3>Summary</h3>
+<p>Finally, let’s take a look at the summary tables of mean and standard
+deviation of each variable.</p>
+<pre class="r"><code>happiness_df %&gt;%
+  select(ladder_score, logged_gdp_per_capita, social_support, healthy_life_expectancy, freedom_to_make_life_choices, generosity, perceptions_of_corruption) %&gt;%
+  tbl_summary(missing_text = &quot;(Missing)&quot;,
+              statistic = list(all_continuous() ~ &quot;{mean} ({sd})&quot;),
+              label = list(ladder_score ~ &quot;Ladder score&quot;,
+                           logged_gdp_per_capita ~ &quot;Logged gdp per capita&quot;,
+                           social_support ~ &quot;Social support&quot;,
+                           healthy_life_expectancy ~ &quot;Healthy life exp&quot;,
+                           freedom_to_make_life_choices ~ &quot;Freedom to make life choices&quot;,
+                           generosity ~ &quot;Generosity&quot;,
+                           perceptions_of_corruption ~ &quot;Perceiptions of corruption&quot;)) %&gt;% 
+  bold_labels() %&gt;%
+  italicize_levels() </code></pre>
+<div id="avexjlgmbf" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#avexjlgmbf .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#avexjlgmbf .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#avexjlgmbf .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#avexjlgmbf .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#avexjlgmbf .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#avexjlgmbf .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#avexjlgmbf .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#avexjlgmbf .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#avexjlgmbf .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#avexjlgmbf .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#avexjlgmbf .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#avexjlgmbf .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#avexjlgmbf .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#avexjlgmbf .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#avexjlgmbf .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#avexjlgmbf .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#avexjlgmbf .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#avexjlgmbf .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#avexjlgmbf .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#avexjlgmbf .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#avexjlgmbf .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#avexjlgmbf .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#avexjlgmbf .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#avexjlgmbf .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#avexjlgmbf .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#avexjlgmbf .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#avexjlgmbf .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#avexjlgmbf .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#avexjlgmbf .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#avexjlgmbf .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#avexjlgmbf .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#avexjlgmbf .gt_left {
+  text-align: left;
+}
+
+#avexjlgmbf .gt_center {
+  text-align: center;
+}
+
+#avexjlgmbf .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#avexjlgmbf .gt_font_normal {
+  font-weight: normal;
+}
+
+#avexjlgmbf .gt_font_bold {
+  font-weight: bold;
+}
+
+#avexjlgmbf .gt_font_italic {
+  font-style: italic;
+}
+
+#avexjlgmbf .gt_super {
+  font-size: 65%;
+}
+
+#avexjlgmbf .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#avexjlgmbf .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#avexjlgmbf .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#avexjlgmbf .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#avexjlgmbf .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#avexjlgmbf .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#avexjlgmbf .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>N = 1,816</strong><sup class="gt_footnote_marks">1</sup></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Ladder score</td>
+<td class="gt_row gt_center">5.47 (1.13)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Logged gdp per capita</td>
+<td class="gt_row gt_center">9.35 (1.15)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Social support</td>
+<td class="gt_row gt_center">0.81 (0.12)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Healthy life exp</td>
+<td class="gt_row gt_center">64 (8)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Freedom to make life choices</td>
+<td class="gt_row gt_center">0.75 (0.14)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Generosity</td>
+<td class="gt_row gt_center">0.00 (0.16)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Perceiptions of corruption</td>
+<td class="gt_row gt_center">0.75 (0.19)</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="2"><sup class="gt_footnote_marks">1</sup> Mean (SD)</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+<pre class="r"><code>happiness_df %&gt;%
+  select(regional_indicator, ladder_score, logged_gdp_per_capita, social_support, healthy_life_expectancy, freedom_to_make_life_choices, generosity, perceptions_of_corruption) %&gt;%
+  tbl_summary(by = &quot;regional_indicator&quot;,
+              missing_text = &quot;(Missing)&quot;,
+              statistic = list(all_continuous() ~ &quot;{mean} ({sd})&quot;),
+              label = list(ladder_score ~ &quot;Ladder score&quot;,
+                           logged_gdp_per_capita ~ &quot;Logged gdp per capita&quot;,
+                           social_support ~ &quot;Social support&quot;,
+                           healthy_life_expectancy ~ &quot;Healthy life exp&quot;,
+                           freedom_to_make_life_choices ~ &quot;Freedom to make life choices&quot;,
+                           generosity ~ &quot;Generosity&quot;,
+                           perceptions_of_corruption ~ &quot;Perceiptions of corruption&quot;)) %&gt;% 
+  bold_labels() %&gt;%
+  italicize_levels() </code></pre>
+<div id="ummzlqvpmx" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#ummzlqvpmx .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ummzlqvpmx .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ummzlqvpmx .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ummzlqvpmx .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ummzlqvpmx .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ummzlqvpmx .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ummzlqvpmx .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ummzlqvpmx .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ummzlqvpmx .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ummzlqvpmx .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ummzlqvpmx .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ummzlqvpmx .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ummzlqvpmx .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ummzlqvpmx .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ummzlqvpmx .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ummzlqvpmx .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ummzlqvpmx .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ummzlqvpmx .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#ummzlqvpmx .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#ummzlqvpmx .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ummzlqvpmx .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#ummzlqvpmx .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#ummzlqvpmx .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ummzlqvpmx .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ummzlqvpmx .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ummzlqvpmx .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ummzlqvpmx .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ummzlqvpmx .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ummzlqvpmx .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ummzlqvpmx .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ummzlqvpmx .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ummzlqvpmx .gt_left {
+  text-align: left;
+}
+
+#ummzlqvpmx .gt_center {
+  text-align: center;
+}
+
+#ummzlqvpmx .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ummzlqvpmx .gt_font_normal {
+  font-weight: normal;
+}
+
+#ummzlqvpmx .gt_font_bold {
+  font-weight: bold;
+}
+
+#ummzlqvpmx .gt_font_italic {
+  font-style: italic;
+}
+
+#ummzlqvpmx .gt_super {
+  font-size: 65%;
+}
+
+#ummzlqvpmx .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#ummzlqvpmx .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#ummzlqvpmx .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#ummzlqvpmx .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#ummzlqvpmx .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#ummzlqvpmx .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#ummzlqvpmx .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>Central and Eastern Europe</strong>, N = 224<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>Commonwealth of Independent States</strong>, N = 165<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>East Asia</strong>, N = 49<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>Latin America and Caribbean</strong>, N = 292<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>Middle East and North Africa</strong>, N = 138<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>North America and ANZ</strong>, N = 58<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>South Asia</strong>, N = 87<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>Southeast Asia</strong>, N = 116<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>Sub-Saharan Africa</strong>, N = 421<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>Western Europe</strong>, N = 266<sup class="gt_footnote_marks">1</sup></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Ladder score</td>
+<td class="gt_row gt_center">5.55 (0.63)</td>
+<td class="gt_row gt_center">5.18 (0.62)</td>
+<td class="gt_row gt_center">5.68 (0.51)</td>
+<td class="gt_row gt_center">5.99 (0.76)</td>
+<td class="gt_row gt_center">5.27 (0.96)</td>
+<td class="gt_row gt_center">7.25 (0.18)</td>
+<td class="gt_row gt_center">4.51 (0.69)</td>
+<td class="gt_row gt_center">5.37 (0.75)</td>
+<td class="gt_row gt_center">4.32 (0.64)</td>
+<td class="gt_row gt_center">6.87 (0.69)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Logged gdp per capita</td>
+<td class="gt_row gt_center">10.03 (0.36)</td>
+<td class="gt_row gt_center">9.28 (0.66)</td>
+<td class="gt_row gt_center">10.17 (0.64)</td>
+<td class="gt_row gt_center">9.33 (0.62)</td>
+<td class="gt_row gt_center">9.61 (0.76)</td>
+<td class="gt_row gt_center">10.76 (0.14)</td>
+<td class="gt_row gt_center">8.33 (0.55)</td>
+<td class="gt_row gt_center">9.26 (0.96)</td>
+<td class="gt_row gt_center">7.99 (0.76)</td>
+<td class="gt_row gt_center">10.79 (0.28)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Social support</td>
+<td class="gt_row gt_center">0.86 (0.08)</td>
+<td class="gt_row gt_center">0.82 (0.11)</td>
+<td class="gt_row gt_center">0.87 (0.06)</td>
+<td class="gt_row gt_center">0.85 (0.07)</td>
+<td class="gt_row gt_center">0.77 (0.10)</td>
+<td class="gt_row gt_center">0.94 (0.02)</td>
+<td class="gt_row gt_center">0.65 (0.13)</td>
+<td class="gt_row gt_center">0.81 (0.07)</td>
+<td class="gt_row gt_center">0.71 (0.11)</td>
+<td class="gt_row gt_center">0.92 (0.05)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Healthy life exp</td>
+<td class="gt_row gt_center">67 (2)</td>
+<td class="gt_row gt_center">63 (2)</td>
+<td class="gt_row gt_center">70 (6)</td>
+<td class="gt_row gt_center">66 (5)</td>
+<td class="gt_row gt_center">65 (4)</td>
+<td class="gt_row gt_center">72 (2)</td>
+<td class="gt_row gt_center">60 (5)</td>
+<td class="gt_row gt_center">64 (5)</td>
+<td class="gt_row gt_center">53 (5)</td>
+<td class="gt_row gt_center">72 (1)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Freedom to make life choices</td>
+<td class="gt_row gt_center">0.69 (0.14)</td>
+<td class="gt_row gt_center">0.70 (0.13)</td>
+<td class="gt_row gt_center">0.71 (0.09)</td>
+<td class="gt_row gt_center">0.78 (0.11)</td>
+<td class="gt_row gt_center">0.64 (0.13)</td>
+<td class="gt_row gt_center">0.90 (0.04)</td>
+<td class="gt_row gt_center">0.69 (0.17)</td>
+<td class="gt_row gt_center">0.87 (0.07)</td>
+<td class="gt_row gt_center">0.70 (0.11)</td>
+<td class="gt_row gt_center">0.84 (0.12)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Generosity</td>
+<td class="gt_row gt_center">-0.10 (0.10)</td>
+<td class="gt_row gt_center">-0.12 (0.14)</td>
+<td class="gt_row gt_center">-0.04 (0.12)</td>
+<td class="gt_row gt_center">-0.03 (0.12)</td>
+<td class="gt_row gt_center">-0.06 (0.13)</td>
+<td class="gt_row gt_center">0.23 (0.08)</td>
+<td class="gt_row gt_center">0.08 (0.11)</td>
+<td class="gt_row gt_center">0.20 (0.22)</td>
+<td class="gt_row gt_center">-0.01 (0.11)</td>
+<td class="gt_row gt_center">0.06 (0.17)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Perceiptions of corruption</td>
+<td class="gt_row gt_center">0.87 (0.09)</td>
+<td class="gt_row gt_center">0.78 (0.16)</td>
+<td class="gt_row gt_center">0.79 (0.11)</td>
+<td class="gt_row gt_center">0.79 (0.09)</td>
+<td class="gt_row gt_center">0.77 (0.13)</td>
+<td class="gt_row gt_center">0.45 (0.16)</td>
+<td class="gt_row gt_center">0.81 (0.07)</td>
+<td class="gt_row gt_center">0.73 (0.25)</td>
+<td class="gt_row gt_center">0.79 (0.13)</td>
+<td class="gt_row gt_center">0.56 (0.24)</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="11"><sup class="gt_footnote_marks">1</sup> Mean (SD)</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+<pre class="r"><code>happiness_df %&gt;%
+  select(year, ladder_score, logged_gdp_per_capita, social_support, healthy_life_expectancy, freedom_to_make_life_choices, generosity, perceptions_of_corruption) %&gt;%
+  filter(year != 2005) %&gt;%
+  tbl_summary(by = &quot;year&quot;,
+              missing_text = &quot;(Missing)&quot;,
+              statistic = list(all_continuous() ~ &quot;{mean} ({sd})&quot;),
+              label = list(ladder_score ~ &quot;Ladder score&quot;,
+                           logged_gdp_per_capita ~ &quot;Logged gdp per capita&quot;,
+                           social_support ~ &quot;Social support&quot;,
+                           healthy_life_expectancy ~ &quot;Healthy life exp&quot;,
+                           freedom_to_make_life_choices ~ &quot;Freedom to make life choices&quot;,
+                           generosity ~ &quot;Generosity&quot;,
+                           perceptions_of_corruption ~ &quot;Perceiptions of corruption&quot;)) %&gt;% 
+  bold_labels() %&gt;%
+  italicize_levels() </code></pre>
+<div id="awkbjsfyti" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#awkbjsfyti .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#awkbjsfyti .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#awkbjsfyti .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#awkbjsfyti .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#awkbjsfyti .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#awkbjsfyti .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#awkbjsfyti .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#awkbjsfyti .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#awkbjsfyti .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#awkbjsfyti .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#awkbjsfyti .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#awkbjsfyti .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#awkbjsfyti .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#awkbjsfyti .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#awkbjsfyti .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#awkbjsfyti .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#awkbjsfyti .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#awkbjsfyti .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#awkbjsfyti .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#awkbjsfyti .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#awkbjsfyti .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#awkbjsfyti .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#awkbjsfyti .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#awkbjsfyti .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#awkbjsfyti .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#awkbjsfyti .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#awkbjsfyti .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#awkbjsfyti .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#awkbjsfyti .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#awkbjsfyti .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#awkbjsfyti .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#awkbjsfyti .gt_left {
+  text-align: left;
+}
+
+#awkbjsfyti .gt_center {
+  text-align: center;
+}
+
+#awkbjsfyti .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#awkbjsfyti .gt_font_normal {
+  font-weight: normal;
+}
+
+#awkbjsfyti .gt_font_bold {
+  font-weight: bold;
+}
+
+#awkbjsfyti .gt_font_italic {
+  font-style: italic;
+}
+
+#awkbjsfyti .gt_super {
+  font-size: 65%;
+}
+
+#awkbjsfyti .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#awkbjsfyti .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#awkbjsfyti .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#awkbjsfyti .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#awkbjsfyti .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#awkbjsfyti .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#awkbjsfyti .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2006</strong>, N = 74<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2007</strong>, N = 92<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2008</strong>, N = 99<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2009</strong>, N = 101<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2010</strong>, N = 109<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2011</strong>, N = 125<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2012</strong>, N = 116<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2013</strong>, N = 119<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2014</strong>, N = 123<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2015</strong>, N = 124<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2016</strong>, N = 122<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2017</strong>, N = 129<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2018</strong>, N = 126<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2019</strong>, N = 126<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2020</strong>, N = 81<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col"><strong>2021</strong>, N = 149<sup class="gt_footnote_marks">1</sup></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Ladder score</td>
+<td class="gt_row gt_center">5.18 (1.11)</td>
+<td class="gt_row gt_center">5.37 (1.02)</td>
+<td class="gt_row gt_center">5.44 (1.20)</td>
+<td class="gt_row gt_center">5.48 (1.06)</td>
+<td class="gt_row gt_center">5.55 (1.15)</td>
+<td class="gt_row gt_center">5.41 (1.10)</td>
+<td class="gt_row gt_center">5.45 (1.16)</td>
+<td class="gt_row gt_center">5.38 (1.20)</td>
+<td class="gt_row gt_center">5.40 (1.21)</td>
+<td class="gt_row gt_center">5.40 (1.15)</td>
+<td class="gt_row gt_center">5.42 (1.15)</td>
+<td class="gt_row gt_center">5.51 (1.13)</td>
+<td class="gt_row gt_center">5.54 (1.09)</td>
+<td class="gt_row gt_center">5.56 (1.13)</td>
+<td class="gt_row gt_center">5.87 (1.00)</td>
+<td class="gt_row gt_center">5.53 (1.07)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Logged gdp per capita</td>
+<td class="gt_row gt_center">9.05 (1.22)</td>
+<td class="gt_row gt_center">9.17 (1.11)</td>
+<td class="gt_row gt_center">9.16 (1.25)</td>
+<td class="gt_row gt_center">9.29 (1.14)</td>
+<td class="gt_row gt_center">9.42 (1.11)</td>
+<td class="gt_row gt_center">9.25 (1.16)</td>
+<td class="gt_row gt_center">9.34 (1.10)</td>
+<td class="gt_row gt_center">9.34 (1.11)</td>
+<td class="gt_row gt_center">9.36 (1.15)</td>
+<td class="gt_row gt_center">9.36 (1.17)</td>
+<td class="gt_row gt_center">9.40 (1.16)</td>
+<td class="gt_row gt_center">9.39 (1.16)</td>
+<td class="gt_row gt_center">9.40 (1.18)</td>
+<td class="gt_row gt_center">9.42 (1.15)</td>
+<td class="gt_row gt_center">9.75 (0.95)</td>
+<td class="gt_row gt_center">9.43 (1.16)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Social support</td>
+<td class="gt_row gt_center">0.83 (0.12)</td>
+<td class="gt_row gt_center">0.81 (0.11)</td>
+<td class="gt_row gt_center">0.78 (0.15)</td>
+<td class="gt_row gt_center">0.81 (0.11)</td>
+<td class="gt_row gt_center">0.83 (0.10)</td>
+<td class="gt_row gt_center">0.81 (0.13)</td>
+<td class="gt_row gt_center">0.81 (0.12)</td>
+<td class="gt_row gt_center">0.81 (0.11)</td>
+<td class="gt_row gt_center">0.81 (0.12)</td>
+<td class="gt_row gt_center">0.80 (0.13)</td>
+<td class="gt_row gt_center">0.82 (0.12)</td>
+<td class="gt_row gt_center">0.81 (0.12)</td>
+<td class="gt_row gt_center">0.81 (0.12)</td>
+<td class="gt_row gt_center">0.81 (0.12)</td>
+<td class="gt_row gt_center">0.84 (0.11)</td>
+<td class="gt_row gt_center">0.81 (0.11)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Healthy life exp</td>
+<td class="gt_row gt_center">60 (9)</td>
+<td class="gt_row gt_center">61 (8)</td>
+<td class="gt_row gt_center">61 (9)</td>
+<td class="gt_row gt_center">63 (8)</td>
+<td class="gt_row gt_center">63 (8)</td>
+<td class="gt_row gt_center">62 (8)</td>
+<td class="gt_row gt_center">63 (7)</td>
+<td class="gt_row gt_center">63 (7)</td>
+<td class="gt_row gt_center">64 (7)</td>
+<td class="gt_row gt_center">64 (7)</td>
+<td class="gt_row gt_center">64 (7)</td>
+<td class="gt_row gt_center">64 (7)</td>
+<td class="gt_row gt_center">65 (7)</td>
+<td class="gt_row gt_center">65 (7)</td>
+<td class="gt_row gt_center">67 (6)</td>
+<td class="gt_row gt_center">65 (7)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Freedom to make life choices</td>
+<td class="gt_row gt_center">0.73 (0.13)</td>
+<td class="gt_row gt_center">0.69 (0.15)</td>
+<td class="gt_row gt_center">0.68 (0.16)</td>
+<td class="gt_row gt_center">0.68 (0.15)</td>
+<td class="gt_row gt_center">0.71 (0.15)</td>
+<td class="gt_row gt_center">0.73 (0.15)</td>
+<td class="gt_row gt_center">0.71 (0.15)</td>
+<td class="gt_row gt_center">0.73 (0.13)</td>
+<td class="gt_row gt_center">0.74 (0.14)</td>
+<td class="gt_row gt_center">0.75 (0.13)</td>
+<td class="gt_row gt_center">0.76 (0.13)</td>
+<td class="gt_row gt_center">0.78 (0.13)</td>
+<td class="gt_row gt_center">0.78 (0.12)</td>
+<td class="gt_row gt_center">0.79 (0.12)</td>
+<td class="gt_row gt_center">0.82 (0.09)</td>
+<td class="gt_row gt_center">0.79 (0.11)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Generosity</td>
+<td class="gt_row gt_center">0.00 (0.17)</td>
+<td class="gt_row gt_center">0.01 (0.17)</td>
+<td class="gt_row gt_center">0.02 (0.17)</td>
+<td class="gt_row gt_center">-0.02 (0.16)</td>
+<td class="gt_row gt_center">0.00 (0.16)</td>
+<td class="gt_row gt_center">-0.02 (0.17)</td>
+<td class="gt_row gt_center">0.00 (0.17)</td>
+<td class="gt_row gt_center">0.00 (0.17)</td>
+<td class="gt_row gt_center">0.02 (0.16)</td>
+<td class="gt_row gt_center">0.02 (0.17)</td>
+<td class="gt_row gt_center">0.00 (0.16)</td>
+<td class="gt_row gt_center">-0.01 (0.16)</td>
+<td class="gt_row gt_center">-0.02 (0.16)</td>
+<td class="gt_row gt_center">-0.02 (0.15)</td>
+<td class="gt_row gt_center">0.00 (0.14)</td>
+<td class="gt_row gt_center">-0.02 (0.15)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Perceiptions of corruption</td>
+<td class="gt_row gt_center">0.76 (0.18)</td>
+<td class="gt_row gt_center">0.80 (0.17)</td>
+<td class="gt_row gt_center">0.77 (0.19)</td>
+<td class="gt_row gt_center">0.78 (0.18)</td>
+<td class="gt_row gt_center">0.77 (0.18)</td>
+<td class="gt_row gt_center">0.76 (0.18)</td>
+<td class="gt_row gt_center">0.77 (0.18)</td>
+<td class="gt_row gt_center">0.76 (0.18)</td>
+<td class="gt_row gt_center">0.74 (0.19)</td>
+<td class="gt_row gt_center">0.74 (0.20)</td>
+<td class="gt_row gt_center">0.75 (0.19)</td>
+<td class="gt_row gt_center">0.72 (0.18)</td>
+<td class="gt_row gt_center">0.73 (0.19)</td>
+<td class="gt_row gt_center">0.72 (0.19)</td>
+<td class="gt_row gt_center">0.71 (0.20)</td>
+<td class="gt_row gt_center">0.73 (0.18)</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="17"><sup class="gt_footnote_marks">1</sup> Mean (SD)</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+<p><strong>Note</strong>: Since year 2005 only has one observation, it
+is removed from this summary table.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

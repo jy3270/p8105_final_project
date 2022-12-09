@@ -120,7 +120,7 @@ happ_df %>%
   ) 
 ```
 
-#### Social Support
+#### Social support
 Western Europe and North America and ANZ regions have similar distribution and the overall positions are the two highest on the social support scale. Surprisingly, the Sub-Saharan Africa region is not the lowest one on this scale, but has many outliers and larger range.
 ```{r, fig.width = 11.5, fig.height = 6.5}
 happ_df %>%
@@ -213,5 +213,157 @@ happ_df %>%
     y = "Perceptions of corruption",
     title = "Perceptions of Corruption for Different Regions Across Years"
   ) 
+```
+
+
+### Global Maps {.tabset}
+The global maps show the mean values of each variable for the countries with the corresponding color density. White regions are countries without data from that variable.
+```{r, message=FALSE}
+iso_code <- 
+  read.csv("https://raw.githubusercontent.com/plotly/datasets/master/2014_world_gdp_with_codes.csv") %>%
+  janitor::clean_names() %>%
+  rename(country_name = country) %>%
+  select(-gdp_billions) %>%
+  add_row(country_name = "Palestinian Territories", code = "PSE")
+
+happy <- 
+  read_csv('Data/happiness.csv') %>%
+  filter(year != 2005) %>%
+  group_by(country_name) %>%
+  summarise(mean_ladder_score = mean(ladder_score),
+            mean_gdp = mean(logged_gdp_per_capita),
+            mean_social_support = mean(social_support),
+            mean_expectancy = mean(healthy_life_expectancy),
+            mean_freedom = mean(freedom_to_make_life_choices),
+            mean_generosity = mean(generosity),
+            mean_corruption = mean(perceptions_of_corruption))
+
+happy_name <- unique(happy$country_name)
+name <- unique(iso_code$country_name)
+diff_name <- setdiff(happy_name,name)
+code_name <- c("Congo, Republic of the","Gambia, The", "Hong Kong", "Cote d'Ivoire" ,"Burma", "Cyprus", "Macedonia", "Korea, South", "Taiwan")
+
+for (i in 1:length(code_name)) {
+  iso_code$country_name[iso_code$country_name == code_name[i]] <- diff_name[i]
+}
+
+happy <- left_join(happy,iso_code)
+
+g <- list(
+  showframe = FALSE,
+  projection = list(type = 'Mercator')
+)
+```
+
+#### Life Ladder Score
+```{r}
+plot_ly(
+  happy, 
+  type = 'choropleth', 
+  locations = happy$code, 
+  z = happy$mean_ladder_score, 
+  text = happy$country_name, 
+  colors = 'Blues'
+  ) %>% 
+  layout(
+    title = "Global Life Ladder Score",
+    geo = g
+  )
+```
+
+#### Logged GDP per capita
+```{r}
+plot_ly(
+  happy, 
+  type = 'choropleth', 
+  locations = happy$code, 
+  z = happy$mean_gdp, 
+  text = happy$country_name, 
+  colors = 'Purples'
+  ) %>% 
+  layout(
+    title = "Global Logged GDP per Capita",
+    geo = g
+  )
+```
+
+#### Social support
+```{r}
+plot_ly(
+  happy, 
+  type = 'choropleth', 
+  locations = happy$code, 
+  z = happy$mean_social_support, 
+  text = happy$country_name, 
+  colors = 'GnBu'
+  ) %>% 
+  layout(
+    title = "Global Social Support",
+    geo = g
+  )
+```
+
+#### Healthy life expectancy
+```{r}
+plot_ly(
+  happy, 
+  type = 'choropleth', 
+  locations = happy$code, 
+  z = happy$mean_expectancy, 
+  text = happy$country_name, 
+  colors = 'PuBuGn'
+  ) %>% 
+  layout(
+    title = "Global Healthy Life Expectancy",
+    geo = g
+  )
+```
+
+#### Freedom to make life chocies
+```{r}
+plot_ly(
+  happy, 
+  type = 'choropleth', 
+  locations = happy$code, 
+  z = happy$mean_freedom, 
+  text = happy$country_name, 
+  colors = 'PuRd'
+  ) %>% 
+  layout(
+    title = "Global Freedom to Make Life Choices",
+    geo = g
+  )
+```
+
+#### Generosity
+```{r}
+plot_ly(
+  happy, 
+  type = 'choropleth', 
+  locations = happy$code, 
+  z = happy$mean_generosity, 
+  text = happy$country_name, 
+  colors = "BuGn"
+  ) %>% 
+  layout(
+    title = "Global Generosity",
+    geo = g
+  )
+```
+
+#### Perceptions of corruption
+```{r}
+plot_ly(
+  happy, 
+  type = 'choropleth', 
+  locations = happy$code, 
+  z = happy$mean_corruption, 
+  text = happy$country_name, 
+  colors = 'YlGnBu'
+  ) %>% 
+  layout(
+    title = "Global Perceptions of Corruption",
+    geo = g
+  )
 ```
 
