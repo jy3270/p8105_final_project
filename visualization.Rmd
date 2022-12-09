@@ -2,6 +2,7 @@
 title: "Visualization"
 output: 
   html_document:
+    code_folding: hide
     toc: true
     toc_float: true
 ---
@@ -30,9 +31,9 @@ happ_df = read_csv("Data/happiness.csv")
 ```
 
 
-### Life Ladder Scores for Different Regions
+### Life Ladder Scores Based on Different Regions
 
-#### Overall mean Life Ladder Score
+#### Overall mean life ladder score
 We want to first get a general sense about the differences among life ladder scores for different regions by plotting the mean life ladder score for each region throughout the years.
 ```{r}
 happ_df %>%
@@ -73,11 +74,9 @@ happ_df %>%
 
 With the initial idea that the mean life ladder score of the North America and ANZ region being the highest, we can see that each year the life ladder score of the North America and ANZ region has similar distribution around 7. For Sub-Saharan Africa, it also has similar distribution in life ladder score around 4 across the years. It seems that the Middle East and North Africa region has many outliers in each year's life ladder score.
 
-### Life Ladder Scores for Different Countries
-
 #### Mean life ladder score for top 50 countries
 Now we want to look at the countries that have top 50 mean life ladder score and which regions they belong to.
-```{r}
+```{r, message=FALSE, fig.width = 11.5, fig.height = 5.5}
 happ_df %>%
   group_by(country_name, regional_indicator) %>%
   summarise(mean = mean(ladder_score)) %>%
@@ -90,10 +89,124 @@ happ_df %>%
         legend.position = "top") +
   labs(
     x = "Country",
-    y = "Mean Life Ladder Score",
+    y = "Mean life ladder score",
     color = "Region"
   )
   
 ```
 
+Interestingly, there are many countries from Western Europe and they also have relatively high mean life ladder score across the years.
+
+### Other variables Based on Different Regions {.tabset}
+
+#### Logged GDP per capita
+We can see that the distributions in North America and ANZ, and Western Europe are similar in logged GDP per capita and they are the two highest among these regions.
+
+```{r, fig.width = 11.5, fig.height = 6.5}
+happ_df %>%
+  filter(year != 2005) %>%
+  ggplot(aes(x = year, y = logged_gdp_per_capita, group = year)) +
+  geom_boxplot() +
+  theme(
+    axis.text.x = element_text(angle = 60, vjust = 0.5, hjust = 1, margin = margin(-10, 0, 0, 0)),
+    axis.title.x = element_text(margin = margin(15, 0, 0, 0))
+  ) +
+  facet_wrap(~regional_indicator, nrow = 2) +
+  labs(
+    x = "Year",
+    y = "Logged GDP per capita",
+    title = "Logged GDP per capita for Different Regions Across Years"
+  ) 
+```
+
+#### Social Support
+
+```{r, fig.width = 11.5, fig.height = 6.5}
+happ_df %>%
+  filter(year != 2005) %>%
+  ggplot(aes(x = year, y = social_support, group = year)) +
+  geom_boxplot() +
+  theme(
+    axis.text.x = element_text(angle = 60, vjust = 0.5, hjust = 1, margin = margin(-10, 0, 0, 0)),
+    axis.title.x = element_text(margin = margin(15, 0, 0, 0))
+  ) +
+  facet_wrap(~regional_indicator, nrow = 2) +
+  labs(
+    x = "Year",
+    y = "Social support",
+    title = "Social Support for Different Regions Across Years"
+  ) 
+```
+
+#### Healthy life expectancy
+```{r, fig.width = 11.5, fig.height = 6.5}
+happ_df %>%
+  filter(year != 2005) %>%
+  ggplot(aes(x = year, y = healthy_life_expectancy, group = year)) +
+  geom_boxplot() +
+  theme(
+    axis.text.x = element_text(angle = 60, vjust = 0.5, hjust = 1, margin = margin(-10, 0, 0, 0)),
+    axis.title.x = element_text(margin = margin(15, 0, 0, 0))
+  ) +
+  facet_wrap(~regional_indicator, nrow = 2) +
+  labs(
+    x = "Year",
+    y = "Healthy life expectancy",
+    title = "Healthy Life Expectancy for Different Regions Across Years"
+  ) 
+```
+
+#### Freedom to make life chocies
+```{r, fig.width = 11.5, fig.height = 6.5}
+happ_df %>%
+  filter(year != 2005) %>%
+  ggplot(aes(x = year, y = freedom_to_make_life_choices, group = year)) +
+  geom_boxplot() +
+  theme(
+    axis.text.x = element_text(angle = 60, vjust = 0.5, hjust = 1, margin = margin(-10, 0, 0, 0)),
+    axis.title.x = element_text(margin = margin(15, 0, 0, 0))
+  ) +
+  facet_wrap(~regional_indicator, nrow = 2) +
+  labs(
+    x = "Year",
+    y = "Freedom to make life choices",
+    title = "Freedom for Different Regions Across Years"
+  ) 
+```
+
+#### Generosity
+```{r, fig.width = 11.5, fig.height = 6.5}
+happ_df %>%
+  filter(year != 2005) %>%
+  ggplot(aes(x = year, y = generosity, group = year)) +
+  geom_boxplot() +
+  theme(
+    axis.text.x = element_text(angle = 60, vjust = 0.5, hjust = 1, margin = margin(-10, 0, 0, 0)),
+    axis.title.x = element_text(margin = margin(15, 0, 0, 0))
+  ) +
+  facet_wrap(~regional_indicator, nrow = 2) +
+  labs(
+    x = "Year",
+    y = "Generosity",
+    title = "Generosity for Different Regions Across Years"
+  ) 
+```
+
+#### Perceptions of corruption
+```{r, fig.width = 11.5, fig.height = 6.5}
+happ_df %>%
+  filter(year != 2005) %>%
+  ggplot(aes(x = year, y = perceptions_of_corruption, group = year)) +
+  geom_boxplot() +
+  theme(
+    axis.text.x = element_text(angle = 60, vjust = 0.5, hjust = 1, margin = margin(-10, 0, 0, 0)),
+    axis.title.x = element_text(margin = margin(15, 0, 0, 0))
+  ) +
+  facet_wrap(~regional_indicator, nrow = 2) +
+  labs(
+    x = "Year",
+    y = "Perceptions of corruption",
+    title = "Perceptions of Corruption for Different Regions Across Years"
+  ) 
+```
 

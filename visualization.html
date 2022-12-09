@@ -33,6 +33,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -226,6 +227,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -353,6 +357,14 @@ div.tocify {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">Visualization</h1>
@@ -360,11 +372,11 @@ div.tocify {
 </div>
 
 
-<div id="life-ladder-scores-for-different-regions"
+<div id="life-ladder-scores-based-on-different-regions"
 class="section level3">
-<h3>Life Ladder Scores for Different Regions</h3>
+<h3>Life Ladder Scores Based on Different Regions</h3>
 <div id="overall-mean-life-ladder-score" class="section level4">
-<h4>Overall mean Life Ladder Score</h4>
+<h4>Overall mean life ladder score</h4>
 <p>We want to first get a general sense about the differences among life
 ladder scores for different regions by plotting the mean life ladder
 score for each region throughout the years.</p>
@@ -416,10 +428,6 @@ distribution in life ladder score around 4 across the years. It seems
 that the Middle East and North Africa region has many outliers in each
 year’s life ladder score.</p>
 </div>
-</div>
-<div id="life-ladder-scores-for-different-countries"
-class="section level3">
-<h3>Life Ladder Scores for Different Countries</h3>
 <div id="mean-life-ladder-score-for-top-50-countries"
 class="section level4">
 <h4>Mean life ladder score for top 50 countries</h4>
@@ -437,12 +445,127 @@ ladder score and which regions they belong to.</p>
         legend.position = &quot;top&quot;) +
   labs(
     x = &quot;Country&quot;,
-    y = &quot;Mean Life Ladder Score&quot;,
+    y = &quot;Mean life ladder score&quot;,
     color = &quot;Region&quot;
   )</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;country_name&#39;. You can override using the
-## `.groups` argument.</code></pre>
-<p><img src="visualization_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="visualization_files/figure-html/unnamed-chunk-5-1.png" width="1104" /></p>
+<p>Interestingly, there are many countries from Western Europe and they
+also have relatively high mean life ladder score across the years.</p>
+</div>
+</div>
+<div id="other-variables-based-on-different-regions"
+class="section level3 tabset">
+<h3 class="tabset">Other variables Based on Different Regions</h3>
+<div id="logged-gdp-per-capita" class="section level4">
+<h4>Logged GDP per capita</h4>
+<p>We can see that the distributions in North America and ANZ, and
+Western Europe are similar in logged GDP per capita and they are the two
+highest among these regions.</p>
+<pre class="r"><code>happ_df %&gt;%
+  filter(year != 2005) %&gt;%
+  ggplot(aes(x = year, y = logged_gdp_per_capita, group = year)) +
+  geom_boxplot() +
+  theme(
+    axis.text.x = element_text(angle = 60, vjust = 0.5, hjust = 1, margin = margin(-10, 0, 0, 0)),
+    axis.title.x = element_text(margin = margin(15, 0, 0, 0))
+  ) +
+  facet_wrap(~regional_indicator, nrow = 2) +
+  labs(
+    x = &quot;Year&quot;,
+    y = &quot;Logged GDP per capita&quot;,
+    title = &quot;Logged GDP per capita for Different Regions Across Years&quot;
+  ) </code></pre>
+<p><img src="visualization_files/figure-html/unnamed-chunk-6-1.png" width="1104" /></p>
+</div>
+<div id="social-support" class="section level4">
+<h4>Social Support</h4>
+<pre class="r"><code>happ_df %&gt;%
+  filter(year != 2005) %&gt;%
+  ggplot(aes(x = year, y = social_support, group = year)) +
+  geom_boxplot() +
+  theme(
+    axis.text.x = element_text(angle = 60, vjust = 0.5, hjust = 1, margin = margin(-10, 0, 0, 0)),
+    axis.title.x = element_text(margin = margin(15, 0, 0, 0))
+  ) +
+  facet_wrap(~regional_indicator, nrow = 2) +
+  labs(
+    x = &quot;Year&quot;,
+    y = &quot;Social support&quot;,
+    title = &quot;Social Support for Different Regions Across Years&quot;
+  ) </code></pre>
+<p><img src="visualization_files/figure-html/unnamed-chunk-7-1.png" width="1104" /></p>
+</div>
+<div id="healthy-life-expectancy" class="section level4">
+<h4>Healthy life expectancy</h4>
+<pre class="r"><code>happ_df %&gt;%
+  filter(year != 2005) %&gt;%
+  ggplot(aes(x = year, y = healthy_life_expectancy, group = year)) +
+  geom_boxplot() +
+  theme(
+    axis.text.x = element_text(angle = 60, vjust = 0.5, hjust = 1, margin = margin(-10, 0, 0, 0)),
+    axis.title.x = element_text(margin = margin(15, 0, 0, 0))
+  ) +
+  facet_wrap(~regional_indicator, nrow = 2) +
+  labs(
+    x = &quot;Year&quot;,
+    y = &quot;Healthy life expectancy&quot;,
+    title = &quot;Healthy Life Expectancy for Different Regions Across Years&quot;
+  ) </code></pre>
+<p><img src="visualization_files/figure-html/unnamed-chunk-8-1.png" width="1104" /></p>
+</div>
+<div id="freedom-to-make-life-chocies" class="section level4">
+<h4>Freedom to make life chocies</h4>
+<pre class="r"><code>happ_df %&gt;%
+  filter(year != 2005) %&gt;%
+  ggplot(aes(x = year, y = freedom_to_make_life_choices, group = year)) +
+  geom_boxplot() +
+  theme(
+    axis.text.x = element_text(angle = 60, vjust = 0.5, hjust = 1, margin = margin(-10, 0, 0, 0)),
+    axis.title.x = element_text(margin = margin(15, 0, 0, 0))
+  ) +
+  facet_wrap(~regional_indicator, nrow = 2) +
+  labs(
+    x = &quot;Year&quot;,
+    y = &quot;Freedom to make life choices&quot;,
+    title = &quot;Freedom for Different Regions Across Years&quot;
+  ) </code></pre>
+<p><img src="visualization_files/figure-html/unnamed-chunk-9-1.png" width="1104" /></p>
+</div>
+<div id="generosity" class="section level4">
+<h4>Generosity</h4>
+<pre class="r"><code>happ_df %&gt;%
+  filter(year != 2005) %&gt;%
+  ggplot(aes(x = year, y = generosity, group = year)) +
+  geom_boxplot() +
+  theme(
+    axis.text.x = element_text(angle = 60, vjust = 0.5, hjust = 1, margin = margin(-10, 0, 0, 0)),
+    axis.title.x = element_text(margin = margin(15, 0, 0, 0))
+  ) +
+  facet_wrap(~regional_indicator, nrow = 2) +
+  labs(
+    x = &quot;Year&quot;,
+    y = &quot;Generosity&quot;,
+    title = &quot;Generosity for Different Regions Across Years&quot;
+  ) </code></pre>
+<p><img src="visualization_files/figure-html/unnamed-chunk-10-1.png" width="1104" /></p>
+</div>
+<div id="perceptions-of-corruption" class="section level4">
+<h4>Perceptions of corruption</h4>
+<pre class="r"><code>happ_df %&gt;%
+  filter(year != 2005) %&gt;%
+  ggplot(aes(x = year, y = perceptions_of_corruption, group = year)) +
+  geom_boxplot() +
+  theme(
+    axis.text.x = element_text(angle = 60, vjust = 0.5, hjust = 1, margin = margin(-10, 0, 0, 0)),
+    axis.title.x = element_text(margin = margin(15, 0, 0, 0))
+  ) +
+  facet_wrap(~regional_indicator, nrow = 2) +
+  labs(
+    x = &quot;Year&quot;,
+    y = &quot;Perceptions of corruption&quot;,
+    title = &quot;Perceptions of Corruption for Different Regions Across Years&quot;
+  ) </code></pre>
+<p><img src="visualization_files/figure-html/unnamed-chunk-11-1.png" width="1104" /></p>
 </div>
 </div>
 
@@ -481,6 +604,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 <script>
 $(document).ready(function ()  {
