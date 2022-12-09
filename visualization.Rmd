@@ -76,7 +76,7 @@ With the initial idea that the mean life ladder score of the North America and A
 
 #### Mean life ladder score for top 50 countries
 Now we want to look at the countries that have top 50 mean life ladder score and which regions they belong to.
-```{r, message=FALSE, fig.width = 11.5, fig.height = 5.5}
+```{r, message=FALSE, fig.width = 11, fig.height = 5.5}
 happ_df %>%
   group_by(country_name, regional_indicator) %>%
   summarise(mean = mean(ladder_score)) %>%
