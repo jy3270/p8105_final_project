@@ -1,0 +1,262 @@
+---
+title: "Descriptive Statistics"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r, include = FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(gtsummary)
+
+knitr::opts_chunk$set(
+	echo = TRUE,
+	warning = FALSE,
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+
+select <- dplyr::select
+```
+
+```{r, include = FALSE, message=FALSE, warning=FALSE}
+happiness_df = read_csv("Data/happiness.csv")
+```
+
+First Let's take a peak of our dataset:
+
+```{r}
+happiness_df %>% head() %>% knitr::kable()
+```
+
+The dataset has `r nrow(happiness_df)` observations and `r ncol(happiness_df)` variables, Let's take a deeper look into each variable:
+
+
+### Country name
+There are `r happiness_df %>% pull(country_name) %>% unique() %>% length()` unique countries in this dataset.
+
+```{r}
+happiness_df %>%
+  group_by(country_name) %>%
+  summarize(
+    n_obs = n()
+  ) %>%
+  group_by(n_obs) %>%
+  summarize(
+    number_of_countries = n()
+  ) %>%
+  knitr::kable()
+```
+We can see that 6 countries appeared only 1 time, while 24 countries appeared 16 times.
+
+### Regional indicator
+This variable represents the region that the country belongs to. There are `r happiness_df %>% pull(regional_indicator) %>% unique() %>% length()` unique regions in this dataset. The regional indicators are `r happiness_df %>% pull(regional_indicator) %>% unique()`.
+
+```{r}
+happiness_df %>%
+  group_by(regional_indicator) %>%
+  summarize(
+    n_obs = n()
+  ) %>%
+  mutate(regional_indicator = fct_reorder(regional_indicator, n_obs)) %>%
+  ggplot(aes(x = regional_indicator, y = n_obs)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) +
+  labs(
+    x = "regional indicator",
+    y = "number of observations",
+    title = "Number of observations for each region"
+  )
+```
+
+East Asia has the lowest number of observations, while Sub-Saharan Africa has the highest.
+
+### Year
+
+```{r}
+happiness_df %>%
+  group_by(year) %>%
+  summarize(
+    n_obs = n()
+  ) %>%
+  ggplot(aes(x = factor(year), y = n_obs)) +
+  geom_col() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) +
+  labs(
+    x = "year",
+    y = "number of observations",
+    title = "Number of observations for each year"
+  )
+```
+
+Year ranges from 2005 to 2021 in this dataset. The year with the most observation is 2021, and the year with the least observation is 2005.
+
+### Ladder score
+Ladder score is the happiness index. 
+
+```{r}
+happiness_df %>%
+  ggplot(aes(x = ladder_score)) +
+  geom_histogram(bins = 20) +
+  labs(title = "Distribution of ladder score")
+```
+
+Ladder score ranges from `r happiness_df %>% pull(ladder_score) %>% range() %>% .[1]` to `r happiness_df %>% pull(ladder_score) %>% range() %>% .[2]`. The distribution is approximately symmetric with mean at `r happiness_df %>% pull(ladder_score) %>% mean()`.
+
+
+Since ladder score is the main outcome of our project, we should dive a little deeper by looking at the mean ladder score for each region and year.
+```{r}
+happiness_df %>%
+  group_by(regional_indicator) %>%
+  summarize(
+    mean_ladder_score = mean(ladder_score)
+  ) %>%
+  arrange(mean_ladder_score) %>%
+  knitr::kable()
+```
+
+Sub-Saharan Africa has the lowest mean ladder score across all years, while North America and ANZ has the highest.
+
+```{r}
+happiness_df %>%
+  group_by(year) %>%
+  summarize(
+    mean_ladder_score = mean(ladder_score)
+  ) %>%
+  knitr::kable()
+```
+
+Year 2005 has significantly higher ladder score than the others. However, because year 2005 only has one observation, the difference should not be considered significant. Ladder scores for all other years are around 5.5.
+
+
+### Logged GDP per capita
+```{r}
+happiness_df %>%
+  ggplot(aes(x = logged_gdp_per_capita)) +
+  geom_histogram(bins = 15) +
+  labs(title = "Distribution of logged GDP per capita")
+```
+
+Logged GDP per capita ranges from `r happiness_df %>% pull(logged_gdp_per_capita) %>% range() %>% .[1]` to `r happiness_df %>% pull(logged_gdp_per_capita) %>% range() %>% .[2]`. The distribution is approximately symmetric with mean at `r happiness_df %>% pull(logged_gdp_per_capita) %>% mean()`.
+
+
+### Social support
+```{r}
+happiness_df %>%
+  ggplot(aes(x = social_support)) +
+  geom_histogram(bins = 15) +
+  labs(title = "Distribution of social support")
+```
+
+Social support ranges from `r happiness_df %>% pull(social_support) %>% range() %>% .[1]` to `r happiness_df %>% pull(social_support) %>% range() %>% .[2]`. Since the distribution is skewed right, we will look at the median instead of the mean. The median of social support is `r happiness_df %>% pull(social_support) %>% median()`.
+
+### Healthy life expectancy
+```{r}
+happiness_df %>%
+  ggplot(aes(x = healthy_life_expectancy)) +
+  geom_histogram(bins = 15) +
+  labs(title = "Distribution of healthy life expectancy")
+```
+
+Healthy life expectancy ranges from `r happiness_df %>% pull(healthy_life_expectancy) %>% range() %>% .[1]` to `r happiness_df %>% pull(healthy_life_expectancy) %>% range() %>% .[2]`. The distribution is skewed right. The median of healthy life expectancy is `r happiness_df %>% pull(healthy_life_expectancy) %>% median()`.
+
+### Freedom to make life choices
+```{r}
+happiness_df %>%
+  ggplot(aes(x = freedom_to_make_life_choices)) +
+  geom_histogram(bins = 15) +
+  labs(title = "Distribution of freedom to make life choices")
+```
+
+Freedom to make life choices ranges from `r happiness_df %>% pull(freedom_to_make_life_choices) %>% range() %>% .[1]` to `r happiness_df %>% pull(freedom_to_make_life_choices) %>% range() %>% .[2]`. The distribution is skewed right. The median of freedom to make life choices is `r happiness_df %>% pull(freedom_to_make_life_choices) %>% median()`.
+
+
+### Generosity
+```{r}
+happiness_df %>%
+  ggplot(aes(x = generosity)) +
+  geom_histogram(bins = 15) +
+  labs(title = "Distribution of generosity")
+```
+
+Generosity ranges from `r happiness_df %>% pull(generosity) %>% range() %>% .[1]` to `r happiness_df %>% pull(generosity) %>% range() %>% .[2]`. The distribution is approximately symmetric with mean at `r happiness_df %>% pull(generosity) %>% mean()`.
+
+
+### Perceptions of corruption
+```{r}
+happiness_df %>%
+  ggplot(aes(x = perceptions_of_corruption)) +
+  geom_histogram(bins = 15) +
+  labs(title = "Distribution of perceptions of corruption")
+```
+
+Perceptions of corruption ranges from `r happiness_df %>% pull(perceptions_of_corruption) %>% range() %>% .[1]` to `r happiness_df %>% pull(perceptions_of_corruption) %>% range() %>% .[2]`. The distribution is skewed right. The median of perceptions of corruption is `r happiness_df %>% pull(perceptions_of_corruption) %>% median()`.
+
+
+### Summary
+
+Finally, let's take a look at the summary tables of mean and standard deviation of each variable.
+```{r}
+happiness_df %>%
+  select(ladder_score, logged_gdp_per_capita, social_support, healthy_life_expectancy, freedom_to_make_life_choices, generosity, perceptions_of_corruption) %>%
+  tbl_summary(missing_text = "(Missing)",
+              statistic = list(all_continuous() ~ "{mean} ({sd})"),
+              label = list(ladder_score ~ "Ladder score",
+                           logged_gdp_per_capita ~ "Logged gdp per capita",
+                           social_support ~ "Social support",
+                           healthy_life_expectancy ~ "Healthy life exp",
+                           freedom_to_make_life_choices ~ "Freedom to make life choices",
+                           generosity ~ "Generosity",
+                           perceptions_of_corruption ~ "Perceiptions of corruption")) %>% 
+  bold_labels() %>%
+  italicize_levels() 
+```
+
+
+```{r}
+happiness_df %>%
+  select(regional_indicator, ladder_score, logged_gdp_per_capita, social_support, healthy_life_expectancy, freedom_to_make_life_choices, generosity, perceptions_of_corruption) %>%
+  tbl_summary(by = "regional_indicator",
+              missing_text = "(Missing)",
+              statistic = list(all_continuous() ~ "{mean} ({sd})"),
+              label = list(ladder_score ~ "Ladder score",
+                           logged_gdp_per_capita ~ "Logged gdp per capita",
+                           social_support ~ "Social support",
+                           healthy_life_expectancy ~ "Healthy life exp",
+                           freedom_to_make_life_choices ~ "Freedom to make life choices",
+                           generosity ~ "Generosity",
+                           perceptions_of_corruption ~ "Perceiptions of corruption")) %>% 
+  bold_labels() %>%
+  italicize_levels() 
+```
+
+
+```{r}
+happiness_df %>%
+  select(year, ladder_score, logged_gdp_per_capita, social_support, healthy_life_expectancy, freedom_to_make_life_choices, generosity, perceptions_of_corruption) %>%
+  filter(year != 2005) %>%
+  tbl_summary(by = "year",
+              missing_text = "(Missing)",
+              statistic = list(all_continuous() ~ "{mean} ({sd})"),
+              label = list(ladder_score ~ "Ladder score",
+                           logged_gdp_per_capita ~ "Logged gdp per capita",
+                           social_support ~ "Social support",
+                           healthy_life_expectancy ~ "Healthy life exp",
+                           freedom_to_make_life_choices ~ "Freedom to make life choices",
+                           generosity ~ "Generosity",
+                           perceptions_of_corruption ~ "Perceiptions of corruption")) %>% 
+  bold_labels() %>%
+  italicize_levels() 
+```
+__Note__: Since year 2005 only has one observation, it is removed from this summary table.
