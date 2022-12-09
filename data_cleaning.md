@@ -7,21 +7,12 @@ Jingya Yu, Landi Guo, Fengdi Zhang, Meng Fang, Yixuan Jiao
 library(tidyverse)
 ```
 
-    ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-    ## ✔ ggplot2 3.3.6      ✔ purrr   0.3.5 
-    ## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
-    ## ✔ tidyr   1.2.1      ✔ stringr 1.4.1 
-    ## ✔ readr   2.1.3      ✔ forcats 0.5.2 
-    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-    ## ✖ dplyr::filter() masks stats::filter()
-    ## ✖ dplyr::lag()    masks stats::lag()
-
 ``` r
 happiness_2021 <- read_csv("data/world-happiness-report-2021.csv") %>% janitor::clean_names()
 ```
 
     ## Rows: 149 Columns: 20
-    ## ── Column specification ────────────────────────────────────────────────────────
+    ## ── Column specification ───────────────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr  (2): Country name, Regional indicator
     ## dbl (18): Ladder score, Standard error of ladder score, upperwhisker, lowerw...
@@ -34,7 +25,7 @@ happiness_pre_2021 <- read_csv("data/world-happiness-report.csv") %>% janitor::c
 ```
 
     ## Rows: 1949 Columns: 11
-    ## ── Column specification ────────────────────────────────────────────────────────
+    ## ── Column specification ───────────────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr  (1): Country name
     ## dbl (10): year, Life Ladder, Log GDP per capita, Social support, Healthy lif...

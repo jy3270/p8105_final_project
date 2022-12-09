@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Meng Fang" />
+
+
+<title>Statistical Testing for World Happiness Report</title>
+
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Overview</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="visualization.html">Visulization</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Statistical Analysis
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Statistical Test</li>
+    <li>
+      <a href="regression_analysis.html">Regression Analysis</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown-header">About</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Statistical Testing for World Happiness
+Report</h1>
+<h4 class="author">Meng Fang</h4>
+
+</div>
+
+
+<p>We want to try different tests in happiness scores. Let’s see whether
+there are some interesting findings. <strong>All the tests have a
+significance level of 0.05</strong></p>
+<div id="load-package-and-data" class="section level3">
+<h3>Load Package and Data</h3>
+</div>
+<div id="test-1-anova-test" class="section level3">
+<h3>Test 1: ANOVA Test</h3>
+<p>Using ANOVA test, we can possibly compare the mean happiness scores
+across different regions, lets first get a sense of the ranges of the
+happiness scores in each region. Here we visualize the estimates and the
+CI bounds of each region to get a general sense of regional
+difference.</p>
+<pre class="r"><code>score_estimates &lt;- function(x){
+  t.test(x, conf.level = 0.95) %&gt;% broom::tidy()%&gt;%select(estimate, conf.low, conf.high)
+}
+
+result_df &lt;- happy_meta %&gt;%
+  select(regional_indicator, ladder_score) %&gt;%
+  nest_by(regional_indicator) %&gt;%
+  rename(ladder_vec = data) %&gt;%
+  mutate(result = map(ladder_vec, score_estimates)) %&gt;%
+  select(-ladder_vec) %&gt;%
+  unnest(result)
+
+result_df %&gt;%
+  ggplot(aes(x = reorder(regional_indicator, estimate), y = estimate)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = conf.low, ymax = conf.high)) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5, hjust = 0.5, size = 7),
+        plot.title = element_text(hjust = 0.5)) +
+  xlab(&quot;Region&quot;) +
+  ylab(&quot;Estimate of Ladder Score&quot;) +
+  ggtitle(&quot;Estimated Ladder Scores and Their CIs for Different Regions&quot;)</code></pre>
+<p><img src="statistical_tests_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>From the Plot, we see that ranges of the estimates of the ladder
+score differ a lot based on regions. Let’s see whether anova test will
+prove our observation.</p>
+<p><span class="math inline">\(H_0:\)</span> the population mean of
+ladder score is the same for the all the 10 regions.</p>
+<p><span class="math inline">\(H_1:\)</span> At least one population
+mean of the ladder score is different in all the 10 regions.</p>
+<pre class="r"><code>aov(ladder_score ~ factor(regional_indicator), data = happy_meta) %&gt;% summary()</code></pre>
+<pre><code>##                              Df Sum Sq Mean Sq F value Pr(&gt;F)    
+## factor(regional_indicator)    9 1447.0  160.78   337.3 &lt;2e-16 ***
+## Residuals                  1806  860.9    0.48                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="test-2-two-sample-t-test-before-covid-or-after-covid"
+class="section level3">
+<h3>Test 2: Two Sample T-test (Before Covid or After Covid?)</h3>
+<p>Overall in the world, whether the mean happiness score for all the
+regions before covid-19 higher than the mean happiness score after
+covid-19? Here we split the data in to “before covid” and “after covid”
+based on variable <code>year</code>, and compare the mean happiness
+score of these two groups using a two sample t-test.</p>
+<ul>
+<li>Lets check the variances of these two data groups.</li>
+</ul>
+<pre class="r"><code>var.test(ladder_score ~ covid_status, data = happy_meta)</code></pre>
+<pre><code>## 
+##  F test to compare two variances
+## 
+## data:  ladder_score by covid_status
+## F = 1.0981, num df = 1459, denom df = 355, p-value = 0.2756
+## alternative hypothesis: true ratio of variances is not equal to 1
+## 95 percent confidence interval:
+##  0.9279279 1.2887684
+## sample estimates:
+## ratio of variances 
+##           1.098121</code></pre>
+<p>As the p value is very big (0.2756), we fail to reject the null
+hypothesis and conclude that the variances of the two groups are equal
+in this case. So we are conducting a 2 sample t-test with equal
+variances in this case.</p>
+<p><span class="math inline">\(H_0:\)</span> the population mean of
+ladder score is the same for the time period before covid-19 and the
+time period after covid-19 for all countries.</p>
+<p><span class="math inline">\(H_1:\)</span> the population mean of
+ladder score is the smaller for the time period before covid-19 and the
+time period after covid-19 for all countries.</p>
+<pre class="r"><code>t.test(ladder_score ~ covid_status, alternative = &quot;less&quot;, data = happy_meta, var.equal = TRUE)</code></pre>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  ladder_score by covid_status
+## t = -2.7966, df = 1814, p-value = 0.002609
+## alternative hypothesis: true difference in means between group No and group Yes is less than 0
+## 95 percent confidence interval:
+##         -Inf -0.07657036
+## sample estimates:
+##  mean in group No mean in group Yes 
+##          5.433695          5.619750</code></pre>
+<p>Since the p-value is low, We found out that the happiness score after
+covid-19 is higher than the happiness score before covid-19. This might
+due to people are spending more time with their families during work
+from home work mode and quarantine, or other factors. If we look down on
+each region, will we still get the same result? Now, we compute the two
+tail and one tail test for data in each region.</p>
+<pre class="r"><code>pval_df &lt;- tibble()
+
+nest_conti &lt;-
+  happy_meta %&gt;%
+  nest_by(regional_indicator)
+
+for(i in 1:10){
+  
+  pval_df[i,1] = nest_conti[i,1] %&gt;% pull()
+  
+  p_value &lt;- t.test(ladder_score ~ covid_status, alternative = &quot;less&quot;, data = nest_conti[[2]][[i]], var.equal = TRUE) %&gt;% broom::tidy() %&gt;% pull(p.value)
+  
+  pval_df[i,2] = p_value
+}
+
+pval_df %&gt;%
+  rename(regional = ...1,
+         p_value = ...2) %&gt;%
+  mutate(
+    test_Result = case_when(
+      p_value &lt; 0.05 ~ &quot;reject null&quot;,
+      p_value &gt; 0.05 ~ &quot;fail to reject null&quot;
+    )
+  ) %&gt;% knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">regional</th>
+<th align="right">p_value</th>
+<th align="left">test_Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Central and Eastern Europe</td>
+<td align="right">0.0000001</td>
+<td align="left">reject null</td>
+</tr>
+<tr class="even">
+<td align="left">Commonwealth of Independent States</td>
+<td align="right">0.0003179</td>
+<td align="left">reject null</td>
+</tr>
+<tr class="odd">
+<td align="left">East Asia</td>
+<td align="right">0.1041398</td>
+<td align="left">fail to reject null</td>
+</tr>
+<tr class="even">
+<td align="left">Latin America and Caribbean</td>
+<td align="right">0.5362506</td>
+<td align="left">fail to reject null</td>
+</tr>
+<tr class="odd">
+<td align="left">Middle East and North Africa</td>
+<td align="right">0.6747703</td>
+<td align="left">fail to reject null</td>
+</tr>
+<tr class="even">
+<td align="left">North America and ANZ</td>
+<td align="right">0.9973080</td>
+<td align="left">fail to reject null</td>
+</tr>
+<tr class="odd">
+<td align="left">South Asia</td>
+<td align="right">0.8213778</td>
+<td align="left">fail to reject null</td>
+</tr>
+<tr class="even">
+<td align="left">Southeast Asia</td>
+<td align="right">0.5272470</td>
+<td align="left">fail to reject null</td>
+</tr>
+<tr class="odd">
+<td align="left">Sub-Saharan Africa</td>
+<td align="right">0.0001335</td>
+<td align="left">reject null</td>
+</tr>
+<tr class="even">
+<td align="left">Western Europe</td>
+<td align="right">0.1244833</td>
+<td align="left">fail to reject null</td>
+</tr>
+</tbody>
+</table>
+<p>Now we see that our tests says that only in Central and Eastern
+Europe, Commonwealth of Independent States and Sub-Saharan Africa we
+reject the null hypothesis and conclude that the mean happiness score is
+lower for the time before covid. Lets continue looking at other regions
+and conduct a test where an alternative hypothesis is “the mean
+happiness score decreases after covid”.</p>
+<pre class="r"><code>pval_df2 &lt;- tibble()
+
+nest_conti2 &lt;-
+  happy_meta %&gt;%
+  nest_by(regional_indicator) %&gt;%
+  filter(!regional_indicator %in% c(&quot;Central and Eastern Europe&quot;, &quot;Commonwealth of Independent States&quot;, &quot;Sub-Saharan Africa&quot;))
+
+for(i in 1:7){
+  
+  pval_df2[i,1] = nest_conti2[i,1] %&gt;% pull()
+  
+  p_value &lt;- t.test(ladder_score ~ covid_status, alternative = &quot;greater&quot;, data = nest_conti2[[2]][[i]], var.equal = TRUE) %&gt;% broom::tidy() %&gt;% pull(p.value)
+  
+  pval_df2[i,2] = p_value
+}
+
+pval_df2 %&gt;%
+  rename(regional = ...1,
+         p_value = ...2) %&gt;%
+  mutate(
+    test_Result = case_when(
+      p_value &lt; 0.05 ~ &quot;reject null&quot;,
+      p_value &gt; 0.05 ~ &quot;fail to reject null&quot;
+    )
+  ) %&gt;% knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">regional</th>
+<th align="right">p_value</th>
+<th align="left">test_Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">East Asia</td>
+<td align="right">0.8958602</td>
+<td align="left">fail to reject null</td>
+</tr>
+<tr class="even">
+<td align="left">Latin America and Caribbean</td>
+<td align="right">0.4637494</td>
+<td align="left">fail to reject null</td>
+</tr>
+<tr class="odd">
+<td align="left">Middle East and North Africa</td>
+<td align="right">0.3252297</td>
+<td align="left">fail to reject null</td>
+</tr>
+<tr class="even">
+<td align="left">North America and ANZ</td>
+<td align="right">0.0026920</td>
+<td align="left">reject null</td>
+</tr>
+<tr class="odd">
+<td align="left">South Asia</td>
+<td align="right">0.1786222</td>
+<td align="left">fail to reject null</td>
+</tr>
+<tr class="even">
+<td align="left">Southeast Asia</td>
+<td align="right">0.4727530</td>
+<td align="left">fail to reject null</td>
+</tr>
+<tr class="odd">
+<td align="left">Western Europe</td>
+<td align="right">0.8755167</td>
+<td align="left">fail to reject null</td>
+</tr>
+</tbody>
+</table>
+<p>Now we see that only for the North America and ANZ region, the p
+value is low and we reject the null and conclude that the happiness
+score after covid is less than the happiness score before covid.</p>
+<p>What about other continents? Is there a big difference in happiness
+score before and after covid? We conduct a two sided t test for those
+regions.</p>
+<pre class="r"><code>pval_df3 &lt;- tibble()
+
+nest_conti3 &lt;-
+  happy_meta %&gt;%
+  nest_by(regional_indicator) %&gt;%
+  filter(!regional_indicator %in% c(&quot;Central and Eastern Europe&quot;, &quot;Commonwealth of Independent States&quot;, &quot;Sub-Saharan Africa&quot;,&quot;North America and ANZ&quot;))
+
+for(i in 1:6){
+  
+  pval_df3[i,1] = nest_conti2[i,1] %&gt;% pull()
+  
+  p_value &lt;- t.test(ladder_score ~ covid_status, alternative = &quot;two.sided&quot;, data = nest_conti3[[2]][[i]], var.equal = TRUE) %&gt;% broom::tidy() %&gt;% pull(p.value)
+  
+  pval_df3[i,2] = p_value
+}
+
+pval_df3 %&gt;%
+  rename(regional = ...1,
+         p_value = ...2) %&gt;%
+  mutate(
+    test_Result = case_when(
+      p_value &lt; 0.05 ~ &quot;reject null&quot;,
+      p_value &gt; 0.05 ~ &quot;fail to reject null&quot;
+    )
+  ) %&gt;% knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">regional</th>
+<th align="right">p_value</th>
+<th align="left">test_Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">East Asia</td>
+<td align="right">0.2082797</td>
+<td align="left">fail to reject null</td>
+</tr>
+<tr class="even">
+<td align="left">Latin America and Caribbean</td>
+<td align="right">0.9274987</td>
+<td align="left">fail to reject null</td>
+</tr>
+<tr class="odd">
+<td align="left">Middle East and North Africa</td>
+<td align="right">0.6504595</td>
+<td align="left">fail to reject null</td>
+</tr>
+<tr class="even">
+<td align="left">North America and ANZ</td>
+<td align="right">0.3572444</td>
+<td align="left">fail to reject null</td>
+</tr>
+<tr class="odd">
+<td align="left">South Asia</td>
+<td align="right">0.9455060</td>
+<td align="left">fail to reject null</td>
+</tr>
+<tr class="even">
+<td align="left">Southeast Asia</td>
+<td align="right">0.2489666</td>
+<td align="left">fail to reject null</td>
+</tr>
+</tbody>
+</table>
+<p>As a result, all these left regions have a high p-value, and we fail
+to reject null hypothesis that “the mean happiness score before covid is
+the same as the mean happiness score after covid”. Thus for these
+regions, the happiness score didn’t change as much before and after
+covid.</p>
+</div>
+<div id="test-3-2-sample-t-test-test-happy-region-vs-unhappy-regions"
+class="section level3">
+<h3>Test 3: 2 Sample t-test Test (“Happy Region” vs “Unhappy
+Regions)</h3>
+<p>Whether the regions that have high happiness score throughout
+2008-2021 differ in properties than the countries that have relatively
+low happiness score throughout 2008-2022? In this section, we divide all
+the 10 regions into two group “happy regions” and “unhappy regions”
+based on previous analysis on the estimates and the confidence intervals
+of the ladder scores. we are going to find out whether those regions
+have differences in <code>logged_gdp_per_capita</code>,
+<code>social_support</code>, <code>healthy_life_expectancy</code>,
+<code>freedom _to_make_life_choices</code>, and
+<code>preceptions_of_corruptions</code>, we are going to conduct two
+sample mean t.test for each of the variables.</p>
+<pre class="r"><code>happy_list &lt;- c(&quot;Central and Eastern Europe&quot;, &quot;East Asia&quot;, &quot;Latin America and Caribbean&quot;, &quot;Western Europe&quot;, &quot;North America and ANZ&quot;)
+unhappy_list &lt;- c(&quot;Sub-Saharan Africa&quot;, &quot;South Asia&quot;, &quot;Southeast Asia&quot;, &quot;Middle East and North Africa&quot;, &quot;Commonwealth of Independent States&quot;)
+
+hap_unhap &lt;- happy_meta %&gt;%
+  mutate(
+    happy_status = case_when(
+      regional_indicator %in% happy_list ~ &quot;happy region&quot;,
+      regional_indicator %in% unhappy_list ~ &quot;unhappy region&quot;
+    )
+  )</code></pre>
+<ol style="list-style-type: decimal">
+<li><code>logged_gdp_per_capita</code></li>
+</ol>
+<p>First we visualize the differences, looks like the logged gdp per
+capita for the happy countries are much higher than the unhappy
+ones.</p>
+<pre class="r"><code>hap_unhap %&gt;%
+  ggplot() +
+  geom_boxplot(mapping = aes(x = happy_status, y = logged_gdp_per_capita, fill = happy_status)) </code></pre>
+<p><img src="statistical_tests_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Looking at the box plot, the variance is quite different for happy
+countries and unhappy countries, now we conduct a 2-sample t-test with
+unequal variances.</p>
+<pre class="r"><code>t.test(logged_gdp_per_capita ~ happy_status, alternative = &quot;greater&quot;, data = hap_unhap, var.equal = FALSE) %&gt;% broom::tidy() %&gt;% knitr::kable(digit = 3)</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="7%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="21%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">estimate</th>
+<th align="right">estimate1</th>
+<th align="right">estimate2</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">parameter</th>
+<th align="right">conf.low</th>
+<th align="right">conf.high</th>
+<th align="left">method</th>
+<th align="left">alternative</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1.432</td>
+<td align="right">10.083</td>
+<td align="right">8.651</td>
+<td align="right">34.177</td>
+<td align="right">0</td>
+<td align="right">1707.127</td>
+<td align="right">1.363</td>
+<td align="right">Inf</td>
+<td align="left">Welch Two Sample t-test</td>
+<td align="left">greater</td>
+</tr>
+</tbody>
+</table>
+<ol start="2" style="list-style-type: decimal">
+<li><code>social_support</code></li>
+</ol>
+<pre class="r"><code>hap_unhap %&gt;%
+  ggplot() +
+  geom_boxplot(mapping = aes(x = happy_status, y = social_support, fill = happy_status)) </code></pre>
+<p><img src="statistical_tests_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>We see that the variance for these two groups are quite difference
+based on the boxplot, so we conduct a Two Sample t-test with unequal
+variances.</p>
+<p><span class="math inline">\(H_0:\)</span> the population mean of
+social support is the same for the happy regions and the unhappy
+regions.</p>
+<p><span class="math inline">\(H_1:\)</span> the population mean of
+social_support is the greater for the happy regions than the unhappy
+regions.</p>
+<pre class="r"><code>t.test(social_support ~ happy_status, alternative = &quot;greater&quot;, data = hap_unhap, var.equal = FALSE) %&gt;% broom::tidy() %&gt;% knitr::kable(digit = 3)</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="7%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="21%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">estimate</th>
+<th align="right">estimate1</th>
+<th align="right">estimate2</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">parameter</th>
+<th align="right">conf.low</th>
+<th align="right">conf.high</th>
+<th align="left">method</th>
+<th align="left">alternative</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.132</td>
+<td align="right">0.879</td>
+<td align="right">0.748</td>
+<td align="right">28.349</td>
+<td align="right">0</td>
+<td align="right">1528.296</td>
+<td align="right">0.124</td>
+<td align="right">Inf</td>
+<td align="left">Welch Two Sample t-test</td>
+<td align="left">greater</td>
+</tr>
+</tbody>
+</table>
+<p>We see that the p.value is close to zero, there is strong statistical
+evidences to reject null and conclude that the population mean of social
+support is the greater for the happy regions than the unhappy
+regions.</p>
+<ol start="3" style="list-style-type: decimal">
+<li><code>healthy_life_expectancy</code></li>
+</ol>
+<pre class="r"><code>hap_unhap %&gt;%
+  ggplot() +
+  geom_boxplot(mapping = aes(x = happy_status, y = healthy_life_expectancy, fill = happy_status)) </code></pre>
+<p><img src="statistical_tests_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>We see that the variance for these two groups are quite difference
+based on the boxplot, so we conduct a Two Sample t-test with unequal
+variances.</p>
+<p><span class="math inline">\(H_0:\)</span> the population mean of
+healthy life expectancy is the same for the happy regions and the
+unhappy regions.</p>
+<p><span class="math inline">\(H_1:\)</span> the population mean of
+healthy life expectancy is the greater for the happy regions than the
+unhappy regions.</p>
+<pre class="r"><code>t.test(healthy_life_expectancy ~ happy_status, alternative = &quot;greater&quot;, data = hap_unhap, var.equal = FALSE) %&gt;% broom::tidy() %&gt;% knitr::kable(digit = 3)</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="7%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="21%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">estimate</th>
+<th align="right">estimate1</th>
+<th align="right">estimate2</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">parameter</th>
+<th align="right">conf.low</th>
+<th align="right">conf.high</th>
+<th align="left">method</th>
+<th align="left">alternative</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">9.995</td>
+<td align="right">68.652</td>
+<td align="right">58.657</td>
+<td align="right">37.904</td>
+<td align="right">0</td>
+<td align="right">1563.001</td>
+<td align="right">9.561</td>
+<td align="right">Inf</td>
+<td align="left">Welch Two Sample t-test</td>
+<td align="left">greater</td>
+</tr>
+</tbody>
+</table>
+<p>We see that the p.value is close to zero, there is strong statistical
+evidences to reject null and conclude that the population mean of
+healthy life expectancy index is the greater for the happy regions than
+the unhappy regions.</p>
+<ol start="4" style="list-style-type: decimal">
+<li><code>freedom_to_make_life_choices</code></li>
+</ol>
+<pre class="r"><code>hap_unhap %&gt;%
+  ggplot() +
+  geom_boxplot(mapping = aes(x = happy_status, y = freedom_to_make_life_choices, fill = happy_status)) </code></pre>
+<p><img src="statistical_tests_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>The variance looks similar in this case for the two group, we conduct
+a variance test to see whether the variances are equal</p>
+<pre class="r"><code>var.test(freedom_to_make_life_choices ~ happy_status, data = hap_unhap) %&gt;% broom::tidy()</code></pre>
+<pre><code>## Multiple parameters; naming those columns num.df, den.df</code></pre>
+<pre><code>## # A tibble: 1 × 9
+##   estimate num.df den.df statistic p.value conf.low conf.high method     alter…¹
+##      &lt;dbl&gt;  &lt;int&gt;  &lt;int&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;  
+## 1    0.993    888    926     0.993   0.911    0.871      1.13 F test to… two.si…
+## # … with abbreviated variable name ¹​alternative</code></pre>
+<p>The p-value is high in this case, we fail to reject the null
+hypothesis that two groups have the same variances. In this case, we
+conduct a 2 sample t-test with equal variances.</p>
+<p><span class="math inline">\(H_0:\)</span> the population mean of
+freedom to make life choices index is the same for the happy regions and
+the unhappy regions.</p>
+<p><span class="math inline">\(H_1:\)</span> the population mean of
+freedom to make life choices index is the greater for the happy regions
+and the unhappy regions.</p>
+<pre class="r"><code>t.test(freedom_to_make_life_choices ~ happy_status,alternative = &quot;greater&quot;, data = hap_unhap, var.equal = TRUE) %&gt;% broom::tidy() %&gt;% knitr::kable(digit = 3)</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="8%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="7%" />
+<col width="9%" />
+<col width="8%" />
+<col width="9%" />
+<col width="16%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">estimate</th>
+<th align="right">estimate1</th>
+<th align="right">estimate2</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">parameter</th>
+<th align="right">conf.low</th>
+<th align="right">conf.high</th>
+<th align="left">method</th>
+<th align="left">alternative</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.067</td>
+<td align="right">0.78</td>
+<td align="right">0.713</td>
+<td align="right">10.429</td>
+<td align="right">0</td>
+<td align="right">1814</td>
+<td align="right">0.056</td>
+<td align="right">Inf</td>
+<td align="left">Two Sample t-test</td>
+<td align="left">greater</td>
+</tr>
+</tbody>
+</table>
+<p>We see that the p.value is close to zero, there is strong statistical
+evidences to reject null and conclude that the population mean of
+freedom to make life choices index is the greater for the happy regions
+than the unhappy regions.</p>
+<ol start="5" style="list-style-type: decimal">
+<li><code>generosity</code></li>
+</ol>
+<pre class="r"><code>hap_unhap %&gt;%
+  ggplot() +
+  geom_boxplot(mapping = aes(x = happy_status, y = generosity, fill = happy_status)) </code></pre>
+<p><img src="statistical_tests_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>The variance looks similar in this case for the two group, we conduct
+a variance test to see whether the variances are equal</p>
+<pre class="r"><code>var.test(generosity ~ happy_status, data = hap_unhap)</code></pre>
+<pre><code>## 
+##  F test to compare two variances
+## 
+## data:  generosity by happy_status
+## F = 0.91941, num df = 888, denom df = 926, p-value = 0.2064
+## alternative hypothesis: true ratio of variances is not equal to 1
+## 95 percent confidence interval:
+##  0.8071813 1.0474223
+## sample estimates:
+## ratio of variances 
+##           0.919406</code></pre>
+<p>The p-value is high in this case, we fail to reject the null
+hypothesis that two groups have the same variances. In this case, we
+conduct a 2 sample t-test with equal variances.</p>
+<p><span class="math inline">\(H_0:\)</span> the population mean of
+generosity index is the same for the happy regions and the unhappy
+regions.</p>
+<p><span class="math inline">\(H_1:\)</span> the population mean of
+generosity index is different for the happy regions from the unhappy
+regions.</p>
+<pre class="r"><code>t.test(generosity ~ happy_status, data = hap_unhap, var.equal = TRUE) %&gt;% broom::tidy() %&gt;% knitr::kable(digit = 3)</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="8%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="7%" />
+<col width="9%" />
+<col width="8%" />
+<col width="9%" />
+<col width="16%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">estimate</th>
+<th align="right">estimate1</th>
+<th align="right">estimate2</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">parameter</th>
+<th align="right">conf.low</th>
+<th align="right">conf.high</th>
+<th align="left">method</th>
+<th align="left">alternative</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">-0.006</td>
+<td align="right">-0.006</td>
+<td align="right">0</td>
+<td align="right">-0.792</td>
+<td align="right">0.428</td>
+<td align="right">1814</td>
+<td align="right">-0.021</td>
+<td align="right">0.009</td>
+<td align="left">Two Sample t-test</td>
+<td align="left">two.sided</td>
+</tr>
+</tbody>
+</table>
+<p>We see that the p.value is higher than 0.05, we fail to reject null
+and conclude that the population mean of generosity index is the same
+for the happy regions than the unhappy regions.</p>
+<ol start="6" style="list-style-type: decimal">
+<li><code>perceptions_of_corruption</code></li>
+</ol>
+<pre class="r"><code>hap_unhap %&gt;%
+  ggplot() +
+  geom_boxplot(mapping = aes(x = happy_status, y = perceptions_of_corruption, fill = happy_status)) </code></pre>
+<p><img src="statistical_tests_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p>We see that the variance for these two groups are quite difference
+based on the boxplot, so we conduct a Two Sample t-test with unequal
+variances.</p>
+<p><span class="math inline">\(H_0:\)</span> the population mean of
+perceptions of corruption is the same for the happy regions and the
+unhappy regions.</p>
+<p><span class="math inline">\(H_1:\)</span> the population mean of
+perceptions of corruption is the greater for the happy regions than the
+unhappy regions.</p>
+<pre class="r"><code>t.test(perceptions_of_corruption ~ happy_status, data = hap_unhap, var.equal = FALSE) %&gt;% broom::tidy() %&gt;% knitr::kable(digit = 3)</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="7%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="21%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">estimate</th>
+<th align="right">estimate1</th>
+<th align="right">estimate2</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">parameter</th>
+<th align="right">conf.low</th>
+<th align="right">conf.high</th>
+<th align="left">method</th>
+<th align="left">alternative</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">-0.062</td>
+<td align="right">0.717</td>
+<td align="right">0.779</td>
+<td align="right">-7.135</td>
+<td align="right">0</td>
+<td align="right">1615.654</td>
+<td align="right">-0.079</td>
+<td align="right">-0.045</td>
+<td align="left">Welch Two Sample t-test</td>
+<td align="left">two.sided</td>
+</tr>
+</tbody>
+</table>
+<p>We see that the p.value is close to zero, there is strong statistical
+evidences to reject null and conclude that the population mean of
+perceptions of corruption is the different in the happy regions than the
+unhappy regions.</p>
+<p>Overall, our 2 sample t tests show strong evidences that the factors
+include in the data differ a lot for happy regions and unhappy regions,
+except for the generosity index.</p>
+</div>
+<div id="test-4-permutation-test" class="section level3">
+<h3>Test 4: Permutation test</h3>
+<p>Let’s found out whether the distribution of the ladder score of is
+different in the happy regions and the unhappy regions. In permutation
+test, we assign a label (“0” or “1” to the observation belong to happy
+region and the observation belong to unhappy region). The label itself
+is independent of the ladder score we are testing on, and we shuffle the
+labels to replicate our process of getting the test statistic. In this
+case, our hypothesis are:</p>
+<p><span class="math inline">\(H_0:\)</span> the distribution of the
+ladder score is the same for the happy regions and the unhappy
+regions.</p>
+<p><span class="math inline">\(H_1:\)</span> the distribution of the
+ladder score for the happy region is different from the distribution of
+the ladder score in the unhappy regions.</p>
+<p>For simplicity, we choose our test statistic to be the difference of
+ladder score of happy regions and unhappy regions. We shuffle the label
+of our observation data, compute the test statistic over 1000 time and
+look at their distributions.</p>
+<pre class="r"><code>#Assign label
+hap_unhap &lt;- hap_unhap %&gt;%
+  mutate(
+    label = case_when(
+      happy_status == &quot;happy region&quot; ~ 1,
+      happy_status ==  &quot;unhappy region&quot; ~ 0
+    )
+  )
+
+#Write a function to get the test statistic
+mean_diff &lt;- function(df, label) {mean(df[label]) - mean(df[!label])}
+
+dist.ts &lt;- replicate(1000, {
+    ## shuffle the labels
+    permuted_label &lt;- sample(hap_unhap$label)
+    ## compute the test statistic
+    mean_diff(hap_unhap$ladder_score, permuted_label)
+})</code></pre>
+<pre class="r"><code>plot(density(dist.ts), main = &quot;Distributoin of the test mean differences&quot; )</code></pre>
+<p><img src="statistical_tests_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p>Now we compute the p_value for this test. Assume that the ladder
+score distribution is the same for the happy region and the unhappy
+region, the p-value is the probablity that we observe an value on the
+distribution that is more extreme (smaller or bigger) than the observed
+mean differences in these two groups.</p>
+<ul>
+<li>Get Observed Statistics</li>
+</ul>
+<pre class="r"><code>t_observed &lt;- mean_diff(hap_unhap$ladder_score, hap_unhap$label)
+t_observed</code></pre>
+<pre><code>## [1] -2.240037</code></pre>
+<ul>
+<li>Get p value</li>
+</ul>
+<pre class="r"><code>2 * min(mean(dist.ts &lt;= t_observed), mean(dist.ts &gt;= t_observed))</code></pre>
+<pre><code>## [1] 0</code></pre>
+<p>The p-value is close to zero. Thus we reject the null hypothesis and
+conclude that the distribution of the ladder score for the happy region
+is different from the distribution of the ladder score in the unhappy
+regions.</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
