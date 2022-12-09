@@ -1,30 +1,54 @@
 ---
 title: "Regression analysis"
-author: "Jingya Yu"
-date: "2022-12-04"
 output: 
   html_document:
+    code_folding: hide
     toc: true
     toc_float: true
 ---
-```{r}
+
+```{r setup, include=FALSE, message=FALSE}
 library(readr)
 library(dplyr)
 library(corrplot)
 library(ggplot2)
-library(MASS)
 library(faraway)
-```
-Here I am interested in which features best predict the outcome - Ladder Score. I am considering a multiple linear regression to see how variables relate to the outcome. Once important question that I am interested in is how much does GDP impacts the Ladder Score.
+library(kableExtra)
+library(stringr)
 
-## regression data import
-```{r, message=FALSE}
+knitr::opts_chunk$set(
+  out.width = "90%"
+)
+theme_set(theme_minimal() + theme(legend.position = "bottom"))
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis"
+)
+scale_colour_discrete = scale_color_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+set.seed(1)
+```
+
+<style type="text/css">
+
+h1.title {
+  text-align: center;
+}
+
+</style>
+
+Since our goal is to explore what kinds of features might influence and best predict our outcome - ladder score. I am considering a multiple linear regression to see how variables relate to the outcome. Once important question that I am interested in is how much does GDP impacts the Ladder Score, and does anything interact with GDP. Here we mainly focus on our latest data - happiness report from 2021.
+
+&nbsp;
+
+```{r include=FALSE, message=FALSE}
 regression_df = 
   read_csv("data/world-happiness-report-2021.csv") %>% 
   janitor::clean_names() 
 head(regression_df)
 ```
-## variable description
+
+## variable description (put it in the data description part)
 - Ladder Score or Happiness Score: “Please imagine a ladder, with steps numbered from 0 at the bottom to 10 at the top. The top of the ladder represents the best possible life for you and the bottom of the ladder represents the worst possible life for you. On which step of the ladder would you say you personally feel you stand at this time?”.
 
 - Log GDP per capita: It is the total monetary or market value of all the finished goods and services produced within a country’s borders in a specific time period.
@@ -39,7 +63,9 @@ head(regression_df)
 
 - Corruption Perception: “Is corruption widespread throughout the government or not” and “Is corruption widespread within businesses or not?”
 
-## change column names and check if there is na
+&nbsp;
+
+## Outcome: Ladder score 
 ```{r}
 regression_df$country_name <- as.factor(regression_df$country_name)
 
@@ -65,8 +91,13 @@ head(hap)
 sum(is.na(regression_df)) # there is no na
 ```
 
-## Now, I would like to check the correlations between each of the variables. In order to use use the cor() function, the variables need to be numeric. I use the select_if() function on the hap dataframe and select the data that is numeric.
-## Then we print the correlation matrix and plot the correlation graph.
+We first rename the column name for further use and check if there is NA.
+It turns out that no NA is in our dataset. What's worth mentioning is that we transform the ladder score according to their rank(largest score as rank 1) to have a better understanding when comparing them.
+
+&nbsp;
+
+## Correlations between each variables
+Now, we check the correlations between each of the variables, and then we print the correlation matrix and plot the correlation graph.
 ```{r}
 num.var <- select_if(hap, is.numeric)
 M<-cor(num.var)
@@ -74,8 +105,12 @@ M
 corrplot(M)
 ```
 
-##  Split the data into a training and validation set.
-```{r}
+&nbsp;
+
+
+## Model selection
+- First, we split the data into a training and validation set and star our analysis
+```{r include=FALSE, message=FALSE, warning=FALSE}
 #Data Partitioning
 set.seed(10)
 
@@ -93,35 +128,58 @@ train <- hap[train_ind,]
 test <- hap[-train_ind,]
 ```
 
-## use North America and ANZ as a reference group for comparision
+- Then, we choose to use North America and ANZ as a reference group for comparision
 ```{r}
 str(hap$Region)
 levels(hap$Region)
-hap$Region<- relevel(hap$Region, ref="North America and ANZ")
+hap$Region<-relevel(hap$Region, ref="North America and ANZ")
 ```
+&nbsp;
 
-## use stepwise comparision to select the model with the lowest AIC. I also take a peek at the null model, which is just the intercept (mean) of the outcome variable. Once I get the best performing model, I take a look at the residuals to see how the model performs. Overall the residuals seem normally distributed and most assumptions seem to be maintained.
-
-## But, the Scale-Location plot does show some heteroskedasticity, where the variance increases a bit around the center.
+###  Full model
 ```{r}
-#Modeling
 summary(train)
 colnames(train)
+
 m1 <- lm(Ladder ~ ., data = train[,-1])
 summary(m1)
-
+```
+### Null model
+Looking at the null model, which is just the intercept (mean) of the outcome variable.
+```{r}
 null <- lm(Ladder ~ 1, data = train[,-1])
 summary(null)
+```
+&nbsp;
 
+### Use stepwise comparision procedure
+#### select the model with the lowest AIC, which uses a model’s maximum likelihood estimation (log-likelihood) as a measure of fit.
+```{r}
 step(m1)
 
 m1.step <- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + Currpotion, data = train[, -1])
+```
 
+```{r include=FALSE, message=FALSE, warning=FALSE}
 summary(m1.step)
+```
 
+Here we get the best performing model measuring by AIC. The predictor includes Region, GDP, Social.support, Freedom and Currpotion. 
+
+&nbsp;
+
+#### Plot the the residuals to see how the model performs
+```{r}
 plot(m1.step)
 ```
-## explore if there is an interaction effect between some of the data.
+
+Overall the residuals seem normally distributed and most assumptions seem to be maintained. However, the Scale-Location plot does show some heteroskedasticity, where the variance increases a bit around the center.
+
+&nbsp;
+
+## Add interaction term
+### Explore the interaction
+Here are some plots to initiate our hypothesis
 ```{r}
 ggplot(train[1:10,], aes(x = reorder(Country, Ladder), y = Ladder, fill = GDP)) + 
   geom_bar(stat = "identity")+
@@ -160,20 +218,34 @@ ggplot(hap[low.GDP,], aes(x=Freedom, y=Ladder))+
   geom_line(size=2, aes(color=GDP))
 ```
 
-## It seems like GDP and Freedom may have some interaction. So, I model the interaction.
+It seems like GDP and Freedom may have some interaction. 
+
+&nbsp;
+
+### Model the interaction
 ```{r}
 #interactions
-#slop of Freedom changes for every one increase in GDP
 int.mod <- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + GDP*Freedom, data = train[, -1])
 
-summary(int.mod) #as GDP increases, slope of freedom decreases
+summary(int.mod)
+```
 
+We found that the slope of Freedom changes for every one increase in GDP, and as GDP increases, slope of freedom decreases.
+Looking at the p-value, the value of both GDP and Freedom indicate they're insignificant after we adding the interaction term, but the interaction effect is significant now. 
+
+&nbsp;
+
+#### Plot the residuals to see the distribution
+```{r}
 plot(int.mod)
 ```
 
-Looking at the p-value, the value of both GDP and Freedom indicate they're insignificant after we adding the interaction term, but the interaction effect is significant now. 
+&nbsp;
 
-## Now test how well our model predicts Happiness using MSE.
+## Generate MSE
+Now we test how well our model predicts Happiness using MSE
+Since we have already altered the ladder score into scale of 1 to 149(country count), the error is reasonable to be large.
+
 ```{r}
 predict_train <- predict(int.mod, train)
 predict_test <- predict(int.mod, test)
@@ -185,14 +257,27 @@ test_MSE <- mean((as.numeric(unlist(test[,"Ladder"])) - predict_test)^2)
 test_MSE
 ```
 
-## our final model
+&nbsp;
+
+## Our final model
 ```{r}
 summary(int.mod)
-## Freedom and GDP's correlation
+```
+
+## Reshow the correlation score 
+- Freedom and GDP's correlation
+```{r}
 cor(hap$GDP, hap$Freedom)
-## Ladder and GDP's correlation
+```
+
+&nbsp;
+
+-  Ladder and GDP's correlation
+```{r}
 cor(hap$GDP, hap$Ladder)
 ```
 
-The correlations between GDP and Ladder Score seem very strong, and the initial regression model would suggest that GDP is a powerful predictor of the Happiness Ladder Score, but after adapting interaction term and refit model, we found that the relationship between Freedom and GDP cannot be ignored.
+&nbsp;
 
+## Conclusion based on the analysis
+The correlations between GDP and Ladder Score seem very strong, and the initial regression model would suggest that GDP is a powerful predictor of the Happiness Ladder Score, but after adapting interaction term and refit model, we found that the relationship between Freedom and GDP cannot be ignored: these two seems to influence each other and we cannot eliminate either of them.

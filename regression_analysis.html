@@ -9,13 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Jingya Yu" />
 
-<meta name="date" content="2022-12-04" />
 
 <title>Regression analysis</title>
 
-<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -35,6 +33,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -183,8 +182,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "\e259";
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -192,9 +191,16 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "\e258";
-  font-family: 'Glyphicons Halflings';
+  content: "&#xe258;";
   border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -221,6 +227,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -360,64 +369,38 @@ div.tocify {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">Regression analysis</h1>
-<h4 class="author">Jingya Yu</h4>
-<h4 class="date">2022-12-04</h4>
 
 </div>
 
 
-<pre class="r"><code>library(readr)
-library(dplyr)
-library(corrplot)</code></pre>
-<pre><code>## corrplot 0.92 loaded</code></pre>
-<pre class="r"><code>library(ggplot2)
-library(MASS)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;MASS&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:plotly&#39;:
-## 
-##     select</code></pre>
-<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
-## 
-##     select</code></pre>
-<pre class="r"><code>library(faraway)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;faraway&#39;</code></pre>
-<pre><code>## The following object is masked _by_ &#39;.GlobalEnv&#39;:
-## 
-##     happy</code></pre>
-<p>Here I am interested in which features best predict the outcome -
-Ladder Score. I am considering a multiple linear regression to see how
-variables relate to the outcome. Once important question that I am
-interested in is how much does GDP impacts the Ladder Score.</p>
-<div id="regression-data-import" class="section level2">
-<h2>regression data import</h2>
-<pre class="r"><code>regression_df = 
-  read_csv(&quot;data/world-happiness-report-2021.csv&quot;) %&gt;% 
-  janitor::clean_names() 
-head(regression_df)</code></pre>
-<pre><code>## # A tibble: 6 × 20
-##   country_name regiona…¹ ladde…² stand…³ upper…⁴ lower…⁵ logge…⁶ socia…⁷ healt…⁸
-##   &lt;chr&gt;        &lt;chr&gt;       &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-## 1 Finland      Western …    7.84   0.032    7.90    7.78    10.8   0.954    72  
-## 2 Denmark      Western …    7.62   0.035    7.69    7.55    10.9   0.954    72.7
-## 3 Switzerland  Western …    7.57   0.036    7.64    7.5     11.1   0.942    74.4
-## 4 Iceland      Western …    7.55   0.059    7.67    7.44    10.9   0.983    73  
-## 5 Netherlands  Western …    7.46   0.027    7.52    7.41    10.9   0.942    72.4
-## 6 Norway       Western …    7.39   0.035    7.46    7.32    11.1   0.954    73.3
-## # … with 11 more variables: freedom_to_make_life_choices &lt;dbl&gt;,
-## #   generosity &lt;dbl&gt;, perceptions_of_corruption &lt;dbl&gt;,
-## #   ladder_score_in_dystopia &lt;dbl&gt;, explained_by_log_gdp_per_capita &lt;dbl&gt;,
-## #   explained_by_social_support &lt;dbl&gt;,
-## #   explained_by_healthy_life_expectancy &lt;dbl&gt;,
-## #   explained_by_freedom_to_make_life_choices &lt;dbl&gt;,
-## #   explained_by_generosity &lt;dbl&gt;, …</code></pre>
-</div>
-<div id="variable-description" class="section level2">
-<h2>variable description</h2>
+<style type="text/css">
+
+h1.title {
+  text-align: center;
+}
+
+</style>
+<p>Since our goal is to explore what kinds of features might influence
+and best predict our outcome - ladder score. I am considering a multiple
+linear regression to see how variables relate to the outcome. Once
+important question that I am interested in is how much does GDP impacts
+the Ladder Score, and does anything interact with GDP. Here we mainly
+focus on our latest data - happiness report from 2021.</p>
+<p> </p>
+<div id="variable-description-put-it-in-the-data-description-part"
+class="section level2">
+<h2>variable description (put it in the data description part)</h2>
 <ul>
 <li><p>Ladder Score or Happiness Score: “Please imagine a ladder, with
 steps numbered from 0 at the bottom to 10 at the top. The top of the
@@ -441,10 +424,10 @@ month?” on GDP per capita.</p></li>
 government or not” and “Is corruption widespread within businesses or
 not?”</p></li>
 </ul>
+<p> </p>
 </div>
-<div id="change-column-names-and-check-if-there-is-na"
-class="section level2">
-<h2>change column names and check if there is na</h2>
+<div id="outcome-ladder-score" class="section level2">
+<h2>Outcome: Ladder score</h2>
 <pre class="r"><code>regression_df$country_name &lt;- as.factor(regression_df$country_name)
 
 regression_df$regional_indicator&lt;- as.factor(regression_df$regional_indicator)
@@ -480,20 +463,16 @@ head(hap)</code></pre>
 ## #   ⁴​Currpotion</code></pre>
 <pre class="r"><code>sum(is.na(regression_df)) # there is no na</code></pre>
 <pre><code>## [1] 0</code></pre>
+<p>We first rename the column name for further use and check if there is
+NA. It turns out that no NA is in our dataset. What’s worth mentioning
+is that we transform the ladder score according to their rank(largest
+score as rank 1) to have a better understanding when comparing them.</p>
+<p> </p>
 </div>
-<div
-id="now-i-would-like-to-check-the-correlations-between-each-of-the-variables.-in-order-to-use-use-the-cor-function-the-variables-need-to-be-numeric.-i-use-the-select_if-function-on-the-hap-dataframe-and-select-the-data-that-is-numeric."
-class="section level2">
-<h2>Now, I would like to check the correlations between each of the
-variables. In order to use use the cor() function, the variables need to
-be numeric. I use the select_if() function on the hap dataframe and
-select the data that is numeric.</h2>
-</div>
-<div
-id="then-we-print-the-correlation-matrix-and-plot-the-correlation-graph."
-class="section level2">
-<h2>Then we print the correlation matrix and plot the correlation
-graph.</h2>
+<div id="correlations-between-each-variables" class="section level2">
+<h2>Correlations between each variables</h2>
+<p>Now, we check the correlations between each of the variables, and
+then we print the correlation matrix and plot the correlation graph.</p>
 <pre class="r"><code>num.var &lt;- select_if(hap, is.numeric)
 M&lt;-cor(num.var)
 M</code></pre>
@@ -514,30 +493,17 @@ M</code></pre>
 ## generosity      1.00000000 -0.1639617
 ## Currpotion     -0.16396173  1.0000000</code></pre>
 <pre class="r"><code>corrplot(M)</code></pre>
-<p><img src="regression_analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-3-1.png" width="90%" /></p>
+<p> </p>
 </div>
-<div id="split-the-data-into-a-training-and-validation-set."
-class="section level2">
-<h2>Split the data into a training and validation set.</h2>
-<pre class="r"><code>#Data Partitioning
-set.seed(10)
-
-#select sample size of training data (75% of data for train, 25% for validation)
-sample_size &lt;- floor(0.75 * nrow(hap))
-
-# using sample() to select sample of specific size without replacement
-# seq_len() generates a regular sequence - defined here as nrow (number of rows) of our data
-# size is setting how large the sequence is (111)
-train_ind &lt;- sample(seq_len(nrow(hap)), size = sample_size)
-
-#creating train data based on train_ind
-train &lt;- hap[train_ind,]
-#test data is what is left over after train_ind is taken out
-test &lt;- hap[-train_ind,]</code></pre>
-</div>
-<div id="use-north-america-and-anz-as-a-reference-group-for-comparision"
-class="section level2">
-<h2>use North America and ANZ as a reference group for comparision</h2>
+<div id="model-selection" class="section level2">
+<h2>Model selection</h2>
+<ul>
+<li><p>First, we split the data into a training and validation set and
+star our analysis</p></li>
+<li><p>Then, we choose to use North America and ANZ as a reference group
+for comparision</p></li>
+</ul>
 <pre class="r"><code>str(hap$Region)</code></pre>
 <pre><code>##  Factor w/ 10 levels &quot;Central and Eastern Europe&quot;,..: 10 10 10 10 10 10 10 10 6 10 ...</code></pre>
 <pre class="r"><code>levels(hap$Region)</code></pre>
@@ -546,25 +512,11 @@ class="section level2">
 ##  [5] &quot;Middle East and North Africa&quot;       &quot;North America and ANZ&quot;             
 ##  [7] &quot;South Asia&quot;                         &quot;Southeast Asia&quot;                    
 ##  [9] &quot;Sub-Saharan Africa&quot;                 &quot;Western Europe&quot;</code></pre>
-<pre class="r"><code>hap$Region&lt;- relevel(hap$Region, ref=&quot;North America and ANZ&quot;)</code></pre>
-</div>
-<div
-id="use-stepwise-comparision-to-select-the-model-with-the-lowest-aic.-i-also-take-a-peek-at-the-null-model-which-is-just-the-intercept-mean-of-the-outcome-variable.-once-i-get-the-best-performing-model-i-take-a-look-at-the-residuals-to-see-how-the-model-performs.-overall-the-residuals-seem-normally-distributed-and-most-assumptions-seem-to-be-maintained."
-class="section level2">
-<h2>use stepwise comparision to select the model with the lowest AIC. I
-also take a peek at the null model, which is just the intercept (mean)
-of the outcome variable. Once I get the best performing model, I take a
-look at the residuals to see how the model performs. Overall the
-residuals seem normally distributed and most assumptions seem to be
-maintained.</h2>
-</div>
-<div
-id="but-the-scale-location-plot-does-show-some-heteroskedasticity-where-the-variance-increases-a-bit-around-the-center."
-class="section level2">
-<h2>But, the Scale-Location plot does show some heteroskedasticity,
-where the variance increases a bit around the center.</h2>
-<pre class="r"><code>#Modeling
-summary(train)</code></pre>
+<pre class="r"><code>hap$Region&lt;-relevel(hap$Region, ref=&quot;North America and ANZ&quot;)</code></pre>
+<p> </p>
+<div id="full-model" class="section level3">
+<h3>Full model</h3>
+<pre class="r"><code>summary(train)</code></pre>
 <pre><code>##       Country                                   Region       Ladder      
 ##  Albania  :  1   Sub-Saharan Africa                :31   Min.   :  3.00  
 ##  Algeria  :  1   Western Europe                    :14   1st Qu.: 44.50  
@@ -644,6 +596,11 @@ summary(m1)</code></pre>
 ## Residual standard error: 20.25 on 95 degrees of freedom
 ## Multiple R-squared:  0.8119, Adjusted R-squared:  0.7823 
 ## F-statistic: 27.34 on 15 and 95 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div id="null-model" class="section level3">
+<h3>Null model</h3>
+<p>Looking at the null model, which is just the intercept (mean) of the
+outcome variable.</p>
 <pre class="r"><code>null &lt;- lm(Ladder ~ 1, data = train[,-1])
 summary(null)</code></pre>
 <pre><code>## 
@@ -661,6 +618,15 @@ summary(null)</code></pre>
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Residual standard error: 43.4 on 110 degrees of freedom</code></pre>
+<p> </p>
+</div>
+<div id="use-stepwise-comparision-procedure" class="section level3">
+<h3>Use stepwise comparision procedure</h3>
+<div
+id="select-the-model-with-the-lowest-aic-which-uses-a-models-maximum-likelihood-estimation-log-likelihood-as-a-measure-of-fit."
+class="section level4">
+<h4>select the model with the lowest AIC, which uses a model’s maximum
+likelihood estimation (log-likelihood) as a measure of fit.</h4>
 <pre class="r"><code>step(m1)</code></pre>
 <pre><code>## Start:  AIC=682.56
 ## Ladder ~ Region + GDP + Social.support + Life.exp + Freedom + 
@@ -733,80 +699,48 @@ summary(null)</code></pre>
 ##                                  -92.682  
 ##                               Currpotion  
 ##                                   23.077</code></pre>
-<pre class="r"><code>m1.step &lt;- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + Currpotion, data = train[, -1])
-
-summary(m1.step)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + 
-##     Currpotion, data = train[, -1])
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -33.077 -13.074   0.191  12.750  61.540 
-## 
-## Coefficients:
-##                                          Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)                               296.039     35.487   8.342    5e-13
-## RegionCommonwealth of Independent States   26.090      9.893   2.637 0.009735
-## RegionEast Asia                            11.988     12.168   0.985 0.326973
-## RegionLatin America and Caribbean          -8.385      8.526  -0.984 0.327804
-## RegionMiddle East and North Africa         24.992      8.643   2.892 0.004731
-## RegionNorth America and ANZ                -8.064     14.804  -0.545 0.587166
-## RegionSouth Asia                           39.925     11.474   3.479 0.000754
-## RegionSoutheast Asia                       27.068      9.885   2.738 0.007349
-## RegionSub-Saharan Africa                   23.161      9.058   2.557 0.012111
-## RegionWestern Europe                       -5.987      8.937  -0.670 0.504459
-## GDP                                       -12.128      3.483  -3.482 0.000747
-## Social.support                            -74.255     31.074  -2.390 0.018799
-## Freedom                                   -92.682     23.806  -3.893 0.000182
-## Currpotion                                 23.077     14.872   1.552 0.123996
-##                                             
-## (Intercept)                              ***
-## RegionCommonwealth of Independent States ** 
-## RegionEast Asia                             
-## RegionLatin America and Caribbean           
-## RegionMiddle East and North Africa       ** 
-## RegionNorth America and ANZ                 
-## RegionSouth Asia                         ***
-## RegionSoutheast Asia                     ** 
-## RegionSub-Saharan Africa                 *  
-## RegionWestern Europe                        
-## GDP                                      ***
-## Social.support                           *  
-## Freedom                                  ***
-## Currpotion                                  
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 20.08 on 97 degrees of freedom
-## Multiple R-squared:  0.8112, Adjusted R-squared:  0.7859 
-## F-statistic: 32.07 on 13 and 97 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>m1.step &lt;- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + Currpotion, data = train[, -1])</code></pre>
+<p>Here we get the best performing model measuring by AIC. The predictor
+includes Region, GDP, Social.support, Freedom and Currpotion.</p>
+<p> </p>
+</div>
+<div id="plot-the-the-residuals-to-see-how-the-model-performs"
+class="section level4">
+<h4>Plot the the residuals to see how the model performs</h4>
 <pre class="r"><code>plot(m1.step)</code></pre>
-<p><img src="regression_analysis_files/figure-html/unnamed-chunk-7-1.png" width="672" /><img src="regression_analysis_files/figure-html/unnamed-chunk-7-2.png" width="672" /><img src="regression_analysis_files/figure-html/unnamed-chunk-7-3.png" width="672" /><img src="regression_analysis_files/figure-html/unnamed-chunk-7-4.png" width="672" />
-## explore if there is an interaction effect between some of the
-data.</p>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-10-1.png" width="90%" /><img src="regression_analysis_files/figure-html/unnamed-chunk-10-2.png" width="90%" /><img src="regression_analysis_files/figure-html/unnamed-chunk-10-3.png" width="90%" /><img src="regression_analysis_files/figure-html/unnamed-chunk-10-4.png" width="90%" /></p>
+<p>Overall the residuals seem normally distributed and most assumptions
+seem to be maintained. However, the Scale-Location plot does show some
+heteroskedasticity, where the variance increases a bit around the
+center.</p>
+<p> </p>
+</div>
+</div>
+</div>
+<div id="add-interaction-term" class="section level2">
+<h2>Add interaction term</h2>
+<div id="explore-the-interaction" class="section level3">
+<h3>Explore the interaction</h3>
+<p>Here are some plots to initiate our hypothesis</p>
 <pre class="r"><code>ggplot(train[1:10,], aes(x = reorder(Country, Ladder), y = Ladder, fill = GDP)) + 
   geom_bar(stat = &quot;identity&quot;)+
   theme(axis.text.x=element_text(angle=45, hjust=1))+
   labs(title = &quot;Top Ten Happiest Countries&quot;) + 
   ylab(&quot;Ladder Score&quot;)+
   xlab(&quot;Coutries&quot;)</code></pre>
-<p><img src="regression_analysis_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-11-1.png" width="90%" /></p>
 <pre class="r"><code>ggplot(train[], aes(Ladder,GDP)) + 
   geom_point()</code></pre>
-<p><img src="regression_analysis_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-11-2.png" width="90%" /></p>
 <pre class="r"><code>ggplot(train[], aes(Ladder,Freedom)) + 
   geom_point()</code></pre>
-<p><img src="regression_analysis_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-11-3.png" width="90%" /></p>
 <pre class="r"><code>ggplot(train[], aes(GDP,Freedom)) + 
   geom_point()</code></pre>
-<p><img src="regression_analysis_files/figure-html/unnamed-chunk-8-4.png" width="672" /></p>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-11-4.png" width="90%" /></p>
 <pre class="r"><code>ggplot(data=train[1:30,], aes(x=GDP, y=Ladder))+
   geom_line(size=2, aes(color=Freedom))</code></pre>
-<pre><code>## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-## ℹ Please use `linewidth` instead.</code></pre>
-<p><img src="regression_analysis_files/figure-html/unnamed-chunk-8-5.png" width="672" /></p>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-11-5.png" width="90%" /></p>
 <pre class="r"><code>sd(hap$Freedom)+mean(hap$Freedom)</code></pre>
 <pre><code>## [1] 0.9049291</code></pre>
 <pre class="r"><code>sd(hap$Freedom)-mean(hap$Freedom)</code></pre>
@@ -823,21 +757,19 @@ low.GDP &lt;- which(hap[,&quot;GDP&quot;] &lt;= 8.3)
 
 ggplot(hap[high.GDP,], aes(x=Freedom, y=Ladder))+
   geom_line(size=2, aes(color=GDP))</code></pre>
-<p><img src="regression_analysis_files/figure-html/unnamed-chunk-8-6.png" width="672" /></p>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-11-6.png" width="90%" /></p>
 <pre class="r"><code>ggplot(hap[low.GDP,], aes(x=Freedom, y=Ladder))+
   geom_line(size=2, aes(color=GDP))</code></pre>
-<p><img src="regression_analysis_files/figure-html/unnamed-chunk-8-7.png" width="672" /></p>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-11-7.png" width="90%" /></p>
+<p>It seems like GDP and Freedom may have some interaction.</p>
+<p> </p>
 </div>
-<div
-id="it-seems-like-gdp-and-freedom-may-have-some-interaction.-so-i-model-the-interaction."
-class="section level2">
-<h2>It seems like GDP and Freedom may have some interaction. So, I model
-the interaction.</h2>
+<div id="model-the-interaction" class="section level3">
+<h3>Model the interaction</h3>
 <pre class="r"><code>#interactions
-#slop of Freedom changes for every one increase in GDP
 int.mod &lt;- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + GDP*Freedom, data = train[, -1])
 
-summary(int.mod) #as GDP increases, slope of freedom decreases</code></pre>
+summary(int.mod)</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + 
@@ -884,15 +816,26 @@ summary(int.mod) #as GDP increases, slope of freedom decreases</code></pre>
 ## Residual standard error: 19.87 on 97 degrees of freedom
 ## Multiple R-squared:  0.8152, Adjusted R-squared:  0.7904 
 ## F-statistic: 32.91 on 13 and 97 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>We found that the slope of Freedom changes for every one increase in
+GDP, and as GDP increases, slope of freedom decreases. Looking at the
+p-value, the value of both GDP and Freedom indicate they’re
+insignificant after we adding the interaction term, but the interaction
+effect is significant now.</p>
+<p> </p>
+<div id="plot-the-residuals-to-see-the-distribution"
+class="section level4">
+<h4>Plot the residuals to see the distribution</h4>
 <pre class="r"><code>plot(int.mod)</code></pre>
-<p><img src="regression_analysis_files/figure-html/unnamed-chunk-9-1.png" width="672" /><img src="regression_analysis_files/figure-html/unnamed-chunk-9-2.png" width="672" /><img src="regression_analysis_files/figure-html/unnamed-chunk-9-3.png" width="672" /><img src="regression_analysis_files/figure-html/unnamed-chunk-9-4.png" width="672" /></p>
-<p>Looking at the p-value, the value of both GDP and Freedom indicate
-they’re insignificant after we adding the interaction term, but the
-interaction effect is significant now.</p>
+<p><img src="regression_analysis_files/figure-html/unnamed-chunk-13-1.png" width="90%" /><img src="regression_analysis_files/figure-html/unnamed-chunk-13-2.png" width="90%" /><img src="regression_analysis_files/figure-html/unnamed-chunk-13-3.png" width="90%" /><img src="regression_analysis_files/figure-html/unnamed-chunk-13-4.png" width="90%" /></p>
+<p> </p>
 </div>
-<div id="now-test-how-well-our-model-predicts-happiness-using-mse."
-class="section level2">
-<h2>Now test how well our model predicts Happiness using MSE.</h2>
+</div>
+</div>
+<div id="generate-mse" class="section level2">
+<h2>Generate MSE</h2>
+<p>Now we test how well our model predicts Happiness using MSE Since we
+have already altered the ladder score into scale of 1 to 149(country
+count), the error is reasonable to be large.</p>
 <pre class="r"><code>predict_train &lt;- predict(int.mod, train)
 predict_test &lt;- predict(int.mod, test)
 
@@ -902,9 +845,10 @@ train_MSE</code></pre>
 <pre class="r"><code>test_MSE &lt;- mean((as.numeric(unlist(test[,&quot;Ladder&quot;])) - predict_test)^2)
 test_MSE</code></pre>
 <pre><code>## [1] 369.2025</code></pre>
+<p> </p>
 </div>
 <div id="our-final-model" class="section level2">
-<h2>our final model</h2>
+<h2>Our final model</h2>
 <pre class="r"><code>summary(int.mod)</code></pre>
 <pre><code>## 
 ## Call:
@@ -952,17 +896,30 @@ test_MSE</code></pre>
 ## Residual standard error: 19.87 on 97 degrees of freedom
 ## Multiple R-squared:  0.8152, Adjusted R-squared:  0.7904 
 ## F-statistic: 32.91 on 13 and 97 DF,  p-value: &lt; 2.2e-16</code></pre>
-<pre class="r"><code>## Freedom and GDP&#39;s correlation
-cor(hap$GDP, hap$Freedom)</code></pre>
+</div>
+<div id="reshow-the-correlation-score" class="section level2">
+<h2>Reshow the correlation score</h2>
+<ul>
+<li>Freedom and GDP’s correlation</li>
+</ul>
+<pre class="r"><code>cor(hap$GDP, hap$Freedom)</code></pre>
 <pre><code>## [1] 0.4323235</code></pre>
-<pre class="r"><code>## Ladder and GDP&#39;s correlation
-cor(hap$GDP, hap$Ladder)</code></pre>
+<p> </p>
+<ul>
+<li>Ladder and GDP’s correlation</li>
+</ul>
+<pre class="r"><code>cor(hap$GDP, hap$Ladder)</code></pre>
 <pre><code>## [1] -0.7969875</code></pre>
+<p> </p>
+</div>
+<div id="conclusion-based-on-the-analysis" class="section level2">
+<h2>Conclusion based on the analysis</h2>
 <p>The correlations between GDP and Ladder Score seem very strong, and
 the initial regression model would suggest that GDP is a powerful
 predictor of the Happiness Ladder Score, but after adapting interaction
 term and refit model, we found that the relationship between Freedom and
-GDP cannot be ignored.</p>
+GDP cannot be ignored: these two seems to influence each other and we
+cannot eliminate either of them.</p>
 </div>
 
 
@@ -1000,6 +957,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 <script>
 $(document).ready(function ()  {
