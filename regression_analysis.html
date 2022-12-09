@@ -37,8 +37,6 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -339,9 +337,7 @@ div.tocify {
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="statistical_tests.html">Statistical Test</a>
-    </li>
+    <li class="dropdown-header">Statistical Test</li>
     <li>
       <a href="regression_analysis.html">Regression Analysis</a>
     </li>
@@ -349,21 +345,7 @@ div.tocify {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="about.html">About</a>
-</li>
-<li>
-  <a href="mailto:yj2752@cumc.columbia.edu">
-    <span class="fa fa-envelope fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="http://github.com/YixuanJiao04/">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+        <li class="dropdown-header">About</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -381,25 +363,25 @@ div.tocify {
 
 
 <pre class="r"><code>library(readr)
-library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(corrplot)</code></pre>
+library(dplyr)
+library(corrplot)</code></pre>
 <pre><code>## corrplot 0.92 loaded</code></pre>
 <pre class="r"><code>library(ggplot2)
 library(MASS)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;MASS&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:plotly&#39;:
+## 
+##     select</code></pre>
 <pre><code>## The following object is masked from &#39;package:dplyr&#39;:
 ## 
 ##     select</code></pre>
 <pre class="r"><code>library(faraway)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;faraway&#39;</code></pre>
+<pre><code>## The following object is masked _by_ &#39;.GlobalEnv&#39;:
+## 
+##     happy</code></pre>
 <p>Here I am interested in which features best predict the outcome -
 Ladder Score. I am considering a multiple linear regression to see how
 variables relate to the outcome. Once important question that I am

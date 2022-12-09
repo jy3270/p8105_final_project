@@ -13,6 +13,7 @@ We want to try different tests in happiness scores. Let's see whether there are 
 
 ```{r, include = FALSE}
 library(tidyverse)
+select <- dplyr::select
 happy_meta <- read.csv("./Data/happiness.csv") 
 happy_meta <- happy_meta %>% mutate(
   covid_status = case_when(
