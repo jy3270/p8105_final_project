@@ -215,3 +215,45 @@ happ_df %>%
   ) 
 ```
 
+
+### Map on Life Ladder Score
+
+```{r}
+iso_code <- 
+  read.csv("https://raw.githubusercontent.com/plotly/datasets/master/2014_world_gdp_with_codes.csv") %>%
+  janitor::clean_names() %>%
+  rename(country_name = country) %>%
+  select(-gdp_billions) %>%
+  add_row(country_name = "Palestinian Territories", code = "PSE")
+
+happy <- 
+  read_csv('Data/happiness.csv') %>%
+  filter(year != 2005) %>%
+  group_by(country_name) %>%
+  summarise(mean_ladder_score = mean(ladder_score))
+
+happy_name <- unique(happy$country_name)
+name <- unique(iso_code$country_name)
+diff_name <- setdiff(happy_name,name)
+code_name <- c("Congo, Republic of the","Gambia, The", "Hong Kong", "Cote d'Ivoire" ,"Burma", "Cyprus", "Macedonia", "Korea, South", "Taiwan")
+
+for (i in 1:length(code_name)) {
+  iso_code$country_name[iso_code$country_name == code_name[i]] <- diff_name[i]
+}
+
+happy <- left_join(happy,iso_code)
+
+g <- list(
+  showframe = FALSE,
+  projection = list(type = 'Mercator')
+)
+
+fig <- plot_ly(happy, type = 'choropleth', locations = happy$code, z = happy$mean_ladder_score, text = happy$country_name, colors = 'Blues')
+
+fig %>% 
+  layout(
+    title = "Global Mean Life Ladder Score Across Years",
+    geo = g
+  )
+```
+
