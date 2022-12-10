@@ -26,7 +26,6 @@ library(ggbiplot)
 ```
 
 
-
 ## Motivation
 
 The World Happiness Report is a landmark survey of the state of global happiness. In a generalized view, the progress of the nations seems to somewhat affect the measurements of well-being, or the happiness of the citizens. Therefore, the happiness indicator may serve as a guide for the governments, organizations, and civil societies to assess their policy-making decisions. The World Happiness Report reviews the state of happiness in most of the countries across the years along with other possible factors that would explain the variations in happiness scores across countries and regions.
@@ -39,6 +38,7 @@ How might these or some of these factors affect the state of happiness in genera
 ## Background and related work
 
 We are inspired by the World Happiness Report 2021 and News article World Happiness Report published to mark International Day of Happiness about the importance of World Happiness on a social level by mentioning people’s interactions during the pandemic. While diving into the relationships between the possible variables and the Life Ladder Score, we are aware of the influence of the pandemic on the World Happiness report. We will use regression analysis and PCA/PCR analysis to find the overall “best” model and address the association between the variables and the Life Ladder Score. We will use statistical tests to address the possible influence of the pandemic.
+
 
 ## Research questions
 
@@ -61,7 +61,8 @@ We are inspired by the World Happiness Report 2021 and News article World Happin
 
 
 ## Data
-We uses multiple data sets for our project. For our main research questions, we used the data from [World Happiness Report from 2005-2021](https://worldhappiness.report), which uses global survey data to report how people evaluate their own lives in more than 150 countries worldwide. For exploration analysis we uses all data from 2005 to 2021, and for regression analysis and principle component analysis we focus on report in 2021. 
+
+We used multiple data sets for our project. For our main research questions, we used the data from [World Happiness Report from 2005-2021](https://worldhappiness.report), which uses global survey data to report how people evaluate their own lives in more than 150 countries worldwide. For exploration analysis we used all data from 2005 to 2021, and for regression analysis and principle component analysis we focused on report in 2021. 
 
 Variables of interest: 
 
