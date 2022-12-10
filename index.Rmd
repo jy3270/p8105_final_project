@@ -6,10 +6,6 @@ output:
     toc_float: TRUE
 ---
 
-# Screen Cast
-video link here
-
-
 # Summary of Our Project
 We use the data set from [kaggle](https://www.kaggle.com/datasets/ajaypalsinghlo/world-happiness-report-2021?resource=download&select=world-happiness-report.csv), trying to explore the relationship between the happiness ladder score and other social factors.
 
@@ -31,15 +27,15 @@ For our reader to freely explore our data and try to understand our model, we pr
 - Check associations between each pair of factors.
 
 Final report can be access [here](Report.html) or there is an entry on the right corner.
-Detail code and output of each section is in the navigation bar.
+Detailed code and output of each section is in the navigation bar.
 
 # Members
-Jingya Yu
+[Jingya Yu](https://jy3270.github.io/) (jy3270)
 
-Landi Guo
+[Landi Guo](https://lllandiG.github.io/) (lg3239)
 
-Fengdi Zhang
+[Fengdi Zhang](https://fengdi-zhang.github.io/) (fz2352)
 
-Meng Fang
+[Meng Fang](https://fmmeng0726.github.io/) (mf3532)
 
-Yixuan Jiao
+[Yixuan Jiao](https://yixuanjiao04.github.io/) (yj2752)
