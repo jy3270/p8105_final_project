@@ -6,7 +6,7 @@ navbar:
     - text: "Exploratory Analysis"
       menu:
         - text: "Descriptive statistics"
-          href: descriptive.html
+          href: descriptive_statistics.html
         - text: "Visualization"
           href: visualization.html
     - text: "Statistical Analysis"
