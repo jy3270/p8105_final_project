@@ -27,6 +27,8 @@ options(
 scale_colour_discrete = scale_color_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
 set.seed(1)
+
+rename <- dplyr::rename
 ```
 
 <style type="text/css">
@@ -71,7 +73,7 @@ hap <- regression_df[,-c(4,5,6,13:20)]
 colnames(hap)
 
 hap <- hap %>%
-  mutate(Ladder = row_number())
+  dplyr::mutate(Ladder = row_number())
 head(hap)
 ```
 

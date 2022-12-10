@@ -5,9 +5,11 @@ output:
     code_folding: hide
     toc: true
     toc_float: true
+editor_options: 
+  chunk_output_type: console
 ---
 
-```{r, include = FALSE, message=FALSE, warning=FALSE}
+```{r,  message=FALSE, warning=FALSE}
 library(tidyverse)
 library(ggplot2)
 library(plotly)
@@ -26,7 +28,7 @@ select <- dplyr::select
 ```
 
 
-```{r, include = FALSE, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE}
 happ_df = read_csv("Data/happiness.csv")
 ```
 

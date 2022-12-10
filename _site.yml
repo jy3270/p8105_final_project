@@ -8,7 +8,7 @@ navbar:
         - text: "Descriptive statistics"
           href: descriptive_statistics.html
         - text: "Visualization"
-          href: visualization.html
+          href: a_visualization.html
     - text: "Statistical Analysis"
       menu:
         - text: "Statistical Test"
