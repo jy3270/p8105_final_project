@@ -607,7 +607,7 @@ padding-top: 0px;
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>happiness_2021 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/world-happiness-report-2021.csv&quot;</span>) <span class="sc">%&gt;%</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span></code></pre></div>
 <pre><code>## Rows: 149 Columns: 20
-## ── Column specification ──────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr  (2): Country name, Regional indicator
 ## dbl (18): Ladder score, Standard error of ladder score, upperwhisker, lowerw...
@@ -616,7 +616,7 @@ padding-top: 0px;
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>happiness_pre_2021 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/world-happiness-report.csv&quot;</span>) <span class="sc">%&gt;%</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>()</span></code></pre></div>
 <pre><code>## Rows: 1949 Columns: 11
-## ── Column specification ──────
+## ── Column specification ──────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr  (1): Country name
 ## dbl (10): year, Life Ladder, Log GDP per capita, Social support, Healthy lif...

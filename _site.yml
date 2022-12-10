@@ -20,7 +20,8 @@ navbar:
     - text: "Interactive Data Explore"
       href: shiny.html
   right:
-    - text: "About"
+    - icon: fa-github fa-lg
+      href: https://github.com/jy3270/world-happiness-analysis.github.io
 output:
   html_document:
     theme: cosmo
