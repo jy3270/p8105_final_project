@@ -9,12 +9,36 @@ output:
 # Screen Cast
 video link here
 
+# Motivation?
+
 # Content of Our Project
 We use the data set from [kaggle](https://www.kaggle.com/datasets/ajaypalsinghlo/world-happiness-report-2021?resource=download&select=world-happiness-report.csv), trying to explore the relationship between the happiness ladder score and other social factors.
 
-# Members?
+In the exploratory analysis part, we:
+
+- Summaries the basic statistics over variables.
+- Visually analyse the happiness ladder score and other metrics over different region.
+
+We also perform statistical analysis including:
+
+- Statistical test comparing mean ladder score over regions, pre/post covid, difference in social factors and distribution of ladder score over happy/unhappy region
+- Regression analysis selecting the optimal subset of social factors that help us understand their relationship with happiness ladder score.
+- Principle Component Analysis 
+
+For our reader to freely explore our data and try to understand our model, we provide a interactive shiny app for people to:
+
+- Try how different values effect the ladder score
+- Compare user selected variables over different country/region
+- Check association between each pair of factors.
+
+
+# Members
 Jingya Yu
+
 Landi Guo
+
 Fengdi Zhang
+
 Meng Fang
+
 Yixuan Jiao
