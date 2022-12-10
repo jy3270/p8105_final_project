@@ -13,7 +13,7 @@
 
 <title>PCA and PCR Analysis for World Happiness Report</title>
 
-<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,7 +29,11 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
@@ -218,7 +222,73 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
 
 
 
@@ -228,6 +298,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -295,6 +375,14 @@ $(document).ready(function () {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">PCA and PCR Analysis for World Happiness
@@ -314,7 +402,7 @@ model with our regression model to see which one performs the best.</p>
 going to use to compute the principle components.</p>
 <pre class="r"><code>happy_meta &lt;- read_csv(&quot;./Data/happiness.csv&quot;)</code></pre>
 <pre><code>## Rows: 1816 Columns: 10
-## ── Column specification ──────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (2): country_name, regional_indicator
 ## dbl (8): year, ladder_score, logged_gdp_per_capita, social_support, healthy_...
@@ -426,8 +514,7 @@ observations), and a testing set(25% of the observations).</p>
 train_id &lt;- sample(seq_len(nrow(happy21)), size = floor(0.75*nrow(happy21)))
 train_set &lt;- happy21[train_id,]
 test_set &lt;- happy21[-train_id,]</code></pre>
-<p>Then wer apply the training set to do the principle data
-analysis.</p>
+<p>Then we apply the training set to do the principle data analysis.</p>
 <pre class="r"><code>X &lt;- model.matrix(ladder_score ~logged_gdp_per_capita   + social_support + healthy_life_expectancy + freedom_to_make_life_choices + generosity +perceptions_of_corruption, data = train_set)[, -1]
 happy_PCA &lt;- prcomp(X, center = T, scale = T) 
 summary(happy_PCA)</code></pre>
@@ -440,8 +527,8 @@ summary(happy_PCA)</code></pre>
 <p><img src="PCA_analysis_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>From the scree plot and the summary of the PCA result, we see that
 three components will largely explain the variances in the data
-(86.03%). Let’s see the principle component scores for each
-principle.</p>
+(86.03%). Let’s see the principal component scores for each
+principal.</p>
 <pre class="r"><code>happy_PCA$rotation</code></pre>
 <pre><code>##                                      PC1        PC2         PC3         PC4
 ## logged_gdp_per_capita         0.50557942 -0.1963624  0.03593761 -0.29956544
@@ -505,10 +592,10 @@ summary(happy_pcr)</code></pre>
 ## ladder_score    80.68    80.85    80.97    81.03    81.06    81.68</code></pre>
 <pre class="r"><code>validationplot(happy_pcr, main = &quot;Test Error&quot;)</code></pre>
 <p><img src="PCA_analysis_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>When we look at the plot, we see that when we add one principle
-component, the testerror will be the lowest. So we use one principle
+<p>When we look at the plot, we see that when we add one principal
+component, the test error will be the lowest. So we use one principle
 component to make predictions on the out of sample observations. Now we
-build out pcr model based on the optimal value <span
+build our pcr model based on the optimal value <span
 class="math inline">\(k = 1\)</span>, and compute the test mse and train
 mse.</p>
 <pre class="r"><code>happy21_test&lt;- predict(happy_pcr, newdata = test_set, ncomp = 1) 
@@ -542,6 +629,8 @@ than the pcr regression.</p>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -573,7 +662,41 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
