@@ -37,7 +37,7 @@ For our reader to freely explore our data and try to understand our model, we pr
 Final report can be access [here](Report.html) or there is an entry on the right corner.
 Detailed code and output of each section are in the navigation bar.
 
-# Members
+# Group Members
 [Jingya Yu](https://jy3270.github.io/) (jy3270)
 
 [Landi Guo](https://lllandiG.github.io/) (lg3239)
