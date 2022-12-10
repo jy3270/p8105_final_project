@@ -464,18 +464,49 @@ time period after covid-19 for all countries.</p>
 <p><span class="math inline">\(H_1:\)</span> the population mean of
 ladder score is the smaller for the time period before covid-19 and the
 time period after covid-19 for all countries.</p>
-<pre class="r"><code>t.test(ladder_score ~ covid_status, alternative = &quot;less&quot;, data = happy_meta, var.equal = TRUE)</code></pre>
-<pre><code>## 
-##  Two Sample t-test
-## 
-## data:  ladder_score by covid_status
-## t = -2.7966, df = 1814, p-value = 0.002609
-## alternative hypothesis: true difference in means between group No and group Yes is less than 0
-## 95 percent confidence interval:
-##         -Inf -0.07657036
-## sample estimates:
-##  mean in group No mean in group Yes 
-##          5.433695          5.619750</code></pre>
+<pre class="r"><code>t.test(ladder_score ~ covid_status, alternative = &quot;less&quot;, data = happy_meta, var.equal = TRUE) %&gt;% broom::tidy() %&gt;% knitr::kable(digit = 3)</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="8%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="7%" />
+<col width="9%" />
+<col width="8%" />
+<col width="9%" />
+<col width="16%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">estimate</th>
+<th align="right">estimate1</th>
+<th align="right">estimate2</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">parameter</th>
+<th align="right">conf.low</th>
+<th align="right">conf.high</th>
+<th align="left">method</th>
+<th align="left">alternative</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">-0.186</td>
+<td align="right">5.434</td>
+<td align="right">5.62</td>
+<td align="right">-2.797</td>
+<td align="right">0.003</td>
+<td align="right">1814</td>
+<td align="right">-Inf</td>
+<td align="right">-0.077</td>
+<td align="left">Two Sample t-test</td>
+<td align="left">less</td>
+</tr>
+</tbody>
+</table>
 <p>Since the p-value is low, We found out that the happiness score after
 covid-19 is higher than the happiness score before covid-19. This might
 due to people are spending more time with their families during work

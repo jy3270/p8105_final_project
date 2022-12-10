@@ -84,7 +84,7 @@ $H_1:$ the population mean of ladder score is the smaller for the time period be
 
 
 ```{r}
-t.test(ladder_score ~ covid_status, alternative = "less", data = happy_meta, var.equal = TRUE)
+t.test(ladder_score ~ covid_status, alternative = "less", data = happy_meta, var.equal = TRUE) %>% broom::tidy() %>% knitr::kable(digit = 3)
 ```
 
 Since the p-value is low, We found out that the happiness score after covid-19 is higher than the happiness score before covid-19. This might due to people are spending more time with their families during work from home work mode and quarantine, or other factors. If we look down on each region, will we still get the same result? Now, we compute the two tail and one tail test for data in each region.
