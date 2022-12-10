@@ -3,15 +3,17 @@ title: "Statistical Testing for World Happiness Report"
 output: 
   html_document:
     code_folding: hide
+    toc: true
+    toc_float: true
+    
 
 ---
 
 We want to try different tests in happiness scores. Let's see whether there are some interesting findings. **All the tests have a significance level of 0.05**
 
-### Load Package and Data
-
 ```{r, include = FALSE}
 library(tidyverse)
+rename <- dplyr::rename
 select <- dplyr::select
 happy_meta <- read.csv("./Data/happiness.csv") 
 happy_meta <- happy_meta %>% mutate(
@@ -21,9 +23,11 @@ happy_meta <- happy_meta %>% mutate(
   )
 ```
 
-### Test 1: ANOVA Test
+## Test 1: One Way ANOVA Test
 
-Using ANOVA test, we can possibly compare the mean happiness scores across different regions, lets first get a sense of the ranges of the happiness scores in each region. Here we visualize the estimates and the CI bounds of each region to get a general sense of regional difference.
+#### Compare population mean in different regions
+
+Using ANOVA test, we can possibly compare the mean happiness scores across different regions, lets first get a sense of the ranges of the happiness scores in each region. Here we visualize the estimates and the CI bounds of the ladder score in each region to get a general sense of regional difference.
 
 ```{r}
 score_estimates <- function(x){
@@ -60,7 +64,9 @@ $H_1:$ At least one population mean of the ladder score is different in all the 
 aov(ladder_score ~ factor(regional_indicator), data = happy_meta) %>% summary()
 ```
 
-### Test 2: Two Sample T-test (Before Covid or After Covid?)
+Since the p value in this case is very close to zero, we reject the null hypothesis and conclude that at least one population mean of the ladder score is different in all the 10 regions.
+
+## Test 2: Two Sample T-test (Before Covid or After Covid?)
 
 Overall in the world, whether the mean happiness score for all the regions before covid-19 higher than the mean happiness score after covid-19? Here we split the data in to "before covid" and "after covid" based on variable `year`, and compare the mean happiness score of these two groups using a two sample t-test.
 
@@ -174,7 +180,7 @@ pval_df3 %>%
 
 As a result, all these left regions have a high p-value, and we fail to reject null hypothesis that "the mean happiness score before covid is the same as the mean happiness score after covid". Thus for these regions, the happiness score didn't change as much before and after covid.
 
-### Test 3: 2 Sample t-test Test ("Happy Region" vs "Unhappy Regions)
+## Test 3: 2 Sample t-test Test ("Happy Region" vs "Unhappy Regions)
 
 Whether the regions that have high happiness score throughout 2008-2021 differ in properties than the countries that have relatively low happiness score throughout 2008-2022? In this section, we divide all the 10 regions into two group "happy regions" and "unhappy regions" based on previous analysis on the estimates and the confidence intervals of the ladder scores. we are going to find out whether those regions have differences in `logged_gdp_per_capita`, `social_support`, `healthy_life_expectancy`, `freedom _to_make_life_choices`, and `preceptions_of_corruptions`, we are going to conduct two sample mean t.test for each of the variables. 
 
@@ -326,7 +332,7 @@ We see that the p.value is close to zero, there is strong statistical evidences 
 
 Overall, our 2 sample t tests show strong evidences that the factors include in the data differ a lot for happy regions and unhappy regions, except for the generosity index.
 
-### Test 4: Permutation test
+## Test 4: Permutation test
 
 Let's found out whether the distribution of the ladder score of is different in the happy regions and the unhappy regions. In permutation test, we assign a label ("0" or "1" to the observation belong to happy region and the observation belong to unhappy region). The label itself is independent of the ladder score we are testing on, and we shuffle the labels to replicate our process of getting the test statistic. In this case, our hypothesis are:
 

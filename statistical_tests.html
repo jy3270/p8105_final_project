@@ -13,7 +13,7 @@
 
 <title>Statistical Testing for World Happiness Report</title>
 
-<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
@@ -179,8 +182,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -188,16 +191,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -230,6 +226,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -237,6 +296,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -261,10 +330,10 @@ $(document).ready(function () {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="visualization.html">Visualization</a>
+      <a href="descriptive_statistics.html">Descriptive statistics</a>
     </li>
     <li>
-      <a href="geospatial.html">Geospatial Analysis</a>
+      <a href="visualization.html">Visualization</a>
     </li>
   </ul>
 </li>
@@ -312,16 +381,16 @@ Report</h1>
 <p>We want to try different tests in happiness scores. Let’s see whether
 there are some interesting findings. <strong>All the tests have a
 significance level of 0.05</strong></p>
-<div id="load-package-and-data" class="section level3">
-<h3>Load Package and Data</h3>
-</div>
-<div id="test-1-anova-test" class="section level3">
-<h3>Test 1: ANOVA Test</h3>
+<div id="test-1-one-way-anova-test" class="section level2">
+<h2>Test 1: One Way ANOVA Test</h2>
+<div id="compare-population-mean-in-different-regions"
+class="section level4">
+<h4>Compare population mean in different regions</h4>
 <p>Using ANOVA test, we can possibly compare the mean happiness scores
 across different regions, lets first get a sense of the ranges of the
 happiness scores in each region. Here we visualize the estimates and the
-CI bounds of each region to get a general sense of regional
-difference.</p>
+CI bounds of the ladder score in each region to get a general sense of
+regional difference.</p>
 <pre class="r"><code>score_estimates &lt;- function(x){
   t.test(x, conf.level = 0.95) %&gt;% broom::tidy()%&gt;%select(estimate, conf.low, conf.high)
 }
@@ -357,10 +426,14 @@ mean of the ladder score is different in all the 10 regions.</p>
 ## Residuals                  1806  860.9    0.48                   
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Since the p value in this case is very close to zero, we reject the
+null hypothesis and conclude that at least one population mean of the
+ladder score is different in all the 10 regions.</p>
+</div>
 </div>
 <div id="test-2-two-sample-t-test-before-covid-or-after-covid"
-class="section level3">
-<h3>Test 2: Two Sample T-test (Before Covid or After Covid?)</h3>
+class="section level2">
+<h2>Test 2: Two Sample T-test (Before Covid or After Covid?)</h2>
 <p>Overall in the world, whether the mean happiness score for all the
 regions before covid-19 higher than the mean happiness score after
 covid-19? Here we split the data in to “before covid” and “after covid”
@@ -650,9 +723,9 @@ regions, the happiness score didn’t change as much before and after
 covid.</p>
 </div>
 <div id="test-3-2-sample-t-test-test-happy-region-vs-unhappy-regions"
-class="section level3">
-<h3>Test 3: 2 Sample t-test Test (“Happy Region” vs “Unhappy
-Regions)</h3>
+class="section level2">
+<h2>Test 3: 2 Sample t-test Test (“Happy Region” vs “Unhappy
+Regions)</h2>
 <p>Whether the regions that have high happiness score throughout
 2008-2021 differ in properties than the countries that have relatively
 low happiness score throughout 2008-2022? In this section, we divide all
@@ -1071,8 +1144,8 @@ unhappy regions.</p>
 include in the data differ a lot for happy regions and unhappy regions,
 except for the generosity index.</p>
 </div>
-<div id="test-4-permutation-test" class="section level3">
-<h3>Test 4: Permutation test</h3>
+<div id="test-4-permutation-test" class="section level2">
+<h2>Test 4: Permutation test</h2>
 <p>Let’s found out whether the distribution of the ladder score of is
 different in the happy regions and the unhappy regions. In permutation
 test, we assign a label (“0” or “1” to the observation belong to happy
@@ -1134,6 +1207,8 @@ regions.</p>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -1171,6 +1246,35 @@ $(document).ready(function () {
 });
 </script>
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
