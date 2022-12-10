@@ -1,9 +1,5 @@
 ---
 title: "Report"
-output: html_document
----
----
-title: "Report"
 output: 
  html_document:
     toc: true
@@ -11,44 +7,86 @@ output:
     code_folding: hide
 ---
 
-## Introduction
+## Motivation
+
+The World Happiness Report is a landmark survey of the state of global happiness. In a generalized view, the progress of the nations seems to somewhat affect the measurements of well-being, or the happiness of the citizens. Therefore, the happiness indicator may serve as a guide for the governments, organizations, and civil societies to assess their policy-making decisions. The World Happiness Report reviews the state of happiness in most of the countries across the years along with other possible factors that would explain the variations in happiness scores across countries and regions.
+
+We are motivated to explore the possible relationship between the variations in happiness and other possible factors such as geographical region, GDP per capita, social support, freedom to make life choices, healthy life expectancy, generosity, and perceptions of corruption. 
+
+How might these or some of these factors affect the state of happiness in general? Based on different regions, are the differences in each variable significant? What if taking the pandemic of Covid-19 into account? We are interested to find out the answers to these questions and draw conclusions on the importance of the factors that a nation would focus on.
 
 
 ## Background and related work
- 
+
+We are inspired by the World Happiness Report 2021 and News article World Happiness Report published to mark International Day of Happiness about the importance of World Happiness on a social level by mentioning people’s interactions during the pandemic. While diving into the relationships between the possible variables and the Life Ladder Score, we are aware of the influence of the pandemic on the World Happiness report. We will use regression analysis and PCA/PCR analysis to find the overall “best” model and address the association between the variables and the Life Ladder Score. We will use statistical tests to address the possible influence of the pandemic.
 
 ## Research questions
-### Main research questions
+
+- What is the ranking of the mean Life Ladder Score based on different regions? 
+- What are the trends of the distribution of each variable across the years 2005 to 2021, based on different regions?
+
+- Are the mean Life Ladder Scores significantly different based on regions?
+
+- Whether the mean Life Ladder Score of each region significantly differs before and after the pandemic? If yes, whether the score before is greater than the score after the pandemic?
+
+- Are the variables significantly different between “happy regions” and “unhappy regions”?
+
+- Whether the distributions of the Life Ladder Score differ between “happy regions” and “unhappy regions”?
+
+- What are the possible variables that could be used to predict the Life Ladder Score in 2021?
+
+- How much does GDP associate with the Life Ladder Score?
+
+- Does any variable interact with GDP in the model and whether it is significant?
 
 
-## Method
+## Data
 
-### Data
+[World Happiness Report from 2005-2021](https://worldhappiness.report) 
 
-### Outcome variables
+Variables of interest: 
 
-### Exposures
+- `country_name` \
+- `regional_indicator`: region that the country belongs to\
+- `ladder_score`: happiness index from 1 to 10 measured by the national average response for Gallup World Poll (GWP)\
+- `logged_gdp_per_capita`: the country’s economic output per person from World Development Indicators (WDI)\
+- `social_support`: the amount of assistance available from other people measured by the national average response for GWP; ranges from 0 to 1\
+- `healthy_life_expectancy`: healthy life expectancies at birth based on data from the World Health Organization (WHO)\
+- `freedom_to_make_life_choices`: the amount of freedom to choose what to do with one’s life measured by the national average response for GWP, ranges from 0 to 1\
+- `generosity`: the willingness to make donation to charities; measured by the national average response for GWP\
+- `perceptions_of_corruption`: the level of corruption in the government and within business, measured by the national average response for GWP; ranges from 0 to 1
+
+## Methods
+### Data processing and cleaning
+
+- World Happiness Report pre 2021 [(dataset)](https://www.kaggle.com/datasets/ajaypalsinghlo/world-happiness-report-2021?resource=download&select=world-happiness-report.csv)\
+The World Happiness Report pre 2021 contains 11 variables, describing each country’s happiness score (Life Ladder Score) and its social, economic, public health and other information that reflect the progress of the nation. 
+
+- World Happiness Report 2021 [(dataset)](https://www.kaggle.com/datasets/ajaypalsinghlo/world-happiness-report-2021?resource=download&select=world-happiness-report-2021.csv) \
+The World Happiness Report 2021 contains 20 variables, describing each country’s happiness score and information that reflect the progress of the nation, along with some calculated statistics.
+
+- Combined World Happiness Report [(dataset)](https://github.com/jy3270/world-happiness-analysis.github.io/blob/main/Data/happiness.csv) \
+The 11 variables in World Happiness Report pre 2021 are reduced to 9 to match the variables from the World Happiness Report 2021. The 20 variables in World Happiness Report 2021 are reduced to 10 with an additional regional_indicator. We merged the two datasets by first nesting the variables other than `country_names` in pre 2021 and variables other than `country_names` and `regional_indicator` in 2021 and then using `left_join()`. We combined the nested variables from two datasets with `map2()` and `bind_rows()`. Finally, unnested the variables and dropped na’s. The resulting dataset was exported.
 
 
-### Covariates
+### Exploratory analysis
+
+For our exploratory analysis, we wanted to first analyze the main characteristics of each variable to examine the reliability of our later tests and regression. We found out that out of the total 1816 observations, only 49 observations belong to East Asia, and only 1 observation is from 2005. Furthermore, there are six countries (China, Hong Kong, Kosovo, Maldives, North Cyprus, Turkmenistan) that only have one observation. Therefore, the statistical tests and regression results might not apply for these countries/regions/years.
+
+Looking at the distribution of each continuous variable, ladder score, logged gdp per capita, generosity are all symmetrically distributed, with mean at 5.47, 9.35, and -0.003 respectively. Social support, healthy life expectancy, freedom to make life choices, and perceptions of corruption are all skewed right, with median at 0.84, 65.3, 0.77, and 0.80 respectively. The skewness may suggest some transformation, for instance log transformation. Summary tables are also made to show the descriptive statistics of each variable. The first table combined all the observations and calculated the mean and standard deviation for each variable. The second table is separated by regional indicator, and the third table is separated by year.
+
+In order to discover trends and patterns in our dataset, we also created several visualizations of the variables. To investigate life ladder score, we first plotted a bar plot that represents the mean life ladder score from 2005 to 2021 for different regions. From the plot, we found that North America and ANZ has the highest mean life ladder score, while Sub-Saharan Africa has the lowest. Additionally, we plotted box plots to show the distribution of ladder score for each region from 2006 to 2021. Note that 2005 was excluded from the plot because it only has one observation. The box plots show relatively stable distributions of life ladder score for North American and ANZ and Western Europe across years. Interestingly they are also the two regions with the highest mean life ladder score. We also plotted the mean life ladder score for the top 50 countries. These countries have mean life ladder scores ranging from around 6 to 7.5. Western Europe has the highest proportion among the top 50 countries.
+
+Box plots were also made to show the distribution of all other variables for different regions across years. North American and ANZ and Western Europe are the two regions with highest logged GDP per capita, social support, healthy life expectancy, and freedom to make life choices, which suggest that these variables may have positive correlation with life ladder score. North American and ANZ and Western Europe are also the two regions with lowest perception of corruption, suggesting that it might be inversely correlated with life ladder score. Overall, logged GDP per capita and healthy life expectancy indicate increasing trends across years for all regions.
+
+Lastly, we made interactive maps to show the mean value of each variable across years for each country, where a darker color indicates higher value. For life ladder score, Canada, Australia, and Western European countries have noticeably high values. This trend is found similarly for logged GDP per capita, social support, healthy life expectancy, and freedom to make life choices. The opposite trend is found for perceptions of corruption (i.e. Canada, Australia, and Western European countries have noticeably low value for perceptions of corruption). These findings align with the findings from box plots and suggest that these variables might be strongly correlated with life ladder score.
 
 
-### Statistical Analysis
 
 
-## Results
 
-### Explanatory Analysis
 
-### Regression Analysis
 
-## Discussion
-### Takeaways 
 
-### Next steps
 
-### Challenges
 
-### Limitations
-
-## Conclusion
