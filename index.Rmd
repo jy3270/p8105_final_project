@@ -1,12 +1,16 @@
 ---
-title: "Final Project"
-output: html_document
+title: "About Project"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
 ---
 
-Final Project: overview might be inserted here
+# Screen Cast
 
 ```{r}
-hello <- "hello"
-hello
+"Video link"
 ```
 
+# Members?
+(Link of our personal github page)
