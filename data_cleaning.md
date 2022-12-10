@@ -12,7 +12,7 @@ happiness_2021 <- read_csv("data/world-happiness-report-2021.csv") %>% janitor::
 ```
 
     ## Rows: 149 Columns: 20
-    ## ── Column specification ──────────────────────────────────────────────────────────────────────────────────
+    ## ── Column specification ─────────
     ## Delimiter: ","
     ## chr  (2): Country name, Regional indicator
     ## dbl (18): Ladder score, Standard error of ladder score, upperwhisker, lowerw...
@@ -25,7 +25,7 @@ happiness_pre_2021 <- read_csv("data/world-happiness-report.csv") %>% janitor::c
 ```
 
     ## Rows: 1949 Columns: 11
-    ## ── Column specification ──────────────────────────────────────────────────────────────────────────────────
+    ## ── Column specification ─────────
     ## Delimiter: ","
     ## chr  (1): Country name
     ## dbl (10): year, Life Ladder, Log GDP per capita, Social support, Healthy lif...
