@@ -20,6 +20,8 @@ navbar:
     - text: "Interactive Data Explore"
       href: https://yixuanjiao.shinyapps.io/world-happiness-shinyapp/
   right:
+    - text: "Project Report"
+      href: Report.html
     - icon: fa-github fa-lg
       href: https://github.com/jy3270/world-happiness-analysis.github.io
 output:
