@@ -13,10 +13,12 @@ navbar:
       menu:
         - text: "Statistical Test"
           href: statistical_tests.html
-        - text : "PCA Analysis"
-          href : PCA_analysis.html
         - text: "Regression Analysis"
           href: regression_analysis.html
+        - text : "PCA Analysis"
+          href : PCA_analysis.html
+    - text: "Interactive Data Explore"
+      href: shiny.html
   right:
     - text: "About"
 output:
