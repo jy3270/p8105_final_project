@@ -50,8 +50,6 @@ regression_df =
 head(regression_df)
 ```
 
-&nbsp;
-
 ## Outcome: Ladder score 
 - Rename the column name
 ```{r}
