@@ -18,7 +18,7 @@ navbar:
         - text : "PCA Analysis"
           href : PCA_analysis.html
     - text: "Interactive Data Explore"
-      href: shiny.html
+      href: https://yixuanjiao.shinyapps.io/world-happiness-shinyapp/
   right:
     - icon: fa-github fa-lg
       href: https://github.com/jy3270/world-happiness-analysis.github.io
