@@ -18,7 +18,7 @@ We also perform statistical analysis including:
 
 - Statistical test comparing mean ladder score over regions, pre/post covid period, difference in social factors and distribution of ladder score over happy/unhappy region.
 - Regression analysis selecting the optimal subset of social factors that help us understand their relationships with happiness ladder score.
-- Principle Component Analysis.
+- Principle component analysis and principle component regression.
 
 For our reader to freely explore our data and try to understand our model, we provide a interactive shiny app for people to:
 
