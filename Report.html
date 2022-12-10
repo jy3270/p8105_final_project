@@ -13,7 +13,7 @@
 
 <title>Final Report</title>
 
-<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -590,9 +590,20 @@ determine whether the mean population ladder score is the same for all
 the eight regions in our data. To conduct the test, we nested the data
 based on region, and computed the sample mean of the ladder score for
 each region. The hypothesis for the test are:</p>
-<p>H0: The population mean of the ladder score is the same for all the
-10 regions. Ha: At least one population mean of the ladder score is
-different. <em>ADD R CODE results</em></p>
+<p><span class="math inline">\(H_0\)</span>: <em>The population mean of
+the ladder score is the same for all the 10 regions.</em></p>
+<p><span class="math inline">\(H_a\)</span>: <em>At least one population
+mean of the ladder score is different.</em></p>
+<pre><code>## Call:
+##    aov(formula = ladder_score ~ factor(regional_indicator), data = happy_meta)
+## 
+## Terms:
+##                 factor(regional_indicator) Residuals
+## Sum of Squares                    1446.984   860.851
+## Deg. of Freedom                          9      1806
+## 
+## Residual standard error: 0.6904069
+## Estimated effects may be unbalanced</code></pre>
 <p>In this test, we get a p-value that is very close to zero, which
 indicates that the ladder score is the same for all the countries. Thus,
 we can conclude that at least one population mean ladder score of the 10
@@ -609,11 +620,54 @@ equal variances after checking the variances of these two groups. In
 this case, we unexpectedly found out that the mean population ladder
 score during covid is actually higher than the mean population ladder
 score before covid. The hypothesis for this test are:</p>
-<p>H0: the population mean of ladder score is the same for the time
-period before covid-19 and the time period after covid-19 for all
-countries. Ha: the population mean of ladder score is the smaller for
-the time period before covid-19 and the time period after covid-19 for
-all countries. <em>ADD R CODE results</em></p>
+<p><span class="math inline">\(H_0\)</span>: <em>the population mean of
+ladder score is the same for the time period before covid-19 and the
+time period after covid-19 for all countries.</em></p>
+<p><span class="math inline">\(H_a\)</span>: <em>the population mean of
+ladder score is the smaller for the time period before covid-19 and the
+time period after covid-19 for all countries.</em></p>
+<table style="width:100%;">
+<colgroup>
+<col width="8%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="7%" />
+<col width="9%" />
+<col width="8%" />
+<col width="9%" />
+<col width="16%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">estimate</th>
+<th align="right">estimate1</th>
+<th align="right">estimate2</th>
+<th align="right">statistic</th>
+<th align="right">p.value</th>
+<th align="right">parameter</th>
+<th align="right">conf.low</th>
+<th align="right">conf.high</th>
+<th align="left">method</th>
+<th align="left">alternative</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">-0.186</td>
+<td align="right">5.434</td>
+<td align="right">5.62</td>
+<td align="right">-2.797</td>
+<td align="right">0.003</td>
+<td align="right">1814</td>
+<td align="right">-Inf</td>
+<td align="right">-0.077</td>
+<td align="left">Two Sample t-test</td>
+<td align="left">less</td>
+</tr>
+</tbody>
+</table>
 <p>The p value in this case is very small, thus we have strong evidence
 to say that the population mean of the ladder score after covid-19 is
 higher than the happiness score before covid-19. This might be due to
@@ -640,10 +694,12 @@ group on each variable, and find out whether those regions have
 differences in logged gdp per capita, social support, healthy life
 expectancy, freedom to make life choices, and perceptions of corruption.
 For each variable the hypothesis are:</p>
-<p>H0: the population mean of the variable value is the same for the
-happy regions and the Ha: the population mean of the variable value is
-different, greater or less for the happy regions than the unhappy
-regions.</p>
+<p><span class="math inline">\(H_0\)</span>: <em>the population mean of
+the variable value is the same for the happy regions and the unhappy
+regions.</em></p>
+<p><span class="math inline">\(H_a\)</span>: <em>the population mean of
+the variable value is different, greater or less for the happy regions
+than the unhappy regions.</em></p>
 <p>After conducting five two sample t tests, we find out that for all
 the tests except for the generosity value, the p-value is lower than
 0.005, so we conclude that our 2 sample t tests show strong evidences
@@ -660,11 +716,14 @@ simplicity, we choose our test statistic to be the difference of the
 ladder score of happy regions and unhappy regions. We shuffle the label
 of our observation data, compute the test statistic over 1000 times and
 look at their distributions. In this case, our hypothesis are:</p>
-<p>H0: the distribution of the ladder score is the same for the happy
-regions and the unhappy regions. Ha: the distribution of the ladder
-score for the happy region is different from the distribution of the
-ladder score in the unhappy regions. <em>Show the distribution
-plot</em></p>
+<p><span class="math inline">\(H_0\)</span>: <em>the distribution of the
+ladder score is the same for the happy regions and the unhappy
+regions.</em></p>
+<p><span class="math inline">\(H_a\)</span>: <em>the distribution of the
+ladder score for the happy region is different from the distribution of
+the ladder score in the unhappy regions.</em></p>
+<p><img
+src="statistical_tests_files/figure-html/unnamed-chunk-25-1.png" /></p>
 <p>From the plot, we see that the most observed mean difference of
 ladder score between the happy and unhappy region is about -2.95. To
 compute the p value, we compute the probability that we observe a value
@@ -724,14 +783,33 @@ choices, and perceptions of corruption) since they have different units
 in this scenario. The result of PCA analysis is shown below, the linear
 combination of each component can also be referred from the table
 below.</p>
-<p><em>Show result</em></p>
+<pre><code>## Importance of components:
+##                           PC1    PC2    PC3     PC4     PC5     PC6
+## Standard deviation     1.8067 1.1347 0.7811 0.70345 0.48008 0.33580
+## Proportion of Variance 0.5441 0.2146 0.1017 0.08247 0.03841 0.01879
+## Cumulative Proportion  0.5441 0.7586 0.8603 0.94279 0.98121 1.00000</code></pre>
 <p>We see that the first component explains about 54.4% of the variances
 in the data, the second component explains about 21.5% of the variances
 in the data, and the third explains about 10.17%. The three components
 will cumulatively explain about 86.03% of the variances in the data,
 which is relatively sufficient in this case. The results below show the
-results of each component.</p>
-<p>*Show result of rotation and biplot”</p>
+results of each component and the biplot of the analysis.</p>
+<pre><code>##                                      PC1        PC2         PC3         PC4
+## logged_gdp_per_capita         0.50557942 -0.1963624  0.03593761 -0.29956544
+## social_support                0.48591366 -0.1257005 -0.33392130 -0.09087997
+## healthy_life_expectancy       0.50017876 -0.1503781  0.02985716 -0.29725350
+## freedom_to_make_life_choices  0.40245817  0.2799679 -0.31503571  0.77439435
+## generosity                   -0.03310161  0.7821098 -0.41124119 -0.45908163
+## perceptions_of_corruption    -0.30826981 -0.4826488 -0.78609591 -0.05656135
+##                                      PC5         PC6
+## logged_gdp_per_capita         0.11097337 -0.77619921
+## social_support               -0.74850206  0.26090102
+## healthy_life_expectancy       0.56834485  0.56119575
+## freedom_to_make_life_choices  0.22964237 -0.08930672
+## generosity                    0.06841811 -0.05149951
+## perceptions_of_corruption     0.21678801 -0.06226456</code></pre>
+<p><img
+src="PCA_analysis_files/figure-html/unnamed-chunk-7-1.png" /></p>
 <p>The data points closer to each other in the above biplot have a
 similar data pattern. When we group all the observations on the plot
 based on regions, we see the observations from the same region are
@@ -742,24 +820,39 @@ capita are highly positively correlated with each other (shown on the
 plot, their vectors form very small angles with each other). The
 predictor freedom to make life choices is also relatively correlated
 with social support, healthy life expectation and logged gdp per capita.
-This might be a concern when we build our regression model.</p>
+This might be a concern when we further refine our regression model.</p>
 <p>We also implemented a PCR regression model to predict the ladder
 score in 2021. From the output below, we see that cross validation error
-RMSEP is lowest when we include 1 component in our data. <em>Show result
-and validation plot</em></p>
-<p>When we look at the plot, we also see that when we add one principal
-component, the test error will be the lowest. As a result, we use one
-principle component in the PCR model to make predictions on the out of
-sample observations. We compute the test mse for the PCR model by taking
-the prediction of the PCR model on the test set’s ladder score, subtract
-the observed values of the ladder score and taking the mean square of
-them, then repeat the same process for the training data. We get a test
-MSE value of 0.47, and a train mse of 0.227. What’s more, we want to
-compare the performance of the PCR regression to the best regression
-model we’ve obtained in the regression analysis. In this case the test
-MSE value of the selected best regression model is around 0.38, and the
-train MSE value of the regression model is 0.18. Thus, in this case, the
-regression model outperforms the PRC model.</p>
+RMSEP is lowest when we include 1 component in our data.</p>
+<pre><code>## Data:    X dimension: 111 6 
+##  Y dimension: 111 1
+## Fit method: svdpc
+## Number of components considered: 6
+## 
+## VALIDATION: RMSEP
+## Cross-validated using 10 random segments.
+##        (Intercept)  1 comps  2 comps  3 comps  4 comps  5 comps  6 comps
+## CV           1.095   0.4844   0.4880   0.4938   0.4972   0.5008   0.4971
+## adjCV        1.095   0.4838   0.4872   0.4927   0.4959   0.4994   0.4953
+## 
+## TRAINING: % variance explained
+##               1 comps  2 comps  3 comps  4 comps  5 comps  6 comps
+## X               54.40    75.86    86.03    94.28    98.12   100.00
+## ladder_score    80.68    80.85    80.97    81.03    81.06    81.68</code></pre>
+<p><img src="Report_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>When we look at the cv results and plot, we also see that when we add
+one principal component, the test error will be the lowest. As a result,
+we use one principle component in the PCR model to make predictions on
+the out of sample observations. We compute the test mse for the PCR
+model by taking the prediction of the PCR model on the test set’s ladder
+score, subtract the observed values of the ladder score and taking the
+mean square of them, then repeat the same process for the training data.
+We get a test MSE value of 0.47, and a train mse of 0.227. What’s more,
+we want to compare the performance of the PCR regression to the best
+regression model we’ve obtained in the regression analysis. In this case
+the test MSE value of the selected best regression model is around 0.38,
+and the train MSE value of the regression model is 0.18. Thus, in this
+case, the regression model outperforms the PRC model.</p>
 </div>
 </div>
 <div id="discussion" class="section level2">
@@ -803,6 +896,10 @@ Happiness Ladder Score, but after adapting interaction term and refit
 model, we found that the relationship between Freedom and GDP couldn’t
 be ignored: these two seemed to influence each other and we couldn’t
 eliminate either of them.</p></li>
+<li><p>The PCA analysis shows that observations from the same region
+show a similar pattern in predictors, and there is a strong positive
+correlation in social support, healthy life expectancy, and logged gdp
+per capita.</p></li>
 <li><p>Comparing the PCR and the regression models based on MSE, we
 conclude that the regression model is the best model.</p></li>
 </ul>

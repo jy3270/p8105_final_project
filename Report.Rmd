@@ -7,6 +7,26 @@ output:
     code_folding: hide
 ---
 
+```{r, include = FALSE}
+library(tidyverse)
+rename <- dplyr::rename
+select <- dplyr::select
+happy_meta <- read.csv("./Data/happiness.csv") 
+happy_meta <- happy_meta %>% mutate(
+  covid_status = case_when(
+    year < 2019 ~ "No",
+    year >= 2019 ~ "Yes")
+  )
+
+library(readr)
+library(pls)
+library(devtools)
+install_github("vqv/ggbiplot")
+library(ggbiplot)
+```
+
+
+
 ## Motivation
 
 The World Happiness Report is a landmark survey of the state of global happiness. In a generalized view, the progress of the nations seems to somewhat affect the measurements of well-being, or the happiness of the citizens. Therefore, the happiness indicator may serve as a guide for the governments, organizations, and civil societies to assess their policy-making decisions. The World Happiness Report reviews the state of happiness in most of the countries across the years along with other possible factors that would explain the variations in happiness scores across countries and regions.
@@ -88,32 +108,44 @@ Statistical Tests are conducted to discover the differences of the ladder score 
 
 To investigate the variabilities of the ladder scores between different regions, we conduct an anova test for the population mean of the ladder scores in each region. We compute an One-way ANOVA test to determine whether the mean population ladder score is the same for all the eight regions in our data. To conduct the test, we nested the data based on region, and computed the sample mean of the ladder score for each region. The hypothesis for the test are:
 
-H0: The population mean of the ladder score is the same for all the 10 regions.
-Ha: At least one population mean of the ladder score is different.
-*ADD R CODE results*
+$H_0$: *The population mean of the ladder score is the same for all the 10 regions.*
+
+$H_a$: *At least one population mean of the ladder score is different.*
+
+```{r, echo=FALSE}
+aov(ladder_score ~ factor(regional_indicator), data = happy_meta)
+```
+
 
 In this test, we get a p-value that is very close to zero, which indicates that the ladder score is the same for all the countries. Thus, we can conclude that at least one population mean ladder score of the 10 regions are different. This result agrees with our visualization of the estimates and the confidence intervals of the ladder score in the 10 regions.
 
 Moreover, we are interested in whether the population mean of ladder score changes due to the Covid-19 pandemic. We divided the data into 2 groups: “before covid” and “after covid” based on what year the data is in. If the observation is before 2019, we classify it in the “before covid” group, and if the observation is after or in 2019, we classify it in the “after covid” group. Than we compute a two sample t-test with equal variances after checking the variances of these two groups. In this case, we unexpectedly found out that the mean population ladder score during covid is actually higher than the mean population ladder score before covid. The hypothesis for this test are:
 
-H0:  the population mean of ladder score is the same for the time period before covid-19 and the time period after covid-19 for all countries.
-Ha: the population mean of ladder score is the smaller for the time period before covid-19 and the time period after covid-19 for all countries.
-*ADD R CODE results*
+$H_0$: *the population mean of ladder score is the same for the time period before covid-19 and the time period after covid-19 for all countries.*
+
+$H_a$: *the population mean of ladder score is the smaller for the time period before covid-19 and the time period after covid-19 for all countries.*
+
+```{r, echo = FALSE}
+t.test(ladder_score ~ covid_status, alternative = "less", data = happy_meta, var.equal = TRUE) %>% broom::tidy() %>% knitr::kable(digit = 3)
+```
 
 The p value in this case is very small, thus we have strong evidence to say that the population mean of the ladder score after covid-19 is higher than the happiness score before covid-19. This might be due to the work from home working mode allowing people to spend more time with people they loved, development of technology and life quality with time that is not related to covid, or any other factors. However, the sample size of the after covid data is much smaller than the sample size of before covid data, this may also cause bias in our analysis. We then stratified our analysis on the 10 regions: for each region, whether covid causes change in the population mean of the ladder score, the results found out that for region: Central and Eastern Europe, Commonwealth of Independent States, and Sub-Saharan Africa, the population mean ladder score increased after covid, while for the region North America and ANZ the population mean ladder score decreased after covid. 
 
 We are also interested in Whether the regions that have high happiness scores throughout 2008-2021 differ in properties than the countries that have relatively low happiness scores throughout 2008-2022. We divide all the 10 regions into two groups “happy regions” and “unhappy regions” based on previous analysis on the estimates and the confidence intervals of the ladder scores. We are going to conduct two sample t-tests on the happy region group and the unhappy region group on each variable, and find out whether those regions have differences in logged gdp per capita, social support, healthy life expectancy, freedom to make life choices, and perceptions of corruption. For each variable the hypothesis are:
 
-H0: the population mean of the variable value is the same for the happy regions and the 
-Ha: the population mean of the variable value is different, greater or less for the happy regions than the unhappy regions. 
+$H_0$: *the population mean of the variable value is the same for the happy regions and the unhappy regions.*
+
+$H_a$: *the population mean of the variable value is different, greater or less for the happy regions than the unhappy regions.*
 
 After conducting five two sample t tests, we find out that for all the tests except for the generosity value,  the p-value is lower than 0.005, so we conclude that our 2 sample t tests show strong evidences that the factors include in the data differ a lot for happy regions and unhappy regions, except for the generosity index.
 
 Finally, we want to see whether the distribution of the ladder score is different in the happy regions and the unhappy regions by conducting a permutation test. In the permutation test, we assign a label (“0” or “1” to the observation belonging to the happy regions and the observation belonging to the unhappy regions). The label itself is independent of the ladder score we are testing on, and we shuffle the labels to replicate our process of getting the test statistic. For simplicity, we choose our test statistic to be the difference of the ladder score of happy regions and unhappy regions. We shuffle the label of our observation data, compute the test statistic over 1000 times and look at their distributions. In this case, our hypothesis are:
  
-H0: the distribution of the ladder score is the same for the happy regions and the unhappy regions.
-Ha: the distribution of the ladder score for the happy region is different from the distribution of the ladder score in the unhappy regions.
-*Show the distribution plot*
+$H_0$: *the distribution of the ladder score is the same for the happy regions and the unhappy regions.*
+
+$H_a$: *the distribution of the ladder score for the happy region is different from the distribution of the ladder score in the unhappy regions.*
+
+![](statistical_tests_files/figure-html/unnamed-chunk-25-1.png)
  
 From the plot, we see that the most observed mean difference of ladder score between the happy and unhappy region is about -2.95. To compute the p value, we compute the probability that we observe a value on the mean difference distribution that is more extreme (smaller or bigger) than the observed mean differences (-2.24) in the mean difference of ladder score between the happy regions and the unhappy regions, and we get a p value of zero. This indicates that the distribution of the ladder score is different for the happy regions and the unhappy regions.
 
@@ -134,18 +166,45 @@ Instead of using linear regression on the model, we want to see whether other mo
 
 In the PCA analysis process, we also randomly select 75% of the dataset as our training set, and the rest 25% of the dataset as our testing set. Here we are scaling all the variables (logged gdp per capita, social support, healthy life expectancy, freedom to make life choices, and perceptions of corruption) since they have different units in this scenario. The result of PCA analysis is shown below, the linear combination of each component can also be referred from the table below.
 
-*Show result*
+```{r, echo = FALSE}
+happy21 <- happy_meta %>%
+  filter(year == 2021) %>%
+  select(-year)
 
-We see that the first component explains about 54.4% of the variances in the data, the second component explains about 21.5% of the variances in the data, and the third explains about 10.17%. The three components will cumulatively explain about 86.03% of the variances in the data, which is relatively sufficient in this case. The results below show the results of each component.
+set.seed(1)
+train_id <- sample(seq_len(nrow(happy21)), size = floor(0.75*nrow(happy21)))
+train_set <- happy21[train_id,]
+test_set <- happy21[-train_id,]
 
-*Show result of rotation and biplot”
+X <- model.matrix(ladder_score ~logged_gdp_per_capita	+ social_support + healthy_life_expectancy + freedom_to_make_life_choices + generosity +perceptions_of_corruption, data = train_set)[, -1]
+happy_PCA <- prcomp(X, center = T, scale = T) 
+summary(happy_PCA)
+```
 
-The data points closer to each other in the above biplot have a similar data pattern. When we group all the observations on the plot based on regions, we see the observations from the same region are relatively closer to each other, which means that they are similar in the pattern of the predictors. Furthermore, we can see that the predictors social support, healthy life expectancy, and logged gdp per capita are highly positively correlated with each other (shown on the plot, their vectors form very small angles with each other). The predictor freedom to make life choices is also relatively correlated with social support, healthy life expectation and logged gdp per capita. This might be a concern when we build our regression model.
+
+We see that the first component explains about 54.4% of the variances in the data, the second component explains about 21.5% of the variances in the data, and the third explains about 10.17%. The three components will cumulatively explain about 86.03% of the variances in the data, which is relatively sufficient in this case. The results below show the results of each component and the biplot of the analysis.
+
+```{r, echo = FALSE}
+happy_PCA$rotation
+```
+
+![](PCA_analysis_files/figure-html/unnamed-chunk-7-1.png)
+
+The data points closer to each other in the above biplot have a similar data pattern. When we group all the observations on the plot based on regions, we see the observations from the same region are relatively closer to each other, which means that they are similar in the pattern of the predictors. Furthermore, we can see that the predictors social support, healthy life expectancy, and logged gdp per capita are highly positively correlated with each other (shown on the plot, their vectors form very small angles with each other). The predictor freedom to make life choices is also relatively correlated with social support, healthy life expectation and logged gdp per capita. This might be a concern when we further refine our regression model.
 
 We also implemented a PCR regression model to predict the ladder score in 2021. From the output below, we see that cross validation error RMSEP is lowest when we include 1 component in our data.
-*Show result and validation plot*
 
-When we look at the plot, we also see that when we add one principal component, the test error will be the lowest. As a result, we use one principle component in the PCR model to make predictions on the out of sample observations. We compute the test mse for the PCR model by taking the prediction of the PCR model on the test set’s ladder score, subtract the observed values of the ladder score and taking the mean square of them, then repeat the same process for the training data. We get a test MSE value of 0.47, and a train mse of 0.227. What’s more, we want to compare the performance of the PCR regression to the best regression model we’ve obtained in the regression analysis. In this case the test MSE value of the selected best regression model is around 0.38, and the train MSE value of the regression model is 0.18. Thus, in this case, the regression model outperforms the PRC model.
+```{r, echo=FALSE}
+happy_pcr <- pcr(`ladder_score` ~ logged_gdp_per_capita	+ social_support + healthy_life_expectancy + freedom_to_make_life_choices + generosity +perceptions_of_corruption, data = train_set, scale = TRUE, validation = "CV")
+summary(happy_pcr)
+```
+
+```{r, echo = FALSE}
+validationplot(happy_pcr, main = "Test Error")
+```
+
+
+When we look at the cv results and plot, we also see that when we add one principal component, the test error will be the lowest. As a result, we use one principle component in the PCR model to make predictions on the out of sample observations. We compute the test mse for the PCR model by taking the prediction of the PCR model on the test set’s ladder score, subtract the observed values of the ladder score and taking the mean square of them, then repeat the same process for the training data. We get a test MSE value of 0.47, and a train mse of 0.227. What’s more, we want to compare the performance of the PCR regression to the best regression model we’ve obtained in the regression analysis. In this case the test MSE value of the selected best regression model is around 0.38, and the train MSE value of the regression model is 0.18. Thus, in this case, the regression model outperforms the PRC model.
 
 
 ## Discussion
@@ -167,6 +226,8 @@ To answer our research questions:
 - Regional indicators, logged GDP per capita, social support, and freedom to make life choices have strong relationships with and can be used to predict life ladder scores. Although GDP is a strong predictor for ladder score, there is strong interaction between GDP and freedom to make life choices, meaning that the effect of GDP on ladder score depends on the value of freedom to make life choices. 
 
 - According to regression analysis, the correlations between GDP and Ladder Score seemed to be very strong, and the initial regression model(including Region, GDP, Social.support, Freedom and Corruption as predictor) would suggest that GDP is a powerful predictor of the Happiness Ladder Score, but after adapting interaction term and refit model, we found that the relationship between Freedom and GDP couldn’t be ignored: these two seemed to influence each other and we couldn’t eliminate either of them.
+
+- The PCA analysis shows that observations from the same region show a similar pattern in predictors, and there is a strong positive correlation in social support, healthy life expectancy, and logged gdp per capita.
 
 - Comparing the PCR and the regression models based on MSE, we conclude that the regression model is the best model.
 
