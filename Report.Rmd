@@ -32,7 +32,7 @@ The World Happiness Report is a landmark survey of the state of global happiness
 
 We are motivated to explore the possible relationship between the variations in happiness and other possible factors such as geographical region, GDP per capita, social support, freedom to make life choices, healthy life expectancy, generosity, and perceptions of corruption. 
 
-How might these or some of these factors affect the state of happiness in general? Based on different regions, are the differences in each variable significant? What if taking the pandemic of Covid-19 into account? We are interested to find out the answers to these questions and draw conclusions on the importance of the factors that a nation would focus on.
+How might these or some of these factors affect the state of happiness in general? Based on different regions, are the differences in each variable significant? What if taking the pandemic of Covid-19 into account? We are interested to find out the answers to these questions and draw conclusions on the importance of the factors that a nation would focus on. An interactive shiny app is also included for a better understanding of the variables and associations.
 
 
 ## Background and related work
