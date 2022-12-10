@@ -1,5 +1,5 @@
 ---
-title: "About Project"
+title: "World Happiness Analysis"
 output: 
   html_document:
     toc: TRUE
@@ -7,10 +7,14 @@ output:
 ---
 
 # Screen Cast
+video link here
 
-```{r}
-"Video link"
-```
+# Content of Our Project
+We use the data set from [kaggle](https://www.kaggle.com/datasets/ajaypalsinghlo/world-happiness-report-2021?resource=download&select=world-happiness-report.csv), trying to explore the relationship between the happiness ladder score and other social factors.
 
 # Members?
-(Link of our personal github page)
+Jingya Yu
+Landi Guo
+Fengdi Zhang
+Meng Fang
+Yixuan Jiao
