@@ -20,15 +20,15 @@ In the exploratory analysis part, we:
 
 We also perform statistical analysis including:
 
-- Statistical test comparing mean ladder score over regions, pre/post covid, difference in social factors and distribution of ladder score over happy/unhappy region.
-- Regression analysis selecting the optimal subset of social factors that help us understand their relationship with happiness ladder score.
+- Statistical test comparing mean ladder score over regions, pre/post covid period, difference in social factors and distribution of ladder score over happy/unhappy region.
+- Regression analysis selecting the optimal subset of social factors that help us understand their relationships with happiness ladder score.
 - Principle Component Analysis.
 
 For our reader to freely explore our data and try to understand our model, we provide a interactive shiny app for people to:
 
-- Try how different values effect the ladder score
-- Compare user selected variables over different country/region
-- Check association between each pair of factors.
+- Try how different values to see how do they affect the ladder score
+- Compare user selected variables over different countries/regions
+- Check associations between each pair of factors.
 
 Final report can be access [here](Report.html) or there is an entry on the right corner.
 Detail code and output of each section is in the navigation bar.
