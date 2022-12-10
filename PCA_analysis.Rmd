@@ -1,8 +1,12 @@
 ---
 title: "PCA and PCR Analysis for World Happiness Report"
-output: html_document
+output: 
+  html_document:
+    code_folding: hide
+    toc: true
+    toc_float: true
+  
 ---
-
 Instead of using linear regression on the model, we want to see whether other models will can help us predict the happiness score. In this case, we adapt principle component analysis and principle component regression to predict the ladder score at 2021, and compare our pcr model with our regression model to see which one performs the best.
 
 ```{r, include = FALSE}
@@ -36,7 +40,7 @@ train_set <- happy21[train_id,]
 test_set <- happy21[-train_id,]
 ```
 
-Then wer apply the training set to do the principle data analysis.
+Then we apply the training set to do the principle data analysis.
 
 ```{r}
 X <- model.matrix(ladder_score ~logged_gdp_per_capita	+ social_support + healthy_life_expectancy + freedom_to_make_life_choices + generosity +perceptions_of_corruption, data = train_set)[, -1]
@@ -48,7 +52,7 @@ summary(happy_PCA)
 plot(happy_PCA, main = "Scree Plot")
 ```
 
-From the scree plot and the summary of the PCA result, we see that three components will largely explain the variances in the data (86.03%). Let's see the principle component scores for each principle.
+From the scree plot and the summary of the PCA result, we see that three components will largely explain the variances in the data (86.03%). Let's see the principal component scores for each principal.
 
 ```{r}
 happy_PCA$rotation
@@ -86,7 +90,7 @@ summary(happy_pcr)
 validationplot(happy_pcr, main = "Test Error")
 ```
 
-When we look at the plot, we see that when we add one principle component, the testerror will be the lowest. So we use one principle component to make predictions on the out of sample observations. Now we build out pcr model based on the optimal value $k = 1$, and compute the test mse and train mse.
+When we look at the plot, we see that when we add one principal component, the test error will be the lowest. So we use one principle component to make predictions on the out of sample observations. Now we build our pcr model based on the optimal value $k = 1$, and compute the test mse and train mse.
 
 ```{r}
 happy21_test<- predict(happy_pcr, newdata = test_set, ncomp = 1) 

@@ -27,6 +27,8 @@ options(
 scale_colour_discrete = scale_color_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
 set.seed(1)
+
+rename <- dplyr::rename
 ```
 
 <style type="text/css">
@@ -61,7 +63,7 @@ regression_df <- regression_df %>%
   rename(Country = country_name, Region = regional_indicator, Ladder = ladder_score,
          SD.Ladder = standard_error_of_ladder_score, GDP = logged_gdp_per_capita, Social.support = social_support,
          Life.exp = healthy_life_expectancy, Freedom = freedom_to_make_life_choices,
-         Currpotion = perceptions_of_corruption, Ladder.Dystopia = ladder_score_in_dystopia,
+         Corruption = perceptions_of_corruption, Ladder.Dystopia = ladder_score_in_dystopia,
          EXP.LOG.GPD = explained_by_log_gdp_per_capita, EXP.SS = explained_by_social_support,
          EXP.HLE = explained_by_healthy_life_expectancy, EXP.FREE = explained_by_freedom_to_make_life_choices,
          EXP.GEN = explained_by_generosity, EXP.CUR = explained_by_perceptions_of_corruption,
@@ -71,7 +73,7 @@ hap <- regression_df[,-c(4,5,6,13:20)]
 colnames(hap)
 
 hap <- hap %>%
-  mutate(Ladder = row_number())
+  dplyr::mutate(Ladder = row_number())
 head(hap)
 ```
 
@@ -144,14 +146,14 @@ print(null)
 ```{r}
 step(m1)
 
-m1.step <- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + Currpotion, data = train[, -1])
+m1.step <- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + Corruption, data = train[, -1])
 ```
 
 ```{r include=FALSE, message=FALSE, warning=FALSE}
 print(m1.step)
 ```
 
-Here we get the best performing model measuring by AIC. The predictor includes Region, GDP, Social.support, Freedom and Currpotion. 
+Here we get the best performing model measuring by AIC. The predictor includes Region, GDP, Social.support, Freedom and Corruption. 
 
 &nbsp;
 
@@ -212,13 +214,13 @@ It seems like GDP and Freedom may have some interaction.
 ### Model the interaction
 ```{r}
 #interactions
-int.mod <- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + Currpotion + GDP*Freedom, data = train[, -1])
+int.mod <- lm(formula = Ladder ~ Region + GDP + Social.support + Freedom + Corruption + GDP*Freedom, data = train[, -1])
 
 summary(int.mod)
 ```
 
 We found that the slope of Freedom changes for every one increase in GDP, and as GDP increases, slope of freedom decreases.
-Looking at the p-value, the value of both GDP and Freedom indicate they're insignificant after we adding the interaction term, but the interaction effect is significant now. At the same time, the p-value for Currpotion indicates it's insignificant.
+Looking at the p-value, the value of both GDP and Freedom indicate they're insignificant after we adding the interaction term, but the interaction effect is significant now. At the same time, the p-value for Corruption indicates it's insignificant.
 
 &nbsp;
 

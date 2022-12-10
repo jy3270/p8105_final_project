@@ -13,7 +13,7 @@
 
 <title>Statistical Testing for World Happiness Report</title>
 
-<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -36,6 +36,8 @@
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -333,7 +335,7 @@ div.tocify {
       <a href="descriptive_statistics.html">Descriptive statistics</a>
     </li>
     <li>
-      <a href="visualization.html">Visualization</a>
+      <a href="a_visualization.html">Visualization</a>
     </li>
   </ul>
 </li>
@@ -350,11 +352,22 @@ div.tocify {
     <li>
       <a href="regression_analysis.html">Regression Analysis</a>
     </li>
+    <li>
+      <a href="PCA_analysis.html">PCA Analysis</a>
+    </li>
   </ul>
+</li>
+<li>
+  <a href="https://yixuanjiao.shinyapps.io/world-happiness-shinyapp/">Interactive Data Explore</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown-header">About</li>
+        <li>
+  <a href="https://github.com/jy3270/world-happiness-analysis.github.io">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -465,45 +478,73 @@ time period after covid-19 for all countries.</p>
 ladder score is the smaller for the time period before covid-19 and the
 time period after covid-19 for all countries.</p>
 <pre class="r"><code>t.test(ladder_score ~ covid_status, alternative = &quot;less&quot;, data = happy_meta, var.equal = TRUE) %&gt;% broom::tidy() %&gt;% knitr::kable(digit = 3)</code></pre>
-<table style="width:100%;">
-<colgroup>
-<col width="8%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="7%" />
-<col width="9%" />
-<col width="8%" />
-<col width="9%" />
-<col width="16%" />
-<col width="11%" />
-</colgroup>
+<table>
 <thead>
-<tr class="header">
-<th align="right">estimate</th>
-<th align="right">estimate1</th>
-<th align="right">estimate2</th>
-<th align="right">statistic</th>
-<th align="right">p.value</th>
-<th align="right">parameter</th>
-<th align="right">conf.low</th>
-<th align="right">conf.high</th>
-<th align="left">method</th>
-<th align="left">alternative</th>
+<tr>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+estimate1
+</th>
+<th style="text-align:right;">
+estimate2
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+<th style="text-align:right;">
+parameter
+</th>
+<th style="text-align:right;">
+conf.low
+</th>
+<th style="text-align:right;">
+conf.high
+</th>
+<th style="text-align:left;">
+method
+</th>
+<th style="text-align:left;">
+alternative
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="right">-0.186</td>
-<td align="right">5.434</td>
-<td align="right">5.62</td>
-<td align="right">-2.797</td>
-<td align="right">0.003</td>
-<td align="right">1814</td>
-<td align="right">-Inf</td>
-<td align="right">-0.077</td>
-<td align="left">Two Sample t-test</td>
-<td align="left">less</td>
+<tr>
+<td style="text-align:right;">
+-0.186
+</td>
+<td style="text-align:right;">
+5.434
+</td>
+<td style="text-align:right;">
+5.62
+</td>
+<td style="text-align:right;">
+-2.797
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+1814
+</td>
+<td style="text-align:right;">
+-Inf
+</td>
+<td style="text-align:right;">
+-0.077
+</td>
+<td style="text-align:left;">
+Two Sample t-test
+</td>
+<td style="text-align:left;">
+less
+</td>
 </tr>
 </tbody>
 </table>
@@ -539,62 +580,128 @@ pval_df %&gt;%
   ) %&gt;% knitr::kable()</code></pre>
 <table>
 <thead>
-<tr class="header">
-<th align="left">regional</th>
-<th align="right">p_value</th>
-<th align="left">test_Result</th>
+<tr>
+<th style="text-align:left;">
+regional
+</th>
+<th style="text-align:right;">
+p_value
+</th>
+<th style="text-align:left;">
+test_Result
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">Central and Eastern Europe</td>
-<td align="right">0.0000001</td>
-<td align="left">reject null</td>
+<tr>
+<td style="text-align:left;">
+Central and Eastern Europe
+</td>
+<td style="text-align:right;">
+0.0000001
+</td>
+<td style="text-align:left;">
+reject null
+</td>
 </tr>
-<tr class="even">
-<td align="left">Commonwealth of Independent States</td>
-<td align="right">0.0003179</td>
-<td align="left">reject null</td>
+<tr>
+<td style="text-align:left;">
+Commonwealth of Independent States
+</td>
+<td style="text-align:right;">
+0.0003179
+</td>
+<td style="text-align:left;">
+reject null
+</td>
 </tr>
-<tr class="odd">
-<td align="left">East Asia</td>
-<td align="right">0.1041398</td>
-<td align="left">fail to reject null</td>
+<tr>
+<td style="text-align:left;">
+East Asia
+</td>
+<td style="text-align:right;">
+0.1041398
+</td>
+<td style="text-align:left;">
+fail to reject null
+</td>
 </tr>
-<tr class="even">
-<td align="left">Latin America and Caribbean</td>
-<td align="right">0.5362506</td>
-<td align="left">fail to reject null</td>
+<tr>
+<td style="text-align:left;">
+Latin America and Caribbean
+</td>
+<td style="text-align:right;">
+0.5362506
+</td>
+<td style="text-align:left;">
+fail to reject null
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Middle East and North Africa</td>
-<td align="right">0.6747703</td>
-<td align="left">fail to reject null</td>
+<tr>
+<td style="text-align:left;">
+Middle East and North Africa
+</td>
+<td style="text-align:right;">
+0.6747703
+</td>
+<td style="text-align:left;">
+fail to reject null
+</td>
 </tr>
-<tr class="even">
-<td align="left">North America and ANZ</td>
-<td align="right">0.9973080</td>
-<td align="left">fail to reject null</td>
+<tr>
+<td style="text-align:left;">
+North America and ANZ
+</td>
+<td style="text-align:right;">
+0.9973080
+</td>
+<td style="text-align:left;">
+fail to reject null
+</td>
 </tr>
-<tr class="odd">
-<td align="left">South Asia</td>
-<td align="right">0.8213778</td>
-<td align="left">fail to reject null</td>
+<tr>
+<td style="text-align:left;">
+South Asia
+</td>
+<td style="text-align:right;">
+0.8213778
+</td>
+<td style="text-align:left;">
+fail to reject null
+</td>
 </tr>
-<tr class="even">
-<td align="left">Southeast Asia</td>
-<td align="right">0.5272470</td>
-<td align="left">fail to reject null</td>
+<tr>
+<td style="text-align:left;">
+Southeast Asia
+</td>
+<td style="text-align:right;">
+0.5272470
+</td>
+<td style="text-align:left;">
+fail to reject null
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Sub-Saharan Africa</td>
-<td align="right">0.0001335</td>
-<td align="left">reject null</td>
+<tr>
+<td style="text-align:left;">
+Sub-Saharan Africa
+</td>
+<td style="text-align:right;">
+0.0001335
+</td>
+<td style="text-align:left;">
+reject null
+</td>
 </tr>
-<tr class="even">
-<td align="left">Western Europe</td>
-<td align="right">0.1244833</td>
-<td align="left">fail to reject null</td>
+<tr>
+<td style="text-align:left;">
+Western Europe
+</td>
+<td style="text-align:right;">
+0.1244833
+</td>
+<td style="text-align:left;">
+fail to reject null
+</td>
 </tr>
 </tbody>
 </table>
@@ -631,47 +738,95 @@ pval_df2 %&gt;%
   ) %&gt;% knitr::kable()</code></pre>
 <table>
 <thead>
-<tr class="header">
-<th align="left">regional</th>
-<th align="right">p_value</th>
-<th align="left">test_Result</th>
+<tr>
+<th style="text-align:left;">
+regional
+</th>
+<th style="text-align:right;">
+p_value
+</th>
+<th style="text-align:left;">
+test_Result
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">East Asia</td>
-<td align="right">0.8958602</td>
-<td align="left">fail to reject null</td>
+<tr>
+<td style="text-align:left;">
+East Asia
+</td>
+<td style="text-align:right;">
+0.8958602
+</td>
+<td style="text-align:left;">
+fail to reject null
+</td>
 </tr>
-<tr class="even">
-<td align="left">Latin America and Caribbean</td>
-<td align="right">0.4637494</td>
-<td align="left">fail to reject null</td>
+<tr>
+<td style="text-align:left;">
+Latin America and Caribbean
+</td>
+<td style="text-align:right;">
+0.4637494
+</td>
+<td style="text-align:left;">
+fail to reject null
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Middle East and North Africa</td>
-<td align="right">0.3252297</td>
-<td align="left">fail to reject null</td>
+<tr>
+<td style="text-align:left;">
+Middle East and North Africa
+</td>
+<td style="text-align:right;">
+0.3252297
+</td>
+<td style="text-align:left;">
+fail to reject null
+</td>
 </tr>
-<tr class="even">
-<td align="left">North America and ANZ</td>
-<td align="right">0.0026920</td>
-<td align="left">reject null</td>
+<tr>
+<td style="text-align:left;">
+North America and ANZ
+</td>
+<td style="text-align:right;">
+0.0026920
+</td>
+<td style="text-align:left;">
+reject null
+</td>
 </tr>
-<tr class="odd">
-<td align="left">South Asia</td>
-<td align="right">0.1786222</td>
-<td align="left">fail to reject null</td>
+<tr>
+<td style="text-align:left;">
+South Asia
+</td>
+<td style="text-align:right;">
+0.1786222
+</td>
+<td style="text-align:left;">
+fail to reject null
+</td>
 </tr>
-<tr class="even">
-<td align="left">Southeast Asia</td>
-<td align="right">0.4727530</td>
-<td align="left">fail to reject null</td>
+<tr>
+<td style="text-align:left;">
+Southeast Asia
+</td>
+<td style="text-align:right;">
+0.4727530
+</td>
+<td style="text-align:left;">
+fail to reject null
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Western Europe</td>
-<td align="right">0.8755167</td>
-<td align="left">fail to reject null</td>
+<tr>
+<td style="text-align:left;">
+Western Europe
+</td>
+<td style="text-align:right;">
+0.8755167
+</td>
+<td style="text-align:left;">
+fail to reject null
+</td>
 </tr>
 </tbody>
 </table>
@@ -708,42 +863,84 @@ pval_df3 %&gt;%
   ) %&gt;% knitr::kable()</code></pre>
 <table>
 <thead>
-<tr class="header">
-<th align="left">regional</th>
-<th align="right">p_value</th>
-<th align="left">test_Result</th>
+<tr>
+<th style="text-align:left;">
+regional
+</th>
+<th style="text-align:right;">
+p_value
+</th>
+<th style="text-align:left;">
+test_Result
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">East Asia</td>
-<td align="right">0.2082797</td>
-<td align="left">fail to reject null</td>
+<tr>
+<td style="text-align:left;">
+East Asia
+</td>
+<td style="text-align:right;">
+0.2082797
+</td>
+<td style="text-align:left;">
+fail to reject null
+</td>
 </tr>
-<tr class="even">
-<td align="left">Latin America and Caribbean</td>
-<td align="right">0.9274987</td>
-<td align="left">fail to reject null</td>
+<tr>
+<td style="text-align:left;">
+Latin America and Caribbean
+</td>
+<td style="text-align:right;">
+0.9274987
+</td>
+<td style="text-align:left;">
+fail to reject null
+</td>
 </tr>
-<tr class="odd">
-<td align="left">Middle East and North Africa</td>
-<td align="right">0.6504595</td>
-<td align="left">fail to reject null</td>
+<tr>
+<td style="text-align:left;">
+Middle East and North Africa
+</td>
+<td style="text-align:right;">
+0.6504595
+</td>
+<td style="text-align:left;">
+fail to reject null
+</td>
 </tr>
-<tr class="even">
-<td align="left">North America and ANZ</td>
-<td align="right">0.3572444</td>
-<td align="left">fail to reject null</td>
+<tr>
+<td style="text-align:left;">
+North America and ANZ
+</td>
+<td style="text-align:right;">
+0.3572444
+</td>
+<td style="text-align:left;">
+fail to reject null
+</td>
 </tr>
-<tr class="odd">
-<td align="left">South Asia</td>
-<td align="right">0.9455060</td>
-<td align="left">fail to reject null</td>
+<tr>
+<td style="text-align:left;">
+South Asia
+</td>
+<td style="text-align:right;">
+0.9455060
+</td>
+<td style="text-align:left;">
+fail to reject null
+</td>
 </tr>
-<tr class="even">
-<td align="left">Southeast Asia</td>
-<td align="right">0.2489666</td>
-<td align="left">fail to reject null</td>
+<tr>
+<td style="text-align:left;">
+Southeast Asia
+</td>
+<td style="text-align:right;">
+0.2489666
+</td>
+<td style="text-align:left;">
+fail to reject null
+</td>
 </tr>
 </tbody>
 </table>
@@ -792,45 +989,73 @@ ones.</p>
 countries and unhappy countries, now we conduct a 2-sample t-test with
 unequal variances.</p>
 <pre class="r"><code>t.test(logged_gdp_per_capita ~ happy_status, alternative = &quot;greater&quot;, data = hap_unhap, var.equal = FALSE) %&gt;% broom::tidy() %&gt;% knitr::kable(digit = 3)</code></pre>
-<table style="width:100%;">
-<colgroup>
-<col width="8%" />
-<col width="8%" />
-<col width="8%" />
-<col width="8%" />
-<col width="7%" />
-<col width="8%" />
-<col width="8%" />
-<col width="8%" />
-<col width="21%" />
-<col width="10%" />
-</colgroup>
+<table>
 <thead>
-<tr class="header">
-<th align="right">estimate</th>
-<th align="right">estimate1</th>
-<th align="right">estimate2</th>
-<th align="right">statistic</th>
-<th align="right">p.value</th>
-<th align="right">parameter</th>
-<th align="right">conf.low</th>
-<th align="right">conf.high</th>
-<th align="left">method</th>
-<th align="left">alternative</th>
+<tr>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+estimate1
+</th>
+<th style="text-align:right;">
+estimate2
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+<th style="text-align:right;">
+parameter
+</th>
+<th style="text-align:right;">
+conf.low
+</th>
+<th style="text-align:right;">
+conf.high
+</th>
+<th style="text-align:left;">
+method
+</th>
+<th style="text-align:left;">
+alternative
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="right">1.432</td>
-<td align="right">10.083</td>
-<td align="right">8.651</td>
-<td align="right">34.177</td>
-<td align="right">0</td>
-<td align="right">1707.127</td>
-<td align="right">1.363</td>
-<td align="right">Inf</td>
-<td align="left">Welch Two Sample t-test</td>
-<td align="left">greater</td>
+<tr>
+<td style="text-align:right;">
+1.432
+</td>
+<td style="text-align:right;">
+10.083
+</td>
+<td style="text-align:right;">
+8.651
+</td>
+<td style="text-align:right;">
+34.177
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1707.127
+</td>
+<td style="text-align:right;">
+1.363
+</td>
+<td style="text-align:right;">
+Inf
+</td>
+<td style="text-align:left;">
+Welch Two Sample t-test
+</td>
+<td style="text-align:left;">
+greater
+</td>
 </tr>
 </tbody>
 </table>
@@ -851,45 +1076,73 @@ regions.</p>
 social_support is the greater for the happy regions than the unhappy
 regions.</p>
 <pre class="r"><code>t.test(social_support ~ happy_status, alternative = &quot;greater&quot;, data = hap_unhap, var.equal = FALSE) %&gt;% broom::tidy() %&gt;% knitr::kable(digit = 3)</code></pre>
-<table style="width:100%;">
-<colgroup>
-<col width="8%" />
-<col width="8%" />
-<col width="8%" />
-<col width="8%" />
-<col width="7%" />
-<col width="8%" />
-<col width="8%" />
-<col width="8%" />
-<col width="21%" />
-<col width="10%" />
-</colgroup>
+<table>
 <thead>
-<tr class="header">
-<th align="right">estimate</th>
-<th align="right">estimate1</th>
-<th align="right">estimate2</th>
-<th align="right">statistic</th>
-<th align="right">p.value</th>
-<th align="right">parameter</th>
-<th align="right">conf.low</th>
-<th align="right">conf.high</th>
-<th align="left">method</th>
-<th align="left">alternative</th>
+<tr>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+estimate1
+</th>
+<th style="text-align:right;">
+estimate2
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+<th style="text-align:right;">
+parameter
+</th>
+<th style="text-align:right;">
+conf.low
+</th>
+<th style="text-align:right;">
+conf.high
+</th>
+<th style="text-align:left;">
+method
+</th>
+<th style="text-align:left;">
+alternative
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="right">0.132</td>
-<td align="right">0.879</td>
-<td align="right">0.748</td>
-<td align="right">28.349</td>
-<td align="right">0</td>
-<td align="right">1528.296</td>
-<td align="right">0.124</td>
-<td align="right">Inf</td>
-<td align="left">Welch Two Sample t-test</td>
-<td align="left">greater</td>
+<tr>
+<td style="text-align:right;">
+0.132
+</td>
+<td style="text-align:right;">
+0.879
+</td>
+<td style="text-align:right;">
+0.748
+</td>
+<td style="text-align:right;">
+28.349
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1528.296
+</td>
+<td style="text-align:right;">
+0.124
+</td>
+<td style="text-align:right;">
+Inf
+</td>
+<td style="text-align:left;">
+Welch Two Sample t-test
+</td>
+<td style="text-align:left;">
+greater
+</td>
 </tr>
 </tbody>
 </table>
@@ -914,45 +1167,73 @@ unhappy regions.</p>
 healthy life expectancy is the greater for the happy regions than the
 unhappy regions.</p>
 <pre class="r"><code>t.test(healthy_life_expectancy ~ happy_status, alternative = &quot;greater&quot;, data = hap_unhap, var.equal = FALSE) %&gt;% broom::tidy() %&gt;% knitr::kable(digit = 3)</code></pre>
-<table style="width:100%;">
-<colgroup>
-<col width="8%" />
-<col width="8%" />
-<col width="8%" />
-<col width="8%" />
-<col width="7%" />
-<col width="8%" />
-<col width="8%" />
-<col width="8%" />
-<col width="21%" />
-<col width="10%" />
-</colgroup>
+<table>
 <thead>
-<tr class="header">
-<th align="right">estimate</th>
-<th align="right">estimate1</th>
-<th align="right">estimate2</th>
-<th align="right">statistic</th>
-<th align="right">p.value</th>
-<th align="right">parameter</th>
-<th align="right">conf.low</th>
-<th align="right">conf.high</th>
-<th align="left">method</th>
-<th align="left">alternative</th>
+<tr>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+estimate1
+</th>
+<th style="text-align:right;">
+estimate2
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+<th style="text-align:right;">
+parameter
+</th>
+<th style="text-align:right;">
+conf.low
+</th>
+<th style="text-align:right;">
+conf.high
+</th>
+<th style="text-align:left;">
+method
+</th>
+<th style="text-align:left;">
+alternative
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="right">9.995</td>
-<td align="right">68.652</td>
-<td align="right">58.657</td>
-<td align="right">37.904</td>
-<td align="right">0</td>
-<td align="right">1563.001</td>
-<td align="right">9.561</td>
-<td align="right">Inf</td>
-<td align="left">Welch Two Sample t-test</td>
-<td align="left">greater</td>
+<tr>
+<td style="text-align:right;">
+9.995
+</td>
+<td style="text-align:right;">
+68.652
+</td>
+<td style="text-align:right;">
+58.657
+</td>
+<td style="text-align:right;">
+37.904
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1563.001
+</td>
+<td style="text-align:right;">
+9.561
+</td>
+<td style="text-align:right;">
+Inf
+</td>
+<td style="text-align:left;">
+Welch Two Sample t-test
+</td>
+<td style="text-align:left;">
+greater
+</td>
 </tr>
 </tbody>
 </table>
@@ -986,45 +1267,73 @@ the unhappy regions.</p>
 freedom to make life choices index is the greater for the happy regions
 and the unhappy regions.</p>
 <pre class="r"><code>t.test(freedom_to_make_life_choices ~ happy_status,alternative = &quot;greater&quot;, data = hap_unhap, var.equal = TRUE) %&gt;% broom::tidy() %&gt;% knitr::kable(digit = 3)</code></pre>
-<table style="width:100%;">
-<colgroup>
-<col width="8%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="7%" />
-<col width="9%" />
-<col width="8%" />
-<col width="9%" />
-<col width="16%" />
-<col width="11%" />
-</colgroup>
+<table>
 <thead>
-<tr class="header">
-<th align="right">estimate</th>
-<th align="right">estimate1</th>
-<th align="right">estimate2</th>
-<th align="right">statistic</th>
-<th align="right">p.value</th>
-<th align="right">parameter</th>
-<th align="right">conf.low</th>
-<th align="right">conf.high</th>
-<th align="left">method</th>
-<th align="left">alternative</th>
+<tr>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+estimate1
+</th>
+<th style="text-align:right;">
+estimate2
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+<th style="text-align:right;">
+parameter
+</th>
+<th style="text-align:right;">
+conf.low
+</th>
+<th style="text-align:right;">
+conf.high
+</th>
+<th style="text-align:left;">
+method
+</th>
+<th style="text-align:left;">
+alternative
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="right">0.067</td>
-<td align="right">0.78</td>
-<td align="right">0.713</td>
-<td align="right">10.429</td>
-<td align="right">0</td>
-<td align="right">1814</td>
-<td align="right">0.056</td>
-<td align="right">Inf</td>
-<td align="left">Two Sample t-test</td>
-<td align="left">greater</td>
+<tr>
+<td style="text-align:right;">
+0.067
+</td>
+<td style="text-align:right;">
+0.78
+</td>
+<td style="text-align:right;">
+0.713
+</td>
+<td style="text-align:right;">
+10.429
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1814
+</td>
+<td style="text-align:right;">
+0.056
+</td>
+<td style="text-align:right;">
+Inf
+</td>
+<td style="text-align:left;">
+Two Sample t-test
+</td>
+<td style="text-align:left;">
+greater
+</td>
 </tr>
 </tbody>
 </table>
@@ -1063,45 +1372,73 @@ regions.</p>
 generosity index is different for the happy regions from the unhappy
 regions.</p>
 <pre class="r"><code>t.test(generosity ~ happy_status, data = hap_unhap, var.equal = TRUE) %&gt;% broom::tidy() %&gt;% knitr::kable(digit = 3)</code></pre>
-<table style="width:100%;">
-<colgroup>
-<col width="8%" />
-<col width="9%" />
-<col width="9%" />
-<col width="9%" />
-<col width="7%" />
-<col width="9%" />
-<col width="8%" />
-<col width="9%" />
-<col width="16%" />
-<col width="11%" />
-</colgroup>
+<table>
 <thead>
-<tr class="header">
-<th align="right">estimate</th>
-<th align="right">estimate1</th>
-<th align="right">estimate2</th>
-<th align="right">statistic</th>
-<th align="right">p.value</th>
-<th align="right">parameter</th>
-<th align="right">conf.low</th>
-<th align="right">conf.high</th>
-<th align="left">method</th>
-<th align="left">alternative</th>
+<tr>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+estimate1
+</th>
+<th style="text-align:right;">
+estimate2
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+<th style="text-align:right;">
+parameter
+</th>
+<th style="text-align:right;">
+conf.low
+</th>
+<th style="text-align:right;">
+conf.high
+</th>
+<th style="text-align:left;">
+method
+</th>
+<th style="text-align:left;">
+alternative
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="right">-0.006</td>
-<td align="right">-0.006</td>
-<td align="right">0</td>
-<td align="right">-0.792</td>
-<td align="right">0.428</td>
-<td align="right">1814</td>
-<td align="right">-0.021</td>
-<td align="right">0.009</td>
-<td align="left">Two Sample t-test</td>
-<td align="left">two.sided</td>
+<tr>
+<td style="text-align:right;">
+-0.006
+</td>
+<td style="text-align:right;">
+-0.006
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+-0.792
+</td>
+<td style="text-align:right;">
+0.428
+</td>
+<td style="text-align:right;">
+1814
+</td>
+<td style="text-align:right;">
+-0.021
+</td>
+<td style="text-align:right;">
+0.009
+</td>
+<td style="text-align:left;">
+Two Sample t-test
+</td>
+<td style="text-align:left;">
+two.sided
+</td>
 </tr>
 </tbody>
 </table>
@@ -1125,45 +1462,73 @@ unhappy regions.</p>
 perceptions of corruption is the greater for the happy regions than the
 unhappy regions.</p>
 <pre class="r"><code>t.test(perceptions_of_corruption ~ happy_status, data = hap_unhap, var.equal = FALSE) %&gt;% broom::tidy() %&gt;% knitr::kable(digit = 3)</code></pre>
-<table style="width:100%;">
-<colgroup>
-<col width="8%" />
-<col width="8%" />
-<col width="8%" />
-<col width="8%" />
-<col width="7%" />
-<col width="8%" />
-<col width="8%" />
-<col width="8%" />
-<col width="21%" />
-<col width="10%" />
-</colgroup>
+<table>
 <thead>
-<tr class="header">
-<th align="right">estimate</th>
-<th align="right">estimate1</th>
-<th align="right">estimate2</th>
-<th align="right">statistic</th>
-<th align="right">p.value</th>
-<th align="right">parameter</th>
-<th align="right">conf.low</th>
-<th align="right">conf.high</th>
-<th align="left">method</th>
-<th align="left">alternative</th>
+<tr>
+<th style="text-align:right;">
+estimate
+</th>
+<th style="text-align:right;">
+estimate1
+</th>
+<th style="text-align:right;">
+estimate2
+</th>
+<th style="text-align:right;">
+statistic
+</th>
+<th style="text-align:right;">
+p.value
+</th>
+<th style="text-align:right;">
+parameter
+</th>
+<th style="text-align:right;">
+conf.low
+</th>
+<th style="text-align:right;">
+conf.high
+</th>
+<th style="text-align:left;">
+method
+</th>
+<th style="text-align:left;">
+alternative
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="right">-0.062</td>
-<td align="right">0.717</td>
-<td align="right">0.779</td>
-<td align="right">-7.135</td>
-<td align="right">0</td>
-<td align="right">1615.654</td>
-<td align="right">-0.079</td>
-<td align="right">-0.045</td>
-<td align="left">Welch Two Sample t-test</td>
-<td align="left">two.sided</td>
+<tr>
+<td style="text-align:right;">
+-0.062
+</td>
+<td style="text-align:right;">
+0.717
+</td>
+<td style="text-align:right;">
+0.779
+</td>
+<td style="text-align:right;">
+-7.135
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1615.654
+</td>
+<td style="text-align:right;">
+-0.079
+</td>
+<td style="text-align:right;">
+-0.045
+</td>
+<td style="text-align:left;">
+Welch Two Sample t-test
+</td>
+<td style="text-align:left;">
+two.sided
+</td>
 </tr>
 </tbody>
 </table>
