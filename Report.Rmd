@@ -1,5 +1,5 @@
 ---
-title: "Report"
+title: "Final Report"
 output: 
  html_document:
     toc: true
@@ -148,5 +148,35 @@ We also implemented a PCR regression model to predict the ladder score in 2021. 
 When we look at the plot, we also see that when we add one principal component, the test error will be the lowest. As a result, we use one principle component in the PCR model to make predictions on the out of sample observations. We compute the test mse for the PCR model by taking the prediction of the PCR model on the test set’s ladder score, subtract the observed values of the ladder score and taking the mean square of them, then repeat the same process for the training data. We get a test MSE value of 0.47, and a train mse of 0.227. What’s more, we want to compare the performance of the PCR regression to the best regression model we’ve obtained in the regression analysis. In this case the test MSE value of the selected best regression model is around 0.38, and the train MSE value of the regression model is 0.18. Thus, in this case, the regression model outperforms the PRC model.
 
 
+## Discussion
+
+### Findings and summary
+
+To answer our research questions:
+
+- The ranking of the mean life ladder score from lowest to highest region is Sub Saharan Africa, South Asia, Commonwealth of Independent States, Middle East and North Africa, Southeast Asia, Central and Eastern Europe, East Asia, Latin America and Caribbean, Western Europe, North America and ANZ. 
+
+- From the One Way ANOVA test, we found that at least one region has a mean ladder score different from others. 
+
+- By conducting two sample t-tests, we found that in Central and Eastern Europe, Commonwealth of Independent States and Sub-Saharan Africa, mean ladder scores increased after covid. In North America and ANZ, mean ladder score decreased after covid. In all other regions, mean ladder scores stayed the same before and after covid. 
+
+- Comparing regions with relatively high ladder scores (“happy regions”) with regions with low ladder scores (“unhappy regions”), we conclude that “happy regions” have higher logged GDP per capita, social support, healthy life expectancy, freedom to make life choices. “Happy regions” also have different perceptions of corruption than “unhappy regions”, though the mean generosity is the same between the two types of regions. 
+
+- Permutation test suggests that the distribution of ladder scores for “happy regions” and “unhappy regions” are different.
+
+- Regional indicators, logged GDP per capita, social support, and freedom to make life choices have strong relationships with and can be used to predict life ladder scores. Although GDP is a strong predictor for ladder score, there is strong interaction between GDP and freedom to make life choices, meaning that the effect of GDP on ladder score depends on the value of freedom to make life choices. 
+
+- According to regression analysis, the correlations between GDP and Ladder Score seemed to be very strong, and the initial regression model(including Region, GDP, Social.support, Freedom and Corruption as predictor) would suggest that GDP is a powerful predictor of the Happiness Ladder Score, but after adapting interaction term and refit model, we found that the relationship between Freedom and GDP couldn’t be ignored: these two seemed to influence each other and we couldn’t eliminate either of them.
+
+- Comparing the PCR and the regression models based on MSE, we conclude that the regression model is the best model.
+
+
+### Limitations
+
+The dataset has very few observations for China, Hong Kong, Kosovo, Maldives, North Cyprus, Turkmenistan and for 2005, which prevented us from gaining meaningful insights about the life ladder score for these countries and year. There are also a few countries in Africa that have no observation at all, finding data about their happiness index could give us a more comprehensive image for our project. Furthermore, aside from the variables investigated in this project, there are many other factors that can influence happiness, such as schooling, health care, quality of medical treatment, etc. Including these extra variables in our model can possibly improve our prediction about life ladder score.
+
+### Next steps
+
+If we are able to find datasets related to COVID-19 on the variables we used, we could explore how the pandemic affected these variables such as GDP, healthy life expectancy, social support, freedom to make life choices, and generosity as well as how they work together to have influence on the state of happiness. Since the pandemic might serve as a confounder or have interactions with other variables, we think that by including the data related to COVID-19, a better model could be built to predict future Life Ladder Score. We also believe that by addressing the possible effects of COVID-19 on global happiness and other variables, the government and organizations would be able to make better decisions.
 
 
