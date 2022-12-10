@@ -44,9 +44,9 @@ happiness_df %>% head() %>% knitr::kable()
 The dataset has `r nrow(happiness_df)` observations and `r ncol(happiness_df)` variables, Let's take a deeper look into each variable:
 
 
-### Looking into each variable {.tabset}
+### EDA of each variable {.tabset}
+
 #### Country name
-There are `r happiness_df %>% pull(country_name) %>% unique() %>% length()` unique countries in this dataset.
 
 ```{r}
 happiness_df %>%
@@ -60,10 +60,12 @@ happiness_df %>%
   ) %>%
   knitr::kable()
 ```
-We can see that 6 countries appeared only 1 time, while 24 countries appeared 16 times.
+There are `r happiness_df %>% pull(country_name) %>% unique() %>% length()` unique countries in this dataset. We can see that 6 countries appeared only 1 time, while 24 countries appeared 16 times. The countries that appeared only 1 time are China, Hong Kong, Kosovo, Maldives, North Cyprus, and Turkmenistan.
+
+
 
 #### Regional indicator
-This variable represents the region that the country belongs to. There are `r happiness_df %>% pull(regional_indicator) %>% unique() %>% length()` unique regions in this dataset. The regional indicators are `r happiness_df %>% pull(regional_indicator) %>% unique()`.
+There are `r happiness_df %>% pull(regional_indicator) %>% unique() %>% length()` unique regions in this dataset. The regional indicators are `r happiness_df %>% pull(regional_indicator) %>% unique()`.
 
 ```{r}
 happiness_df %>%
@@ -102,10 +104,9 @@ happiness_df %>%
   )
 ```
 
-Year ranges from 2005 to 2021 in this dataset. The year with the most observation is 2021, and the year with the least observation is 2005.
+Year ranges from 2005 to 2021 in this dataset. The year with the most observation is 2021, and the year with the least observation is 2005, which only has 1 observation.
 
 #### Ladder score
-Ladder score is the happiness index. 
 
 ```{r}
 happiness_df %>%
