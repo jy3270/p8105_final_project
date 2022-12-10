@@ -61,8 +61,7 @@ We are inspired by the World Happiness Report 2021 and News article World Happin
 
 
 ## Data
-
-[World Happiness Report from 2005-2021](https://worldhappiness.report) 
+We uses multiple data sets for our project. For our main research questions, we used the data from [World Happiness Report from 2005-2021](https://worldhappiness.report), which uses global survey data to report how people evaluate their own lives in more than 150 countries worldwide. For exploration analysis we uses all data from 2005 to 2021, and for regression analysis and principle component analysis we focus on report in 2021. 
 
 Variables of interest: 
 

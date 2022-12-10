@@ -10,6 +10,8 @@ output:
 <img src="cover_fig.jpeg" style="width:60%">
 </center>
 
+&nbsp;
+
 # Overview
 
 The annual World Happiness Report for 2022 was released Friday, March 18th, and according to the ranking, the U.S. moved up three spots from last year. Now, at a time of pandemic and war, we need such an effort more than ever, and the lesson of the World Happiness Report over the years is that social support, generosity to one another, and honesty in government are crucial for well-being. 	How do these factors influence our happiness?

@@ -22,6 +22,8 @@ navbar:
   right:
     - text: "Project Report"
       href: Report.html
+    - icon: fa-envelope fa-lg
+      href: mailto:<jy3270@cumc.columbia.edu>
     - icon: fa-github fa-lg
       href: https://github.com/jy3270/world-happiness-analysis.github.io
 output:
