@@ -1,7 +1,7 @@
 name: "P8105 Final Project"
 output_dir: "."
 navbar:
-  title: "Overview"
+  title: "Home"
   left:
     - text: "Exploratory Analysis"
       menu:
