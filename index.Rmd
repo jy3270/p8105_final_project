@@ -39,6 +39,10 @@ For our reader to freely explore our data and try to understand our model, we pr
 Final report can be access [here](Report.html) or there is an entry on the right corner.
 Detailed code and output of each section are in the navigation bar.
 
+# Screencast
+
+<iframe width="616" height="385" src="https://www.youtube.com/embed/taz6dgVxfNs" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+
 # Group Members
 [Jingya Yu](https://jy3270.github.io/) (jy3270)
 

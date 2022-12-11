@@ -37,7 +37,7 @@ How might these or some of these factors affect the state of happiness in genera
 
 ## Background and related work
 
-We are inspired by the World Happiness Report 2021 and News article World Happiness Report published to mark International Day of Happiness about the importance of World Happiness on a social level by mentioning people’s interactions during the pandemic. While diving into the relationships between the possible variables and the Life Ladder Score, we are aware of the influence of the pandemic on the World Happiness report. We will use regression analysis and PCA/PCR analysis to find the overall “best” model and address the association between the variables and the Life Ladder Score. We will use statistical tests to address the possible influence of the pandemic.
+We are inspired by the [World Happiness Report](https://worldhappiness.report/) and News article [World Happiness Report published to mark International Day of Happiness](https://www.sbs.ox.ac.uk/news/world-happiness-report-published-mark-international-day-happiness) about the importance of World Happiness on a social level by mentioning people’s interactions during the pandemic. While diving into the relationships between the possible variables and the Life Ladder Score, we are aware of the influence of the pandemic on the World Happiness report. We will use regression analysis and PCA/PCR analysis to find the overall “best” model and address the association between the variables and the Life Ladder Score. We will use statistical tests to address the possible influence of the pandemic.
 
 
 ## Research questions
